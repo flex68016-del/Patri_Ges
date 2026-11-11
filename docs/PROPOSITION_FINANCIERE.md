@@ -10,7 +10,7 @@
 
 **Durée de la mission :** 6 jours (10-15 Novembre 2026)
 
-**Taux journalier :** 75 000 FCFA
+**Taux journalier :** 200 000 FCFA
 
 ---
 
@@ -18,8 +18,8 @@
 
 | Poste | Jours | Taux Journalier | Montant |
 |-------|-------|-----------------|---------|
-| Développement | 6 | 75 000 FCFA | 450 000 FCFA |
-| **Total** | **6** | **75 000 FCFA** | **450 000 FCFA** |
+| Développement | 6 | 200 000 FCFA | 1 200 000 FCFA |
+| **Total** | **6** | **200 000 FCFA** | **1 200 000 FCFA** |
 
 ---
 
@@ -29,7 +29,7 @@
 - Structure du dépôt et configuration Git
 - Documentation de base (README, .gitignore, .editorconfig)
 - Analyse du besoin et décisions d'architecture
-- **Coût :** 75 000 FCFA
+- **Coût :** 200 000 FCFA
 
 ### Phase B - Conception UML (1 jour)
 - Diagrammes de cas d'utilisation
@@ -37,26 +37,26 @@
 - Diagrammes de séquence
 - Diagrammes d'états et d'activités
 - Diagrammes de composants et de déploiement
-- **Coût :** 75 000 FCFA
+- **Coût :** 200 000 FCFA
 
 ### Phase C - Maquettes Figma (0.5 jour)
 - Tokens de design (couleurs, typographie, espacements)
 - Description détaillée des écrans
 - Documentation pour création manuelle
-- **Coût :** 37 500 FCFA
+- **Coût :** 100 000 FCFA
 
 ### Phase D - Base de Données (0.5 jour)
 - MCD pour les 3 services
 - MLD avec normalisation
 - Plan d'index
-- **Coût :** 37 500 FCFA
+- **Coût :** 100 000 FCFA
 
 ### Phase E - Socle Docker (0.5 jour)
 - Configuration docker-compose
 - Dockerfiles multi-étapes
 - Configuration Nginx gateway
 - Scripts d'initialisation
-- **Coût :** 37 500 FCFA
+- **Coût :** 100 000 FCFA
 
 ### Phase F - Développement (2 jours)
 - Initialisation des 4 services Laravel
@@ -65,25 +65,26 @@
 - Interface web (Blade + Alpine + Tailwind)
 - Tests unitaires
 - Seeders pour données de démonstration
-- **Coût :** 150 000 FCFA
+- **Coût :** 400 000 FCFA
 
 ### Phase G - Qualité et Sécurité (0.5 jour)
 - Composer audit
 - Tests PHPUnit
 - Validation de sécurité
-- **Coût :** 37 500 FCFA
+- Middleware d'autorisation et rate limiting
+- **Coût :** 100 000 FCFA
 
 ### Phase H - Déploiement (0.5 jour)
 - Configuration Render
 - Variables d'environnement
 - Tests de déploiement
-- **Coût :** 37 500 FCFA
+- **Coût :** 100 000 FCFA
 
 ### Phase I - Documents (0.5 jour)
 - Fiche technique
 - Proposition financière
 - Guide utilisateur
-- **Coût :** 37 500 FCFA
+- **Coût :** 100 000 FCFA
 
 ### Phase J - Soutenance (0.5 jour)
 - Préparation de la soutenance
@@ -200,7 +201,7 @@
 
 ## 9. Conclusion
 
-**Montant total de la proposition : 450 000 FCFA**
+**Montant total de la proposition : 1 200 000 FCFA**
 
 Cette proposition inclut :
 - Développement complet de la solution

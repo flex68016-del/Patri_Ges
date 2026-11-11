@@ -1,4 +1,3 @@
-```mermaid
 sequenceDiagram
     participant U as Gestionnaire
     participant W as Web
@@ -38,4 +37,3 @@ sequenceDiagram
     O->>DBO: ROLLBACK
     O-->>W: 500 Internal Server Error
     W-->>U: Message d'erreur : impossible de clôturer (service indisponible)
-```

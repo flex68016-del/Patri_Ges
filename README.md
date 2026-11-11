@@ -166,7 +166,7 @@ Ce projet est configuré pour être déployé sur Render (gratuit pour les proje
 
 - ✅ Phase A - Initialisation
 - ✅ Phase B - Conception UML
-- ✅ Phase C - Maquettes Figma (alternative documentée)
+- ✅ Phase C - Maquettes Figma (disponibles sur Figma)
 - ✅ Phase D - Base de données
 - ✅ Phase E - Socle Docker
 - ✅ Phase F - Développement (backend + web de base)
