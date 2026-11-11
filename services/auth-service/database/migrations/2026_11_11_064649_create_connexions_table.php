@@ -13,16 +13,18 @@ return new class extends Migration
     {
         Schema::create('connexions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('utilisateur_id');
-            $table->string('ip_address', 45)->nullable();
+            $table->uuid('user_id');
+            $table->string('ip_adresse', 45)->nullable();
             $table->text('user_agent')->nullable();
-            $table->timestamp('connecte_at');
-            $table->timestamp('deconnecte_at')->nullable();
+            $table->enum('statut', ['actif', 'inactif'])->default('actif');
+            $table->timestamp('connexion_at');
+            $table->timestamp('deconnexion_at')->nullable();
             $table->timestamps();
 
-            $table->foreign('utilisateur_id')->references('id')->on('users')->onDelete('cascade');
-            $table->index('utilisateur_id');
-            $table->index('connecte_at');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->index('user_id');
+            $table->index('connexion_at');
+            $table->index('statut');
         });
     }
 

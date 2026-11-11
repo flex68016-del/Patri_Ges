@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -16,29 +17,43 @@ class User extends Authenticatable
     protected $keyType = 'uuid';
     public $incrementing = false;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
+    }
+
     protected $fillable = [
         'email',
-        'password_hash',
+        'password',
         'nom',
+        'prenom',
         'role',
-        'service_id',
-        'actif',
+        'statut',
         'email_verified_at',
+        'derniere_connexion_at',
     ];
 
     protected $hidden = [
-        'password_hash',
+        'password',
+        'remember_token',
     ];
 
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
-            'actif' => 'boolean',
+            'derniere_connexion_at' => 'datetime',
         ];
+    }
 
     public function connexions(): HasMany
     {
-        return $this->hasMany(Connexion::class, 'utilisateur_id');
+        return $this->hasMany(Connexion::class, 'user_id');
     }
 }

@@ -45,6 +45,10 @@ Thumbs.db
 *.sqlite
 *.db
 
+# JWT Keys
+*.pem
+services/auth-service/storage/app/jwt/*.pem
+
 # Test
 /coverage
 .phpunit.result.cache

@@ -14,17 +14,19 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('email')->unique();
-            $table->string('password_hash');
+            $table->string('password');
             $table->string('nom');
+            $table->string('prenom')->nullable();
             $table->enum('role', ['administrateur', 'gestionnaire', 'responsable', 'inspecteur']);
-            $table->uuid('service_id')->nullable();
-            $table->boolean('actif')->default(true);
+            $table->enum('statut', ['actif', 'inactif'])->default('actif');
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('derniere_connexion_at')->nullable();
+            $table->string('remember_token', 100)->nullable();
             $table->timestamps();
 
             $table->index('email');
-            $table->index('service_id');
             $table->index('role');
+            $table->index('statut');
         });
     }
 
