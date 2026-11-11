@@ -156,17 +156,47 @@
 - Génération des clés JWT
 - Seeders pour les données de démonstration
 
+**Fait (patrimoine-service) - modèles et contrôleurs :**
+- 9 modèles Eloquent créés avec relations :
+  - Service (self-referential, hasMany biens, affectations)
+  - Categorie (hasMany biens)
+  - Bien (belongsTo categorie, service, hasOne spécialisations, hasMany affectations, mouvements, calcul VNC)
+  - BienImmobilier, BienVehicule, BienEquipement (spécialisations 1:1)
+  - Affectation (belongsTo bien, service)
+  - Mouvement (belongsTo bien, JSON detail)
+  - Cession (belongsTo bien)
+- 4 contrôleurs API créés :
+  - ServiceController (CRUD services)
+  - CategorieController (CRUD catégories)
+  - BienController (CRUD biens, affecter, reformer, ceder, historique)
+  - AffectationController (index, show)
+- Routes API configurées
+- Calcul valeur net comptable implémenté dans modèle Bien
+- Transactions DB pour opérations critiques
+- Commit effectué
+
+**Fait (operations-service) - modèles et contrôleurs :**
+- 5 modèles Eloquent créés :
+  - Maintenance (planification et suivi)
+  - CampagneInventaire (hasMany lignes)
+  - LigneInventaire (belongsTo campagne)
+  - Anomalie (signalement)
+  - JournalAudit (journal d'audit)
+- 3 contrôleurs API créés :
+  - MaintenanceController (CRUD, cloturer)
+  - CampagneInventaireController (CRUD, cloturer)
+  - AnomalieController (CRUD, resoudre)
+- Routes API configurées
+- Validation des entrées
+- Commit effectué
+
 **Reste (patrimoine-service) :**
-- Modèles et relations
-- Contrôleurs API
-- Services métier
-- Tests
+- Tests unitaires et d'intégration
+- Seeders pour données de démonstration
 
 **Reste (operations-service) :**
-- Modèles et relations
-- Contrôleurs API
-- Services métier
-- Tests
+- Tests unitaires et d'intégration
+- Seeders pour données de démonstration
 
 **Reste (web) :**
 - Initialisation Laravel 12
@@ -272,6 +302,8 @@ Répéter la procédure pour patrimoine-service, operations-service et web en ut
 7. `feat(auth): migrations, modèles, middleware et contrôleur JWT`
 8. `feat(patrimoine): initialisation Laravel 12 et migrations MLD`
 9. `feat(operations): initialisation Laravel 12 et migrations MLD`
+10. `feat(patrimoine): modèles Eloquent et contrôleurs API`
+11. `feat(operations): modèles Eloquent et contrôleurs API`
 
 ### Ce qui reste à faire
 
