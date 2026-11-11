@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('libelle', 255)->unique();
+            $table->string('code', 50)->unique();
+            $table->string('nom', 255);
             $table->enum('type_bien', ['immobilier', 'vehicule', 'equipement']);
-            $table->integer('duree_amortissement');
-            $table->boolean('amortissable');
+            $table->text('description')->nullable();
+            $table->integer('duree_vie');
+            $table->boolean('actif')->default(true);
             $table->timestamps();
 
             $table->index('type_bien');
+            $table->index('actif');
         });
     }
 

@@ -15,11 +15,11 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('bien_id');
             $table->uuid('service_id');
+            $table->uuid('auteur_id');
             $table->date('date_debut');
             $table->date('date_fin')->nullable();
             $table->text('motif')->nullable();
-            $table->string('reference_acte', 255)->nullable();
-            $table->uuid('auteur_id');
+            $table->boolean('actif')->default(true);
             $table->timestamps();
 
             $table->foreign('bien_id')->references('id')->on('biens');
@@ -28,6 +28,7 @@ return new class extends Migration
             $table->index('service_id');
             $table->index('date_debut');
             $table->index('auteur_id');
+            $table->index('actif');
         });
     }
 

@@ -2,26 +2,42 @@
 
 namespace App\Models;
 
+use Database\Factories\BienFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 
 class Bien extends Model
 {
+    /** @use HasFactory<BienFactory> */
+    use HasFactory;
+
     protected $keyType = 'uuid';
     public $incrementing = false;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
+    }
+
     protected $fillable = [
-        'code_inventaire',
+        'code',
         'designation',
         'categorie_id',
+        'service_id',
         'date_acquisition',
-        'mode_acquisition',
         'valeur_acquisition',
-        'etat',
         'statut',
-        'service_courant_id',
+        'emplacement',
         'actif',
     ];
 
@@ -36,9 +52,9 @@ class Bien extends Model
         return $this->belongsTo(Categorie::class);
     }
 
-    public function serviceCourant(): BelongsTo
+    public function service(): BelongsTo
     {
-        return $this->belongsTo(Service::class, 'service_courant_id');
+        return $this->belongsTo(Service::class, 'service_id');
     }
 
     public function immobilier(): HasOne
@@ -92,14 +108,15 @@ class Bien extends Model
 
     public function calculerValeurNetComptable(): float
     {
-        if (!$this->categorie->amortissable) {
+        if (!$this->categorie || !$this->categorie->duree_vie) {
             return $this->valeur_acquisition;
         }
 
-        $anneesDepuisAcquisition = now()->diffInYears($this->date_acquisition);
-        $tauxAmortissement = 100 / $this->categorie->duree_amortissement;
-        $cumulAmortissement = min($anneesDepuisAcquisition * $tauxAmortissement, 100);
+        $joursDepuisAcquisition = $this->date_acquisition->diffInDays(now());
+        $joursDureeVie = $this->categorie->duree_vie * 365;
+        $tauxAmortissement = $joursDepuisAcquisition / $joursDureeVie;
+        $cumulAmortissement = min($tauxAmortissement * 100, 100);
 
-        return $this->valeur_acquisition * (1 - $cumulAmortissement / 100);
+        return max(0, $this->valeur_acquisition * (1 - $cumulAmortissement / 100));
     }
 }
