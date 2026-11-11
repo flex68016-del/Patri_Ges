@@ -4,20 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Service;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
     public function index(): JsonResponse
     {
         $services = Service::where('actif', true)->get();
+
         return response()->json($services);
     }
 
     public function show(string $id): JsonResponse
     {
         $service = Service::findOrFail($id);
+
         return response()->json($service);
     }
 
@@ -31,6 +33,7 @@ class ServiceController extends Controller
         ]);
 
         $service = Service::create($validated);
+
         return response()->json($service, 201);
     }
 
@@ -39,7 +42,7 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
 
         $validated = $request->validate([
-            'code' => 'sometimes|string|max:50|unique:services,code,' . $id,
+            'code' => 'sometimes|string|max:50|unique:services,code,'.$id,
             'nom' => 'sometimes|string|max:255',
             'type' => 'sometimes|in:ministere,direction,service',
             'parent_id' => 'nullable|uuid|exists:services,id',
@@ -47,6 +50,7 @@ class ServiceController extends Controller
         ]);
 
         $service->update($validated);
+
         return response()->json($service);
     }
 
@@ -54,6 +58,7 @@ class ServiceController extends Controller
     {
         $service = Service::findOrFail($id);
         $service->update(['actif' => false]);
+
         return response()->json(['message' => 'Service désactivé']);
     }
 }

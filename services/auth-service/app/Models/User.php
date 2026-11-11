@@ -15,6 +15,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $keyType = 'uuid';
+
     public $incrementing = false;
 
     protected static function boot()

@@ -14,6 +14,7 @@ class Categorie extends Model
     use HasFactory;
 
     protected $keyType = 'uuid';
+
     public $incrementing = false;
 
     protected static function boot()

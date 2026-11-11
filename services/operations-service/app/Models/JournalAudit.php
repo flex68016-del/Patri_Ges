@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class JournalAudit extends Model
 {
     protected $keyType = 'uuid';
+
     public $incrementing = false;
 
     protected $fillable = [

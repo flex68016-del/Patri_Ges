@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\MaintenanceController;
-use App\Http\Controllers\Api\CampagneInventaireController;
 use App\Http\Controllers\Api\AnomalieController;
+use App\Http\Controllers\Api\CampagneInventaireController;
+use App\Http\Controllers\Api\MaintenanceController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/health', function () {
     return response()->json(['status' => 'healthy']);

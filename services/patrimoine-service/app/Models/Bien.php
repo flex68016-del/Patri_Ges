@@ -16,6 +16,7 @@ class Bien extends Model
     use HasFactory;
 
     protected $keyType = 'uuid';
+
     public $incrementing = false;
 
     protected static function boot()
@@ -94,11 +95,11 @@ class Bien extends Model
 
     public function getSpecialisationAttribute()
     {
-        if (!$this->categorie) {
+        if (! $this->categorie) {
             return null;
         }
 
-        return match($this->categorie->type_bien) {
+        return match ($this->categorie->type_bien) {
             'immobilier' => $this->immobilier,
             'vehicule' => $this->vehicule,
             'equipement' => $this->equipement,
@@ -108,7 +109,7 @@ class Bien extends Model
 
     public function calculerValeurNetComptable(): float
     {
-        if (!$this->categorie || !$this->categorie->duree_vie) {
+        if (! $this->categorie || ! $this->categorie->duree_vie) {
             return $this->valeur_acquisition;
         }
 

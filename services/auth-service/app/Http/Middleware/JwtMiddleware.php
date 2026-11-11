@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use App\Models\User;
 use Closure;
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,17 +17,17 @@ class JwtMiddleware
     {
         $token = $request->bearerToken();
 
-        if (!$token) {
+        if (! $token) {
             return response()->json(['error' => 'Token manquant'], 401);
         }
 
         try {
             $publicKey = file_get_contents(storage_path('app/jwt/public.pem'));
-            $decoded = JWT::decode($token, new Key($publicKey), 'RS256');
+            $decoded = JWT::decode($token, new Key($publicKey, 'RS256'));
 
             $user = User::find($decoded->sub);
 
-            if (!$user || !$user->actif) {
+            if (! $user || ! $user->actif) {
                 return response()->json(['error' => 'Utilisateur invalide ou inactif'], 401);
             }
 

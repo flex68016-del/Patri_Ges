@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 class Connexion extends Model
@@ -12,6 +12,7 @@ class Connexion extends Model
     use HasFactory;
 
     protected $keyType = 'uuid';
+
     public $incrementing = false;
 
     protected static function boot()

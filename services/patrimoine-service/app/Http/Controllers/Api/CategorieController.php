@@ -4,20 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Categorie;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CategorieController extends Controller
 {
     public function index(): JsonResponse
     {
         $categories = Categorie::all();
+
         return response()->json($categories);
     }
 
     public function show(string $id): JsonResponse
     {
         $categorie = Categorie::findOrFail($id);
+
         return response()->json($categorie);
     }
 
@@ -31,6 +33,7 @@ class CategorieController extends Controller
         ]);
 
         $categorie = Categorie::create($validated);
+
         return response()->json($categorie, 201);
     }
 
@@ -39,13 +42,14 @@ class CategorieController extends Controller
         $categorie = Categorie::findOrFail($id);
 
         $validated = $request->validate([
-            'libelle' => 'sometimes|string|max:255|unique:categories,libelle,' . $id,
+            'libelle' => 'sometimes|string|max:255|unique:categories,libelle,'.$id,
             'type_bien' => 'sometimes|in:immobilier,vehicule,equipement',
             'duree_amortissement' => 'sometimes|integer|min:1',
             'amortissable' => 'sometimes|boolean',
         ]);
 
         $categorie->update($validated);
+
         return response()->json($categorie);
     }
 
@@ -53,6 +57,7 @@ class CategorieController extends Controller
     {
         $categorie = Categorie::findOrFail($id);
         $categorie->delete();
+
         return response()->json(['message' => 'Catégorie supprimée']);
     }
 }

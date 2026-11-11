@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class BienVehicule extends Model
 {
     protected $keyType = 'uuid';
+
     public $incrementing = false;
 
     protected $fillable = [

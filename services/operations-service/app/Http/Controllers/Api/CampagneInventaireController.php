@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\CampagneInventaire;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CampagneInventaireController extends Controller
 {
@@ -22,12 +22,14 @@ class CampagneInventaireController extends Controller
         }
 
         $campagnes = $query->orderBy('periode_debut', 'desc')->paginate(20);
+
         return response()->json($campagnes);
     }
 
     public function show(string $id): JsonResponse
     {
         $campagne = CampagneInventaire::with('lignes')->findOrFail($id);
+
         return response()->json($campagne);
     }
 
@@ -45,6 +47,7 @@ class CampagneInventaireController extends Controller
         $validated['auteur_id'] = $request->attributes->get('user_id');
 
         $campagne = CampagneInventaire::create($validated);
+
         return response()->json($campagne, 201);
     }
 
@@ -52,6 +55,7 @@ class CampagneInventaireController extends Controller
     {
         $campagne = CampagneInventaire::findOrFail($id);
         $campagne->update(['statut' => 'cloturee']);
+
         return response()->json($campagne);
     }
 }

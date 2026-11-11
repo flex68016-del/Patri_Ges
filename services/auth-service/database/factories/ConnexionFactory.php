@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Connexion;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -20,7 +21,7 @@ class ConnexionFactory extends Factory
     {
         return [
             'id' => (string) Str::uuid(),
-            'user_id' => \App\Models\User::factory(),
+            'user_id' => User::factory(),
             'ip_adresse' => fake()->ipv4(),
             'user_agent' => fake()->userAgent(),
             'statut' => 'actif',

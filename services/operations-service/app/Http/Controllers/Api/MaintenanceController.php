@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class MaintenanceController extends Controller
 {
@@ -22,12 +22,14 @@ class MaintenanceController extends Controller
         }
 
         $maintenances = $query->orderBy('date_prevue')->paginate(20);
+
         return response()->json($maintenances);
     }
 
     public function show(string $id): JsonResponse
     {
         $maintenance = Maintenance::findOrFail($id);
+
         return response()->json($maintenance);
     }
 
@@ -49,6 +51,7 @@ class MaintenanceController extends Controller
         $validated['auteur_id'] = $request->attributes->get('user_id');
 
         $maintenance = Maintenance::create($validated);
+
         return response()->json($maintenance, 201);
     }
 
@@ -66,6 +69,7 @@ class MaintenanceController extends Controller
         ]);
 
         $maintenance->update($validated);
+
         return response()->json($maintenance);
     }
 

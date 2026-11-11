@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Categorie;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Categorie>
@@ -18,7 +19,7 @@ class CategorieFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => (string) \Illuminate\Support\Str::uuid(),
+            'id' => (string) Str::uuid(),
             'code' => fake()->unique()->regexify('[A-Z]{3}[0-9]{3}'),
             'nom' => fake()->word(),
             'type_bien' => fake()->randomElement(['immobilier', 'vehicule', 'equipement']),

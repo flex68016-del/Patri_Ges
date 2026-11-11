@@ -15,7 +15,7 @@ class JwtMiddleware
     {
         $token = $request->bearerToken();
 
-        if (!$token) {
+        if (! $token) {
             return response()->json([
                 'success' => false,
                 'message' => 'Token manquant',
@@ -34,9 +34,9 @@ class JwtMiddleware
 
             // Valider le token avec auth-service
             $response = Http::withToken($token)
-                ->get(env('AUTH_SERVICE_URL', 'http://localhost:8001') . '/api/me');
+                ->get(env('AUTH_SERVICE_URL', 'http://localhost:8001').'/api/me');
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Token invalide ou utilisateur introuvable',

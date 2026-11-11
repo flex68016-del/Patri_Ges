@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Bien;
 use App\Models\Affectation;
-use App\Models\Mouvement;
+use App\Models\Bien;
 use App\Models\Cession;
-use Illuminate\Http\Request;
+use App\Models\Mouvement;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BienController extends Controller
@@ -30,18 +30,19 @@ class BienController extends Controller
         }
 
         if ($request->has('search')) {
-            $query->where('designation', 'like', '%' . $request->search . '%')
-                  ->orWhere('code_inventaire', 'like', '%' . $request->search . '%');
+            $query->where('designation', 'like', '%'.$request->search.'%')
+                ->orWhere('code_inventaire', 'like', '%'.$request->search.'%');
         }
 
         $biens = $query->where('actif', true)->paginate(20);
+
         return response()->json($biens);
     }
 
     public function show(string $id): JsonResponse
     {
         $bien = Bien::with(['categorie', 'serviceCourant', 'specialisation', 'affectations', 'mouvements', 'cession'])
-                    ->findOrFail($id);
+            ->findOrFail($id);
 
         $bien->valeur_net_comptable = $bien->calculerValeurNetComptable();
 
@@ -88,6 +89,7 @@ class BienController extends Controller
         ]);
 
         $bien->update($validated);
+
         return response()->json($bien);
     }
 
@@ -186,6 +188,7 @@ class BienController extends Controller
     {
         $bien = Bien::findOrFail($id);
         $mouvements = Mouvement::where('bien_id', $id)->orderBy('date', 'desc')->get();
+
         return response()->json($mouvements);
     }
 }

@@ -12,7 +12,7 @@ class RoleMiddleware
     {
         $userRole = $request->attributes->get('user_role');
 
-        if (!$userRole) {
+        if (! $userRole) {
             return response()->json([
                 'success' => false,
                 'message' => 'Non authentifié',
@@ -22,7 +22,7 @@ class RoleMiddleware
         // Vérifier les rôles multiples (séparés par virgule)
         $allowedRoles = explode(',', $role);
 
-        if (!in_array($userRole, $allowedRoles)) {
+        if (! in_array($userRole, $allowedRoles)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Autorisation insuffisante',

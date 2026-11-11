@@ -16,6 +16,7 @@ class CampagneInventaire extends Model
     protected $table = 'campagne_inventaires';
 
     protected $keyType = 'uuid';
+
     public $incrementing = false;
 
     protected static function boot()

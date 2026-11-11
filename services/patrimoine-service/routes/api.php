@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ServiceController;
-use App\Http\Controllers\Api\CategorieController;
-use App\Http\Controllers\Api\BienController;
 use App\Http\Controllers\Api\AffectationController;
+use App\Http\Controllers\Api\BienController;
+use App\Http\Controllers\Api\CategorieController;
+use App\Http\Controllers\Api\ServiceController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:100,1')->group(function () {
     Route::middleware('jwt')->group(function () {
