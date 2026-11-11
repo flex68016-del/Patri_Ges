@@ -97,17 +97,79 @@
 
 ## Phase F - Développement
 
-**Fait :** Non commencée (arrêt demandé par l'utilisateur)
+**Fait :**
+- Laravel 12 installé dans auth-service (PHP 8.2 ne supporte pas Laravel 13)
+- Dockerfile et configuration docker préservés
+- Todo list créée pour suivre le développement
 
 **Reste :**
-- auth-service (connexion, gestion utilisateurs, rôles)
-- patrimoine-service (référentiels, biens, affectations, valorisation, réforme/cession, historique)
-- operations-service (maintenance, inventaire)
-- web (interface, navigation, formulaires)
-- Tests pour chaque fonctionnalité
-- Documentation API (OpenAPI)
+- Pour auth-service :
+  - Ajouter le package JWT (firebase/php-jwt)
+  - Créer les migrations basées sur mld-auth.md
+  - Créer les modèles User et Connexion
+  - Créer les FormRequests de validation
+  - Créer les contrôleurs AuthController
+  - Créer les API Resources
+  - Créer les tests unitaires et d'intégration
+  - Configurer les routes API
+- Pour patrimoine-service :
+  - Initialiser Laravel 12
+  - Migrations basées sur mld-patrimoine.md
+  - Modèles (Service, Categorie, Bien, spécialisations, Affectation, Mouvement, Cession)
+  - FormRequests, Services, Contrôleurs, API Resources
+  - Tests
+- Pour operations-service :
+  - Initialiser Laravel 12
+  - Migrations basées sur mld-operations.md
+  - Modèles (Maintenance, CampagneInventaire, LigneInventaire, Anomalie, JournalAudit)
+  - FormRequests, Services, Contrôleurs, API Resources
+  - Tests
+- Pour web :
+  - Initialiser Laravel 12
+  - Installer Alpine.js et Tailwind CSS
+  - Créer les vues Blade basées sur docs/design/ecrans.md
+  - Intégrer Chart.js pour les graphiques
+  - Créer les appels API aux services
+  - Tests E2E
 
-**Écarts :** Aucun
+**Écarts :**
+- Laravel 12 utilisé au lieu de Laravel 13 (PHP 8.2 ne supporte pas Laravel 13 qui nécessite PHP 8.3+)
+
+---
+
+## Procédure de Suite Recommandée
+
+### 1. Finaliser auth-service
+```bash
+cd services/auth-service
+composer require firebase/php-jwt
+php artisan make:migration create_users_table
+php artisan make:migration create_connexions_table
+php artisan make:model User
+php artisan make:model Connexion
+php artisan make:controller Api/AuthController
+php artisan make:request LoginRequest
+php artisan make:request RegisterRequest
+php artisan make:resource UserResource
+```
+
+### 2. Initialiser les autres services
+Répéter la procédure pour patrimoine-service, operations-service et web en utilisant les MLD comme référence.
+
+### 3. Configurer l'authentification JWT
+- Générer les clés : `make generate-jwt-keys`
+- Configurer .env avec les clés
+- Implémenter la génération et vérification des tokens RS256
+
+### 4. Tests
+- Utiliser Pest ou PHPUnit
+- Couverture minimale 80%
+- Tests pour chaque règle de gestion RG-01 à RG-13
+
+### 5. Qualité
+- `make lint-*` pour Pint
+- `make stan-*` pour Larastan
+- `composer audit` pour vérifier les vulnérabilités
 
 ---
 
