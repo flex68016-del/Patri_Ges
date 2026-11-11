@@ -39,8 +39,9 @@ class AnomalieController extends Controller
             'type' => 'required|in:panne,degradation,perte',
             'description' => 'required|string',
             'statut' => 'required|in:signalee,en_cours,resolue',
-            'declare_par_id' => 'required|uuid',
         ]);
+
+        $validated['declare_par_id'] = $request->attributes->get('user_id');
 
         $anomalie = Anomalie::create($validated);
         return response()->json($anomalie, 201);

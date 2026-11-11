@@ -34,7 +34,7 @@ class Anomalie extends Model
         'statut',
         'date_constatation',
         'date_resolution',
-        'auteur_id',
+        'declare_par_id',
     ];
 
     protected $casts = [

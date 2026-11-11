@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('statut', ['signale', 'en_cours', 'resolu', 'clos']);
             $table->date('date_constatation');
             $table->date('date_resolution')->nullable();
-            $table->uuid('auteur_id');
+            $table->uuid('declare_par_id');
             $table->timestamps();
 
             $table->index('bien_id');

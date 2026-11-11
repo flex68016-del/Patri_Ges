@@ -34,12 +34,15 @@ class CampagneInventaireController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'service_id' => 'required|uuid',
-            'periode_debut' => 'required|date',
-            'periode_fin' => 'required|date|after_or_equal:periode_debut',
-            'statut' => 'required|in:ouverte,cloturee',
+            'titre' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date|after_or_equal:date_debut',
+            'statut' => 'required|in:planifie,en_cours,termine,annule',
             'inspecteur_id' => 'required|uuid',
         ]);
+
+        $validated['auteur_id'] = $request->attributes->get('user_id');
 
         $campagne = CampagneInventaire::create($validated);
         return response()->json($campagne, 201);

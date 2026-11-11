@@ -44,8 +44,9 @@ class MaintenanceController extends Controller
             'cout' => 'nullable|numeric|min:0',
             'prestataire' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'auteur_id' => 'required|uuid',
         ]);
+
+        $validated['auteur_id'] = $request->attributes->get('user_id');
 
         $maintenance = Maintenance::create($validated);
         return response()->json($maintenance, 201);

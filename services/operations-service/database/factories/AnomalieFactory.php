@@ -27,7 +27,7 @@ class AnomalieFactory extends Factory
             'statut' => fake()->randomElement(['signale', 'en_cours', 'resolu', 'clos']),
             'date_constatation' => fake()->date(),
             'date_resolution' => fake()->optional()->date(),
-            'auteur_id' => (string) Str::uuid(),
+            'declare_par_id' => (string) Str::uuid(),
         ];
     }
 }

@@ -68,7 +68,7 @@ class BienController extends Controller
             Mouvement::create([
                 'bien_id' => $bien->id,
                 'type' => 'creation',
-                'auteur_id' => $request->header('X-User-Id'),
+                'auteur_id' => $request->attributes->get('user_id'),
                 'detail' => ['donnees' => $validated],
             ]);
 
@@ -109,7 +109,7 @@ class BienController extends Controller
                 'date_debut' => $validated['date_debut'],
                 'motif' => $validated['motif'],
                 'reference_acte' => $validated['reference_acte'],
-                'auteur_id' => $request->header('X-User-Id'),
+                'auteur_id' => $request->attributes->get('user_id'),
             ]);
 
             $bien->update([
@@ -120,7 +120,7 @@ class BienController extends Controller
             Mouvement::create([
                 'bien_id' => $bien->id,
                 'type' => 'affectation',
-                'auteur_id' => $request->header('X-User-Id'),
+                'auteur_id' => $request->attributes->get('user_id'),
                 'detail' => ['affectation_id' => $affectation->id, 'service_id' => $validated['service_id']],
             ]);
 
@@ -142,7 +142,7 @@ class BienController extends Controller
             Mouvement::create([
                 'bien_id' => $bien->id,
                 'type' => 'reforme',
-                'auteur_id' => $request->header('X-User-Id'),
+                'auteur_id' => $request->attributes->get('user_id'),
                 'detail' => ['motif' => $validated['motif']],
             ]);
 
@@ -166,7 +166,7 @@ class BienController extends Controller
                 'type' => $validated['type'],
                 'date' => $validated['date'],
                 'valeur_cession' => $validated['valeur_cession'],
-                'valide_par_id' => $request->header('X-User-Id'),
+                'valide_par_id' => $request->attributes->get('user_id'),
             ]);
 
             $bien->update(['statut' => 'cede', 'actif' => false]);
@@ -174,7 +174,7 @@ class BienController extends Controller
             Mouvement::create([
                 'bien_id' => $bien->id,
                 'type' => 'cession',
-                'auteur_id' => $request->header('X-User-Id'),
+                'auteur_id' => $request->attributes->get('user_id'),
                 'detail' => ['cession_id' => $cession->id, 'type' => $validated['type']],
             ]);
 
