@@ -85,8 +85,15 @@
 
         <div class="bg-white rounded-lg shadow p-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Répartition par type</h2>
-            <div class="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                <p class="text-gray-500">Graphique à implémenter avec Chart.js</p>
+            <div class="h-64">
+                <canvas id="typeChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Répartition par statut</h2>
+            <div class="h-64">
+                <canvas id="statutChart"></canvas>
             </div>
         </div>
     </div>
@@ -112,3 +119,72 @@ fetch('/api/dashboard/stats', {
 });
 </script>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Graphique de répartition par type
+    const typeCtx = document.getElementById('typeChart').getContext('2d');
+    new Chart(typeCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Véhicules', 'Immeubles', 'Équipements', 'Mobilier'],
+            datasets: [{
+                data: [35, 25, 30, 10],
+                backgroundColor: [
+                    '#1B5E20', // primary-800
+                    '#4CAF50', // primary-500
+                    '#81C784', // primary-300
+                    '#C8E6C9', // primary-100
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Graphique de répartition par statut
+    const statutCtx = document.getElementById('statutChart').getContext('2d');
+    new Chart(statutCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Actif', 'En maintenance', 'Réformé', 'Cédé'],
+            datasets: [{
+                label: 'Nombre de biens',
+                data: [120, 15, 8, 5],
+                backgroundColor: [
+                    '#4CAF50', // green
+                    '#FFC107', // yellow
+                    '#F44336', // red
+                    '#9E9E9E', // gray
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+@endpush

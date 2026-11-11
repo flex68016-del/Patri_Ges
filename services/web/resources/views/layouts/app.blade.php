@@ -20,5 +20,7 @@
             © 2026 - République Togolaise
         </footer>
     @endif
+
+    @stack('scripts')
 </body>
 </html>
