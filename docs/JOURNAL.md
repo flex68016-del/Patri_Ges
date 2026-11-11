@@ -284,7 +284,7 @@
 - Commit effectué
 
 **Reste :**
-- Laravel Pint (upgrade PHP vers 8.3 requis)
+- Laravel Pint (PHP 8.5 installé, PATH à mettre à jour dans nouvelle session)
 - Larastan (analyse statique)
 - Code review manuel
 - Security review manuel
@@ -292,8 +292,63 @@
 - Security hardening
 
 **Écarts :**
-- Laravel Pint nécessite PHP 8.3, mais PHP 8.2 est requis pour Laravel 12
-- Pint peut être ajouté après upgrade vers PHP 8.3 et Laravel 13
+- PHP 8.5 installé via winget mais PATH non mis à jour dans session actuelle
+- Laravel Pint et Larastan pourront être utilisés après redémarrage session
+- Pour l'instant, Laravel 12 reste compatible avec PHP 8.2
+
+---
+
+## Phase F (suite) - Intégration Web ↔ API
+
+**Fait :**
+- Intégration API réelle dans toutes les vues web
+- biens/index.blade.php : fetch vers patrimoine-service avec filtres
+- biens/show.blade.php : fetch pour détail bien + actions (réformer)
+- biens/create.blade.php : fetch pour créer bien + chargement catégories/services
+- biens/edit.blade.php : fetch pour modifier bien + chargement référentiels
+- maintenances/index.blade.php : fetch vers operations-service + clôture
+- inventaires/index.blade.php : fetch vers operations-service + clôture
+- auth/login.blade.php : fetch vers auth-service pour connexion
+- Token JWT stocké dans localStorage
+- Headers Authorization Bearer configurés
+- Gestion des erreurs avec console.error
+- Commit effectué
+
+**Écarts :**
+- URLs en dur (localhost:8001, 8002, 8003) - à remplacer par variables d'environnement en production
+
+---
+
+## Phase I - Documents
+
+**Fait :**
+- Fiche technique créée (architecture, stack, fonctionnalités, base de données, sécurité, API, tests, déploiement)
+- Proposition financière créée (450 000 FCFA pour 6 jours à 75 000 FCFA/jour)
+- Guide utilisateur créé (connexion, tableau de bord, biens, maintenances, inventaires, dépannage)
+- Commit effectué
+
+**Reste :** Aucun
+
+---
+
+## Phase H - Déploiement Render
+
+**Fait :**
+- Guide de déploiement Render créé
+- Configuration PostgreSQL documentée
+- Configuration des 4 services Laravel documentée
+- Variables d'environnement documentées
+- Génération des clés JWT documentée
+- Exécution des migrations documentée
+- Tests de déploiement documentés
+- Monitoring et dépannage documentés
+- Coûts estimés ($7/mois après 90 jours)
+- Commit effectué
+
+**Reste :**
+- Configuration effective sur Render (à faire par l'utilisateur)
+- Génération des clés JWT
+- Exécution des migrations en production
 
 ---
 
@@ -404,6 +459,9 @@ Répéter la procédure pour patrimoine-service, operations-service et web en ut
 21. `feat(web): formulaires biens (create, edit) et vues operations (maintenances, inventaires)`
 22. `feat(web): intégration Chart.js pour graphiques tableau de bord`
 23. `fix(tests): correction tests auth-service et suppression ExampleTest`
+24. `feat(web): intégration API réelle dans toutes les vues`
+25. `docs: fiche technique, proposition financière et guide utilisateur`
+26. `docs: guide de déploiement Render`
 
 ### Ce qui reste à faire
 
