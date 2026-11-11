@@ -212,6 +212,12 @@
 - Design tokens respectés (vert institutionnel, neutres, transitions)
 - Commit effectué
 
+**Fait (Docker) - restauration :**
+- Dockerfiles restaurés pour auth-service, patrimoine-service, operations-service, web
+- Configurations nginx.conf restaurées pour chaque service
+- docker-compose.yml ajusté (ports PHP-FPM, healthchecks simplifiés)
+- Commit effectué
+
 **Reste (web) :**
 - Vues supplémentaires (liste biens, fiche bien, formulaires, inventaire)
 - Intégration complète avec les API des services
@@ -319,6 +325,8 @@ Répéter la procédure pour patrimoine-service, operations-service et web en ut
 10. `feat(patrimoine): modèles Eloquent et contrôleurs API`
 11. `feat(operations): modèles Eloquent et contrôleurs API`
 12. `feat(web): initialisation Laravel 12 avec Alpine.js et Tailwind CSS`
+13. `fix(patrimoine): correction méthode getSpecialisationAttribute`
+14. `build(docker): restauration des Dockerfiles et configuration docker-compose`
 
 ### Ce qui reste à faire
 
