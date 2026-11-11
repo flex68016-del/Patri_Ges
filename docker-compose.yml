@@ -39,15 +39,10 @@ services:
       JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
     ports:
-      - "8001:8000"
+      - "8001:9000"
     depends_on:
       postgres:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     networks:
       - patrimoine-network
 
@@ -67,19 +62,14 @@ services:
       DB_USERNAME: patrimoine_user
       DB_PASSWORD: patrimoine_password
       JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
-      AUTH_SERVICE_URL: http://auth-service:8000
+      AUTH_SERVICE_URL: http://auth-service:9000
     ports:
-      - "8002:8000"
+      - "8002:9000"
     depends_on:
       postgres:
         condition: service_healthy
       auth-service:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     networks:
       - patrimoine-network
 
@@ -99,10 +89,10 @@ services:
       DB_USERNAME: operations_user
       DB_PASSWORD: operations_password
       JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
-      AUTH_SERVICE_URL: http://auth-service:8000
-      PATRIMOINE_SERVICE_URL: http://patrimoine-service:8000
+      AUTH_SERVICE_URL: http://auth-service:9000
+      PATRIMOINE_SERVICE_URL: http://patrimoine-service:9000
     ports:
-      - "8003:8000"
+      - "8003:9000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -110,29 +100,24 @@ services:
         condition: service_healthy
       patrimoine-service:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     networks:
       - patrimoine-network
 
   web:
     build:
-      context: ./web
+      context: ./services/web
       dockerfile: Dockerfile
     container_name: patrimoine-web
     environment:
       APP_ENV: local
       APP_DEBUG: true
       APP_URL: http://localhost:8000
-      AUTH_SERVICE_URL: http://auth-service:8000
-      PATRIMOINE_SERVICE_URL: http://patrimoine-service:8000
-      OPERATIONS_SERVICE_URL: http://operations-service:8000
+      AUTH_SERVICE_URL: http://auth-service:9000
+      PATRIMOINE_SERVICE_URL: http://patrimoine-service:9000
+      OPERATIONS_SERVICE_URL: http://operations-service:9000
       JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
     ports:
-      - "8000:8000"
+      - "8000:9000"
     depends_on:
       auth-service:
         condition: service_healthy
@@ -140,11 +125,6 @@ services:
         condition: service_healthy
       operations-service:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     networks:
       - patrimoine-network
 
