@@ -292,9 +292,36 @@
 - Security hardening
 
 **Écarts :**
-- PHP 8.5 installé via winget mais PATH non mis à jour dans session actuelle
+- PHP 8.5 installé mais PATH non mis à jour dans session actuelle
 - Laravel Pint et Larastan pourront être utilisés après redémarrage session
 - Pour l'instant, Laravel 12 reste compatible avec PHP 8.2
+
+---
+
+## Phase G (suite) - Code Review et Security Review
+
+**Fait :**
+- Code review manuel complet effectué
+- AuthController : 8.5/10 (sécurité robuste, JWT RS256)
+- BienController : 9/10 (transactions DB, validation complète)
+- Modèles Eloquent : 8.5/10 (UUID, relations, casts)
+- Score global : 8.7/10
+- Security review complète effectuée
+- Composer audit : 0 vulnérabilités
+- OWASP Top 10 : 8/10
+- Recommandations critiques identifiées (autorisation, rate limiting)
+- Rapports détaillés créés (CODE_REVIEW.md, SECURITY_REVIEW.md)
+- Commit effectué
+
+**Reste :**
+- Laravel Pint (après redémarrage session pour PATH PHP 8.5)
+- Larastan (après redémarrage session pour PATH PHP 8.5)
+- Implémentation middleware autorisation (recommandation critique)
+- Implémentation rate limiting (recommandation importante)
+
+**Écarts :**
+- Laravel Pint et Larastan non exécutés (PATH PHP 8.5 non disponible dans session actuelle)
+- Recommandations critiques documentées mais non implémentées (à faire avant production)
 
 ---
 
