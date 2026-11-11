@@ -34,9 +34,17 @@ Route::get('/maintenances', function () {
     return view('maintenances.index');
 })->name('maintenances.index')->middleware('auth');
 
+Route::get('/maintenances/create', function () {
+    return view('maintenances.create');
+})->name('maintenances.create')->middleware('auth');
+
 Route::get('/inventaires', function () {
     return view('inventaires.index');
 })->name('inventaires.index')->middleware('auth');
+
+Route::get('/inventaires/create', function () {
+    return view('inventaires.create');
+})->name('inventaires.create')->middleware('auth');
 
 Route::post('/logout', function () {
     return redirect()->route('login');
