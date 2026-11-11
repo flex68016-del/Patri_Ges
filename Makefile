@@ -116,7 +116,6 @@ stan-web:
 
 # Générer les clés JWT
 generate-jwt-keys:
-	openssl genrsa -out private.pem 2048
-	openssl rsa -in private.pem -pubout -out public.pem
-	@echo "Copiez le contenu de public.pem dans JWT_PUBLIC_KEY"
-	@echo "Copiez le contenu de private.pem dans JWT_PRIVATE_KEY"
+	@echo "Pour générer les clés JWT :"
+	@echo "Windows : scripts\generate-jwt-keys.bat"
+	@echo "Linux/Mac : bash scripts/generate-jwt-keys.sh"
