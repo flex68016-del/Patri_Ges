@@ -173,15 +173,8 @@ Ce projet est configuré pour être déployé sur Render (gratuit pour les proje
 
 ### À terminer
 
-- ⏳ Tests unitaires et d'intégration
-- ⏳ Seeders pour données de démonstration
-- ⏳ Vues web supplémentaires (liste biens, fiche bien, formulaires)
-- ⏳ Graphiques Chart.js
-- ⏳ Phase G - Qualité et sécurité
-- ⏳ Phase H - Déploiement sur Render
-- ⏳ Phase I - Documents (fiche technique, proposition financière, guide)
-- ⏳ Phase J - Soutenance
-- ⏳ Phase K - Vérification finale
+- ⏳ Pint/Larastan (nécessitent PHP 8.3+, utilisateur a mis à jour PHP 8.5)
+- ⏳ Déploiement effectif sur Render (configuration effectuée, à déployer par l'utilisateur)
 
 ## Auteur
 
