@@ -2,31 +2,45 @@
 
 namespace App\Models;
 
+use Database\Factories\MaintenanceFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Maintenance extends Model
 {
+    /** @use HasFactory<MaintenanceFactory> */
+    use HasFactory;
+
     protected $keyType = 'uuid';
     public $incrementing = false;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
+    }
+
     protected $fillable = [
         'bien_id',
-        'bien_libelle',
         'type',
-        'statut',
-        'date_prevue',
-        'date_debut',
-        'date_fin',
-        'cout',
-        'prestataire',
         'description',
+        'date_planifiee',
+        'date_effective',
+        'cout',
+        'statut',
+        'technicien',
         'auteur_id',
     ];
 
     protected $casts = [
-        'date_prevue' => 'date',
-        'date_debut' => 'date',
-        'date_fin' => 'date',
+        'date_planifiee' => 'date',
+        'date_effective' => 'date',
         'cout' => 'decimal:2',
     ];
 }

@@ -8,23 +8,24 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('campagnes_inventaire', function (Blueprint $table) {
+        Schema::create('campagne_inventaires', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('service_id');
-            $table->date('periode_debut');
-            $table->date('periode_fin');
-            $table->enum('statut', ['ouverte', 'cloturee']);
+            $table->string('titre');
+            $table->text('description')->nullable();
+            $table->date('date_debut');
+            $table->date('date_fin');
+            $table->enum('statut', ['planifie', 'en_cours', 'termine', 'annule']);
             $table->uuid('inspecteur_id');
+            $table->uuid('auteur_id');
             $table->timestamps();
 
-            $table->index('service_id');
             $table->index('statut');
-            $table->index(['periode_debut', 'periode_fin']);
+            $table->index(['date_debut', 'date_fin']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('campagnes_inventaire');
+        Schema::dropIfExists('campagne_inventaires');
     }
 };

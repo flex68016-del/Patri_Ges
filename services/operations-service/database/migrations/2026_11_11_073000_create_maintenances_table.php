@@ -11,21 +11,19 @@ return new class extends Migration
         Schema::create('maintenances', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('bien_id');
-            $table->string('bien_libelle', 255);
             $table->enum('type', ['preventive', 'corrective']);
-            $table->enum('statut', ['planifiee', 'en_cours', 'cloturee', 'annulee']);
-            $table->date('date_prevue');
-            $table->date('date_debut')->nullable();
-            $table->date('date_fin')->nullable();
-            $table->decimal('cout', 15, 2)->nullable();
-            $table->string('prestataire', 255)->nullable();
             $table->text('description')->nullable();
+            $table->date('date_planifiee');
+            $table->date('date_effective')->nullable();
+            $table->decimal('cout', 15, 2)->nullable();
+            $table->enum('statut', ['planifie', 'en_cours', 'termine', 'annule']);
+            $table->string('technicien')->nullable();
             $table->uuid('auteur_id');
             $table->timestamps();
 
             $table->index('bien_id');
             $table->index('statut');
-            $table->index('date_prevue');
+            $table->index('date_planifiee');
             $table->index('auteur_id');
         });
     }

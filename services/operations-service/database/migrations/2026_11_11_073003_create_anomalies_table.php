@@ -11,16 +11,18 @@ return new class extends Migration
         Schema::create('anomalies', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('bien_id');
-            $table->string('bien_libelle', 255);
-            $table->enum('type', ['panne', 'degradation', 'perte']);
-            $table->text('description');
-            $table->enum('statut', ['signalee', 'en_cours', 'resolue']);
-            $table->uuid('declare_par_id');
+            $table->enum('type', ['disparition', 'degradation', 'inventaire_ecart', 'autre']);
+            $table->text('description')->nullable();
+            $table->enum('gravite', ['faible', 'moyenne', 'elevee', 'critique']);
+            $table->enum('statut', ['signale', 'en_cours', 'resolu', 'clos']);
+            $table->date('date_constatation');
+            $table->date('date_resolution')->nullable();
+            $table->uuid('auteur_id');
             $table->timestamps();
 
             $table->index('bien_id');
             $table->index('statut');
-            $table->index('declare_par_id');
+            $table->index('auteur_id');
         });
     }
 
