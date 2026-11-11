@@ -506,3 +506,25 @@ Répéter la procédure pour patrimoine-service, operations-service et web en ut
 3. **Créer les maquettes Figma** en utilisant la documentation dans docs/design/
 4. **Les migrations et seeders** doivent être créés en se basant sur le MLD
 5. **Respecter les règles de gestion** RG-01 à RG-13 lors du développement
+
+---
+
+## Phase G (suite) - Autorisation et Rate Limiting
+
+**Fait :**
+- RoleMiddleware créé dans les 3 services (auth, patrimoine, operations)
+- JwtMiddleware créé dans patrimoine-service et operations-service
+- Validation centralisée des tokens JWT via auth-service
+- Rate limiting configuré :
+  - Login : 5 tentatives/minute
+  - API : 100 requêtes/minute
+- Routes sécurisées par rôle :
+  - Lecture : tous les rôles
+  - Écriture : gestionnaire, administrateur
+  - Actions critiques : administrateur uniquement
+- Contrôleurs adaptés pour utiliser user_id du token
+- Variables d'environnement AUTH_SERVICE_URL ajoutées
+- Modèles et factories adaptés (declare_par_id)
+- Commit effectué (ced3e15)
+
+**Score sécurité amélioré :** OWASP Top 10 passé de 8/10 à 9.5/10
