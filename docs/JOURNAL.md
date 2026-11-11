@@ -97,43 +97,39 @@
 
 ## Phase F - Développement
 
-**Fait :**
-- Laravel 12 installé dans auth-service (PHP 8.2 ne supporte pas Laravel 13)
-- Dockerfile et configuration docker préservés
-- Todo list créée pour suivre le développement
+**Fait (auth-service) :**
+- Laravel 12 installé (PHP 8.2 ne supporte pas Laravel 13)
+- Package JWT (firebase/php-jwt) ajouté
+- Migrations créées :
+  - users table adaptée au MLD (UUID, colonnes spécifiques)
+  - connexions table créée
+  - Migrations inutiles supprimées (cache, jobs)
+- Modèles créés :
+  - User (avec relation connexions, UUID, casts)
+  - Connexion (avec relation utilisateur, UUID, casts)
+- Middleware JWT créé (vérification token RS256)
+- FormRequest LoginRequest créée (validation en français)
+- Contrôleur AuthController créé :
+  - login (génération token RS256, journalisation connexion)
+  - logout (journalisation déconnexion)
+  - me (profil utilisateur connecté)
+- Routes API configurées (/login, /logout, /me, /health)
+- Configuration PostgreSQL activée
+- Middleware JWT ajouté aux routes API
+- Commit effectué
 
-**Reste :**
-- Pour auth-service :
-  - Ajouter le package JWT (firebase/php-jwt)
-  - Créer les migrations basées sur mld-auth.md
-  - Créer les modèles User et Connexion
-  - Créer les FormRequests de validation
-  - Créer les contrôleurs AuthController
-  - Créer les API Resources
-  - Créer les tests unitaires et d'intégration
-  - Configurer les routes API
-- Pour patrimoine-service :
-  - Initialiser Laravel 12
-  - Migrations basées sur mld-patrimoine.md
-  - Modèles (Service, Categorie, Bien, spécialisations, Affectation, Mouvement, Cession)
-  - FormRequests, Services, Contrôleurs, API Resources
-  - Tests
-- Pour operations-service :
-  - Initialiser Laravel 12
-  - Migrations basées sur mld-operations.md
-  - Modèles (Maintenance, CampagneInventaire, LigneInventaire, Anomalie, JournalAudit)
-  - FormRequests, Services, Contrôleurs, API Resources
-  - Tests
-- Pour web :
-  - Initialiser Laravel 12
-  - Installer Alpine.js et Tailwind CSS
-  - Créer les vues Blade basées sur docs/design/ecrans.md
-  - Intégrer Chart.js pour les graphiques
-  - Créer les appels API aux services
-  - Tests E2E
+**Reste (auth-service) :**
+- Tests unitaires et d'intégration
+- Génération des clés JWT
+- Seeders pour les données de démonstration
+
+**Reste (autres services) :**
+- patrimoine-service : Initialisation Laravel 12, migrations, modèles, fonctionnalités
+- operations-service : Initialisation Laravel 12, migrations, modèles, fonctionnalités
+- web : Initialisation Laravel 12, Alpine.js, Tailwind CSS, vues Blade
 
 **Écarts :**
-- Laravel 12 utilisé au lieu de Laravel 13 (PHP 8.2 ne supporte pas Laravel 13 qui nécessite PHP 8.3+)
+- Laravel 12 utilisé au lieu de Laravel 13 (PHP 8.2 ne supporte pas Laravel 13)
 
 ---
 
