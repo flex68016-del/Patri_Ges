@@ -76,8 +76,12 @@ class Bien extends Model
         return $this->hasOne(Cession::class);
     }
 
-    public function getSpecialisation()
+    public function getSpecialisationAttribute()
     {
+        if (!$this->categorie) {
+            return null;
+        }
+
         return match($this->categorie->type_bien) {
             'immobilier' => $this->immobilier,
             'vehicule' => $this->vehicule,
