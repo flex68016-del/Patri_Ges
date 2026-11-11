@@ -219,13 +219,81 @@
 - Commit effectué
 
 **Reste (web) :**
-- Vues supplémentaires (liste biens, fiche bien, formulaires, inventaire)
+- Vues supplémentaires (formulaires, inventaire)
 - Intégration complète avec les API des services
 - Graphiques Chart.js pour le tableau de bord
 - Tests E2E
 
+**Fait (tests) :**
+- Tests unitaires auth-service terminés (11 tests, 20 assertions)
+- Tests unitaires patrimoine-service terminés (11 tests, 17 assertions)
+- Tests unitaires operations-service terminés (13 tests, 17 assertions)
+- Adaptation des modèles avec HasFactory et UUID
+- Adaptation des migrations pour correspondre aux factories
+- Correction du calcul de la valeur net comptable (VNC)
+- Correction des noms de tables (campagne_inventaires)
+- Commits effectués
+
+**Fait (seeders) :**
+- UserSeeder créé (4 utilisateurs : admin, gestionnaire, responsable, inspecteur)
+- ServiceSeeder créé (4 services et directions)
+- CategorieSeeder créé (5 catégories : véhicules, immeubles, matériel informatique, mobilier, terrains)
+- MaintenanceSeeder créé (2 maintenances de démonstration)
+- DatabaseSeeder mis à jour pour chaque service
+- Commit effectué
+
+**Fait (web - vues supplémentaires) :**
+- Vue biens/index.blade.php créée (liste des biens avec filtres)
+- Vue biens/show.blade.php créée (détail du bien avec tabs)
+- Vue biens/create.blade.php créée (formulaire de création)
+- Vue biens/edit.blade.php créée (formulaire de modification)
+- Vue maintenances/index.blade.php créée (liste des maintenances)
+- Vue inventaires/index.blade.php créée (liste des campagnes d'inventaire)
+- Routes web ajoutées (biens, maintenances, inventaires)
+- Alpine.js intégré pour les interactions
+- Design tokens respectés
+- Commit effectué
+
+**Fait (web - graphiques) :**
+- Chart.js intégré via CDN
+- Graphique doughnut pour répartition par type de bien
+- Graphique bar pour répartition par statut
+- Scripts section ajoutée au layout principal
+- Design tokens respectés (couleurs primary)
+- Commit effectué
+
 **Écarts :**
 - Laravel 12 utilisé au lieu de Laravel 13 (PHP 8.2 ne supporte pas Laravel 13)
+
+---
+
+## Phase G - Qualité et Sécurité
+
+**Fait :**
+- Composer audit exécuté sur les 3 services backend
+- Aucune vulnérabilité de sécurité trouvée (auth-service, patrimoine-service, operations-service)
+- Tests PHPUnit exécutés sur les 3 services
+- auth-service : 13 tests, 31 assertions (OK)
+- patrimoine-service : 11 tests, 17 assertions (OK)
+- operations-service : 13 tests, 17 assertions (OK)
+- Correction tests auth-service :
+  - Ajout HasFactory au modèle Connexion
+  - Correction test password hashing
+  - Suppression ExampleTest inutiles
+- Laravel Pint non installé (nécessite PHP 8.3, nous avons PHP 8.2)
+- Commit effectué
+
+**Reste :**
+- Laravel Pint (upgrade PHP vers 8.3 requis)
+- Larastan (analyse statique)
+- Code review manuel
+- Security review manuel
+- QA audit client
+- Security hardening
+
+**Écarts :**
+- Laravel Pint nécessite PHP 8.3, mais PHP 8.2 est requis pour Laravel 12
+- Pint peut être ajouté après upgrade vers PHP 8.3 et Laravel 13
 
 ---
 
@@ -327,6 +395,15 @@ Répéter la procédure pour patrimoine-service, operations-service et web en ut
 12. `feat(web): initialisation Laravel 12 avec Alpine.js et Tailwind CSS`
 13. `fix(patrimoine): correction méthode getSpecialisationAttribute`
 14. `build(docker): restauration des Dockerfiles et configuration docker-compose`
+15. `chore(scripts): script de génération des clés JWT et mise à jour README`
+16. `test(auth): tests fonctionnels et unitaires pour auth-service`
+17. `test(patrimoine): tests unitaires et adaptation modèles/migrations`
+18. `test(operations): tests unitaires et adaptation modèles/migrations`
+19. `seed(all): seeders pour données de démonstration (auth, patrimoine, operations)`
+20. `feat(web): vues biens (index, show) et routes`
+21. `feat(web): formulaires biens (create, edit) et vues operations (maintenances, inventaires)`
+22. `feat(web): intégration Chart.js pour graphiques tableau de bord`
+23. `fix(tests): correction tests auth-service et suppression ExampleTest`
 
 ### Ce qui reste à faire
 
