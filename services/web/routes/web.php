@@ -18,6 +18,18 @@ Route::get('/biens', function () {
     return view('biens.index');
 })->name('biens.index')->middleware('auth');
 
+Route::get('/biens/{id}', function ($id) {
+    return view('biens.show', ['id' => $id]);
+})->name('biens.show')->middleware('auth');
+
+Route::get('/biens/create', function () {
+    return view('biens.create');
+})->name('biens.create')->middleware('auth');
+
+Route::get('/biens/{id}/edit', function ($id) {
+    return view('biens.edit', ['id' => $id]);
+})->name('biens.edit')->middleware('auth');
+
 Route::get('/maintenances', function () {
     return view('maintenances.index');
 })->name('maintenances.index')->middleware('auth');
