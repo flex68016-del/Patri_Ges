@@ -109,27 +109,27 @@
 
 <script>
 function loadMaintenances() {
-    // TODO: Appeler l'API operations-service
-    // Pour l'instant, données simulées
-    this.maintenances = [
-        {
-            id: '1',
-            type: 'preventive',
-            date_prevue: '2026-12-15',
-            statut: 'planifie',
-            cout_estime: 50000,
-            bien: { designation: 'Toyota Land Cruiser 2023' }
-        },
-        {
-            id: '2',
-            type: 'corrective',
-            date_prevue: '2026-11-20',
-            statut: 'termine',
-            cout_estime: 250000,
-            bien: { designation: 'Toyota Corolla 2022' }
+    const token = localStorage.getItem('token');
+    const params = new URLSearchParams();
+    if (this.filters.statut) params.append('statut', this.filters.statut);
+    if (this.filters.type) params.append('type', this.filters.type);
+
+    fetch('http://localhost:8003/api/maintenances?' + params.toString(), {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
         }
-    ];
-    this.loading = false;
+    })
+    .then(response => response.json())
+    .then(data => {
+        this.maintenances = data.data || data;
+        this.loading = false;
+    })
+    .catch(error => {
+        console.error('Erreur lors du chargement des maintenances:', error);
+        this.maintenances = [];
+        this.loading = false;
+    });
 }
 
 function formatDate(date) {
@@ -142,8 +142,23 @@ function formatCurrency(value) {
 
 function cloturerMaintenance(maintenance) {
     if (confirm('Êtes-vous sûr de vouloir clôturer cette maintenance ?')) {
-        // TODO: Appeler l'API operations-service
-        alert('Action à implémenter');
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:8003/api/maintenances/' + maintenance.id + '/cloturer', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Maintenance clôturée avec succès');
+            loadMaintenances();
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de la clôture');
+        });
     }
 }
 </script>

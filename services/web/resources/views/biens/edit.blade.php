@@ -144,64 +144,74 @@
 
 <script>
 function loadData() {
-    // TODO: Appeler les API patrimoine-service
-    // Pour l'instant, données simulées
-    this.categories = [
-        { id: '1', libelle: 'Véhicules' },
-        { id: '2', libelle: 'Immeubles' },
-        { id: '3', libelle: 'Matériel Informatique' },
-        { id: '4', libelle: 'Mobilier de Bureau' },
-    ];
-    this.services = [
-        { id: '1', nom: 'Ministère de la Santé' },
-        { id: '2', nom: 'Ministère de l\'Éducation' },
-        { id: '3', nom: 'Direction des Finances' },
-        { id: '4', nom: 'Direction des Ressources Humaines' },
-    ];
-    this.bien = {
-        id: '{{ $id }}',
-        code_inventaire: 'VH-2026-001',
-        designation: 'Toyota Land Cruiser 2023',
-        categorie_id: '1',
-        date_acquisition: '2023-01-15',
-        mode_acquisition: 'achat',
-        valeur_acquisition: 35000000,
-        etat: 'bon',
-        service_courant_id: '1',
-        description: 'Véhicule tout-terrain pour les déplacements de terrain'
-    };
-    this.form = { ...this.bien };
+    const token = localStorage.getItem('token');
+    const bienId = '{{ $id }}';
+
+    // Charger le bien
+    fetch('http://localhost:8002/api/biens/' + bienId, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        this.bien = data.data || data;
+        this.form = { ...this.bien };
+    })
+    .catch(error => console.error('Erreur bien:', error));
+
+    // Charger les catégories
+    fetch('http://localhost:8002/api/categories', {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        this.categories = data.data || data;
+    })
+    .catch(error => console.error('Erreur catégories:', error));
+
+    // Charger les services
+    fetch('http://localhost:8002/api/services', {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        this.services = data.data || data;
+    })
+    .catch(error => console.error('Erreur services:', error));
+
     this.loading = false;
 }
 
 function submitForm() {
-    // TODO: Appeler l'API patrimoine-service
-    // Pour l'instant, validation de base
-    this.errors = {};
+    const token = localStorage.getItem('token');
+    const bienId = '{{ $id }}';
 
-    if (!this.form.code_inventaire) {
-        this.errors.code_inventaire = 'Ce champ est requis';
-    }
-    if (!this.form.designation) {
-        this.errors.designation = 'Ce champ est requis';
-    }
-    if (!this.form.categorie_id) {
-        this.errors.categorie_id = 'Ce champ est requis';
-    }
-    if (!this.form.date_acquisition) {
-        this.errors.date_acquisition = 'Ce champ est requis';
-    }
-    if (!this.form.valeur_acquisition) {
-        this.errors.valeur_acquisition = 'Ce champ est requis';
-    }
-    if (!this.form.service_courant_id) {
-        this.errors.service_courant_id = 'Ce champ est requis';
-    }
-
-    if (Object.keys(this.errors).length === 0) {
+    fetch('http://localhost:8002/api/biens/' + bienId, {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.form)
+    })
+    .then(response => response.json())
+    .then(data => {
         alert('Bien modifié avec succès !');
-        window.location.href = '/biens/{{ $id }}';
-    }
+        window.location.href = '/biens/' + bienId;
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors de la modification');
+    });
 }
 </script>
 @endsection

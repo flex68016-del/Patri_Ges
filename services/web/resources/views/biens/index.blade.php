@@ -120,29 +120,30 @@
 
 <script>
 function loadBiens() {
-    // TODO: Appeler l'API patrimoine-service
-    // Pour l'instant, données simulées
-    this.biens = [
-        {
-            id: '1',
-            code_inventaire: 'VH-2026-001',
-            designation: 'Toyota Land Cruiser 2023',
-            categorie: { libelle: 'Véhicules' },
-            service_courant: { nom: 'Ministère de la Santé' },
-            statut: 'actif',
-            valeur_acquisition: 35000000
-        },
-        {
-            id: '2',
-            code_inventaire: 'IM-2026-001',
-            designation: 'Bureau administratif - Plateau',
-            categorie: { libelle: 'Immeubles' },
-            service_courant: { nom: 'Ministère de l\'Éducation' },
-            statut: 'actif',
-            valeur_acquisition: 150000000
+    const token = localStorage.getItem('token');
+    const params = new URLSearchParams();
+    if (this.filters.search) params.append('search', this.filters.search);
+    if (this.filters.categorie) params.append('categorie', this.filters.categorie);
+    if (this.filters.service) params.append('service', this.filters.service);
+    if (this.filters.statut) params.append('statut', this.filters.statut);
+
+    fetch('http://localhost:8002/api/biens?' + params.toString(), {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
         }
-    ];
-    this.loading = false;
+    })
+    .then(response => response.json())
+    .then(data => {
+        this.biens = data.data || data;
+        this.loading = false;
+    })
+    .catch(error => {
+        console.error('Erreur lors du chargement des biens:', error);
+        // Données de secours en cas d'erreur
+        this.biens = [];
+        this.loading = false;
+    });
 }
 
 function formatCurrency(value) {

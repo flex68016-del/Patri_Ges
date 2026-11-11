@@ -160,22 +160,24 @@
 
 <script>
 function loadBien() {
-    // TODO: Appeler l'API patrimoine-service
-    // Pour l'instant, données simulées
-    this.bien = {
-        id: '1',
-        code_inventaire: 'VH-2026-001',
-        designation: 'Toyota Land Cruiser 2023',
-        categorie: { libelle: 'Véhicules', duree_amortissement: 5 },
-        service_courant: { nom: 'Ministère de la Santé' },
-        statut: 'actif',
-        valeur_acquisition: 35000000,
-        date_acquisition: '2023-01-15',
-        mode_acquisition: 'achat',
-        etat: 'bon',
-        vnc: 28000000
-    };
-    this.loading = false;
+    const token = localStorage.getItem('token');
+    const bienId = '{{ $id }}';
+
+    fetch('http://localhost:8002/api/biens/' + bienId, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        this.bien = data.data || data;
+        this.loading = false;
+    })
+    .catch(error => {
+        console.error('Erreur lors du chargement du bien:', error);
+        this.loading = false;
+    });
 }
 
 function formatDate(date) {
@@ -190,12 +192,28 @@ function formatCurrency(value) {
 }
 
 function affecterBien() {
-    alert('Formulaire d\'affectation à implémenter');
+    window.location.href = '/biens/{{ $id }}/affecter';
 }
 
 function reformerBien() {
     if (confirm('Êtes-vous sûr de vouloir réformer ce bien ?')) {
-        alert('Action à implémenter');
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:8002/api/biens/{{ $id }}/reformer', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Bien réformé avec succès');
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de la réforme');
+        });
     }
 }
 </script>

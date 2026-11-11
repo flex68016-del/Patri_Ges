@@ -80,29 +80,24 @@
 
 <script>
 function loadCampagnes() {
-    // TODO: Appeler l'API operations-service
-    // Pour l'instant, données simulées
-    this.campagnes = [
-        {
-            id: '1',
-            titre: 'Inventaire annuel 2026',
-            date_debut: '2026-01-01',
-            date_fin: '2026-12-31',
-            statut: 'en_cours',
-            progression: 45,
-            inspecteur: { nom: 'Koné Fatou' }
-        },
-        {
-            id: '2',
-            titre: 'Inventaire véhicules 2025',
-            date_debut: '2025-06-01',
-            date_fin: '2025-06-30',
-            statut: 'termine',
-            progression: 100,
-            inspecteur: { nom: 'Touré Awa' }
+    const token = localStorage.getItem('token');
+
+    fetch('http://localhost:8003/api/campagnes-inventaire', {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json'
         }
-    ];
-    this.loading = false;
+    })
+    .then(response => response.json())
+    .then(data => {
+        this.campagnes = data.data || data;
+        this.loading = false;
+    })
+    .catch(error => {
+        console.error('Erreur lors du chargement des campagnes:', error);
+        this.campagnes = [];
+        this.loading = false;
+    });
 }
 
 function formatDate(date) {
@@ -111,8 +106,23 @@ function formatDate(date) {
 
 function cloturerCampagne(campagne) {
     if (confirm('Êtes-vous sûr de vouloir clôturer cette campagne ?')) {
-        // TODO: Appeler l'API operations-service
-        alert('Action à implémenter');
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:8003/api/campagnes-inventaire/' + campagne.id + '/cloturer', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Campagne clôturée avec succès');
+            loadCampagnes();
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de la clôture');
+        });
     }
 }
 </script>

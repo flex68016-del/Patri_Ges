@@ -54,7 +54,7 @@ function login() {
     this.loading = true;
     this.error = '';
 
-    fetch('/api/login', {
+    fetch('http://localhost:8001/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
