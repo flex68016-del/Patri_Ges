@@ -123,10 +123,56 @@
 - Génération des clés JWT
 - Seeders pour les données de démonstration
 
-**Reste (autres services) :**
-- patrimoine-service : Initialisation Laravel 12, migrations, modèles, fonctionnalités
-- operations-service : Initialisation Laravel 12, migrations, modèles, fonctionnalités
-- web : Initialisation Laravel 12, Alpine.js, Tailwind CSS, vues Blade
+**Fait (patrimoine-service) :**
+- Laravel 12 installé
+- Configuration PostgreSQL activée
+- Migrations créées (8 tables) :
+  - services (référentiel des services)
+  - categories (référentiel des catégories)
+  - biens (table principale)
+  - biens_immobiliers (spécialisation 1:1)
+  - biens_vehicules (spécialisation 1:1)
+  - biens_equipements (spécialisation 1:1)
+  - affectations (historique des affectations)
+  - mouvements (journal des mouvements)
+  - cessions (historique des cessions)
+- Migrations inutiles supprimées (users, cache, jobs)
+- Commit effectué
+
+**Fait (operations-service) :**
+- Laravel 12 installé
+- Configuration PostgreSQL activée
+- Migrations créées (5 tables) :
+  - maintenances (planification et suivi)
+  - campagnes_inventaire (campagnes d'inventaire)
+  - lignes_inventaire (lignes de campagne)
+  - anomalies (signalement d'anomalies)
+  - journaux_audit (journal d'audit)
+- Migrations inutiles supprimées (users, cache, jobs)
+- Commit effectué
+
+**Reste (auth-service) :**
+- Tests unitaires et d'intégration
+- Génération des clés JWT
+- Seeders pour les données de démonstration
+
+**Reste (patrimoine-service) :**
+- Modèles et relations
+- Contrôleurs API
+- Services métier
+- Tests
+
+**Reste (operations-service) :**
+- Modèles et relations
+- Contrôleurs API
+- Services métier
+- Tests
+
+**Reste (web) :**
+- Initialisation Laravel 12
+- Installation Alpine.js et Tailwind CSS
+- Création des vues Blade basées sur docs/design/ecrans.md
+- Intégration avec les services API
 
 **Écarts :**
 - Laravel 12 utilisé au lieu de Laravel 13 (PHP 8.2 ne supporte pas Laravel 13)
@@ -222,6 +268,10 @@ Répéter la procédure pour patrimoine-service, operations-service et web en ut
 3. `docs(docs): maquettes et tokens de design`
 4. `docs(db): MCD, MLD, normalisation et plan d'index`
 5. `build(docker): socle docker-compose et configuration`
+6. `feat(auth): initialisation Laravel 12 dans auth-service`
+7. `feat(auth): migrations, modèles, middleware et contrôleur JWT`
+8. `feat(patrimoine): initialisation Laravel 12 et migrations MLD`
+9. `feat(operations): initialisation Laravel 12 et migrations MLD`
 
 ### Ce qui reste à faire
 
