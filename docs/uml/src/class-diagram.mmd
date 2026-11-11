@@ -1,0 +1,163 @@
+```mermaid
+classDiagram
+    %% Entités principales
+    class Service {
+        +UUID id
+        +String code
+        +String nom
+        +String type
+        +UUID parent_id
+        +Boolean actif
+    }
+
+    class Categorie {
+        +UUID id
+        +String libelle
+        +String type_bien
+        +Integer duree_amortissement
+        +Boolean amortissable
+    }
+
+    class Bien {
+        +UUID id
+        +String code_inventaire
+        +String designation
+        +UUID categorie_id
+        +Date date_acquisition
+        +String mode_acquisition
+        +Float valeur_acquisition
+        +String etat
+        +String statut
+        +UUID service_courant_id
+        +Boolean actif
+    }
+
+    class BienImmobilier {
+        +UUID id
+        +UUID bien_id
+        +String adresse
+        +Float superficie
+        +String titre_foncier
+    }
+
+    class BienVehicule {
+        +UUID id
+        +UUID bien_id
+        +String immatriculation
+        +String marque
+        +String modele
+        +Integer kilometrage
+    }
+
+    class BienEquipement {
+        +UUID id
+        +UUID bien_id
+        +String numero_serie
+        +String marque
+    }
+
+    class Affectation {
+        +UUID id
+        +UUID bien_id
+        +UUID service_id
+        +Date date_debut
+        +Date date_fin
+        +String motif
+        +String reference_acte
+        +UUID auteur_id
+    }
+
+    class Mouvement {
+        +UUID id
+        +UUID bien_id
+        +String type
+        +Date date
+        +UUID auteur_id
+        +JSON detail
+    }
+
+    class Cession {
+        +UUID id
+        +UUID bien_id
+        +String type
+        +Date date
+        +Float valeur_cession
+        +UUID valide_par_id
+    }
+
+    class Utilisateur {
+        +UUID id
+        +String email
+        +String password_hash
+        +String role
+        +UUID service_id
+        +Boolean actif
+    }
+
+    class Maintenance {
+        +UUID id
+        +UUID bien_id
+        +String bien_libelle
+        +String type
+        +String statut
+        +Date date_prevue
+        +Date date_debut
+        +Date date_fin
+        +Float cout
+        +String prestataire
+        +String description
+    }
+
+    class CampagneInventaire {
+        +UUID id
+        +UUID service_id
+        +Date periode_debut
+        +Date periode_fin
+        +String statut
+        +UUID inspecteur_id
+    }
+
+    class LigneInventaire {
+        +UUID id
+        +UUID campagne_id
+        +UUID bien_id
+        +String constat
+        +String observation
+    }
+
+    class JournalAudit {
+        +UUID id
+        +UUID acteur_id
+        +String action
+        +String objet
+        +Date date
+    }
+
+    %% Relations
+    Service "1" --> "*" Service : parent
+    Service "1" --> "*" Affectation : reçoit
+    Service "1" --> "*" Bien : détient
+    Service "1" --> "*" CampagneInventaire : concerne
+
+    Categorie "1" --> "*" Bien : catégorise
+
+    Bien "1" --> "1" BienImmobilier : peut être
+    Bien "1" --> "1" BienVehicule : peut être
+    Bien "1" --> "1" BienEquipement : peut être
+    Bien "1" --> "*" Affectation : a
+    Bien "1" --> "*" Mouvement : génère
+    Bien "1" --> "0..1" Cession : est cédé
+    Bien "1" --> "*" Maintenance : subit
+    Bien "1" --> "*" LigneInventaire : inventorié
+
+    Affectation "0..1" --> "1" Service : affecté à
+    Mouvement "*" --> "1" Utilisateur : par
+    Cession "0..1" --> "1" Utilisateur : validé par
+
+    Utilisateur "0..1" --> "1" Service : rattaché à
+
+    CampagneInventaire "1" --> "*" LigneInventaire : contient
+    CampagneInventaire "0..1" --> "1" Utilisateur : inspecteur
+
+    JournalAudit "*" --> "1" Utilisateur : acteur
+```

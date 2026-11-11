@@ -1,0 +1,77 @@
+```mermaid
+flowchart TD
+    %% Acteurs
+    admin([Administrateur])
+    gestionnaire([Gestionnaire du patrimoine])
+    responsable([Responsable de service])
+    inspecteur([Inspecteur / Auditeur])
+
+    %% Cas d'utilisation
+    uc1((Gérer les utilisateurs))
+    uc2((Gérer les rôles et permissions))
+    uc3((Gérer les référentiels))
+    uc4((Créer un bien))
+    uc5((Modifier un bien))
+    uc6((Consulter un bien))
+    uc7((Affecter un bien))
+    uc8((Transférer un bien))
+    uc9((Réformer un bien))
+    uc10((Céder un bien))
+    uc11((Voir la valeur nette comptable))
+    uc12((Consulter l'historique))
+    uc13((Rechercher des biens))
+    uc14((Exporter la liste des biens))
+    uc15((Voir le tableau de bord))
+    uc16((Demander une maintenance))
+    uc17((Planifier une maintenance))
+    uc18((Clôturer une maintenance))
+    uc19((Ouvrir une campagne d'inventaire))
+    uc20((Saisir des constats))
+    uc21((Clôturer la campagne))
+    uc22((Consulter les biens de mon service))
+    uc23((Déclarer une anomalie))
+
+    %% Relations
+    admin --> uc1
+    admin --> uc2
+    admin --> uc3
+    admin --> uc15
+
+    gestionnaire --> uc3
+    gestionnaire --> uc4
+    gestionnaire --> uc5
+    gestionnaire --> uc6
+    gestionnaire --> uc7
+    gestionnaire --> uc8
+    gestionnaire --> uc9
+    gestionnaire --> uc10
+    gestionnaire --> uc11
+    gestionnaire --> uc12
+    gestionnaire --> uc13
+    gestionnaire --> uc14
+    gestionnaire --> uc15
+    gestionnaire --> uc17
+    gestionnaire --> uc18
+
+    responsable --> uc16
+    responsable --> uc22
+    responsable --> uc23
+    responsable --> uc15
+
+    inspecteur --> uc6
+    inspecteur --> uc12
+    inspecteur --> uc13
+    inspecteur --> uc15
+    inspecteur --> uc19
+    inspecteur --> uc20
+    inspecteur --> uc21
+
+    %% Relations entre cas d'utilisation
+    uc6 --> uc12
+    uc7 --> uc12
+    uc8 --> uc12
+    uc9 --> uc12
+    uc10 --> uc12
+    uc19 --> uc20
+    uc20 --> uc21
+```

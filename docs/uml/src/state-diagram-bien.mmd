@@ -1,0 +1,47 @@
+```mermaid
+stateDiagram-v2
+    [*] --> EnStock: Création
+
+    EnStock --> Affecte: Affectation
+    Affecte --> EnStock: Réaffectation (transfert)
+
+    Affecte --> EnMaintenance: Maintenance démarrée
+    EnStock --> EnMaintenance: Maintenance démarrée
+
+    EnMaintenance --> Affecte: Maintenance clôturée
+    EnMaintenance --> EnStock: Maintenance clôturée
+
+    Affecte --> Reforme: Réforme
+    EnStock --> Reforme: Réforme
+    EnMaintenance --> Reforme: Réforme
+
+    Reforme --> Cede: Cession validée
+
+    Cede --> [*: Archivage
+
+    note right of EnStock
+        Bien disponible
+        Non affecté
+    end note
+
+    note right of Affecte
+        Bien affecté à un service
+        Utilisation active
+    end note
+
+    note right of EnMaintenance
+        Bien en cours de réparation
+        Indisponible
+    end note
+
+    note right of Reforme
+        Bien réformé
+        Plus d'utilisation
+        Prêt pour cession
+    end note
+
+    note right of Cede
+        Bien cédé
+        Sorti du patrimoine
+    end note
+```

@@ -1,0 +1,23 @@
+```mermaid
+sequenceDiagram
+    participant U as Inspecteur
+    participant W as Web
+    participant O as Operations Service
+    participant DBO as Operations DB
+    participant AUD as Journal Audit
+
+    U->>W: Clique sur Clôturer la campagne
+    W->>O: POST /api/campagnes/{id}/cloturer
+    O->>O: Valide FormRequest
+    O->>DBO: BEGIN TRANSACTION
+    O->>DBO: Vérifie campagne existe et statut = ouverte
+    DBO-->>O: Campagne OK
+    O->>DBO: Compte les lignes d'inventaire
+    DBO-->>O: {total, presents, absents, degrades}
+    O->>DBO: Met à jour campagne (statut=cloturee)
+    O->>DBO: Marque campagne comme immuable
+    O->>DBO: COMMIT
+    O->>AUD: Enregistre action dans journal d'audit
+    O-->>W: 200 OK {campagne, rapports_ecarts}
+    W-->>U: Affichage du rapport des écarts (biens absents et dégradés)
+```

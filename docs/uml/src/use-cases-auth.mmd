@@ -1,0 +1,29 @@
+```mermaid
+flowchart TD
+    %% Acteurs
+    admin([Administrateur])
+    utilisateur([Utilisateur])
+
+    %% Cas d'utilisation - Service Auth
+    uc1((Se connecter))
+    uc2((Se déconnecter))
+    uc3((Créer un utilisateur))
+    uc4((Modifier un utilisateur))
+    uc5((Désactiver un utilisateur))
+    uc6((Gérer les rôles))
+    uc7((Attacher un utilisateur à un service))
+    uc8((Changer son mot de passe))
+
+    %% Relations
+    utilisateur --> uc1
+    utilisateur --> uc2
+    utilisateur --> uc8
+
+    admin --> uc3
+    admin --> uc4
+    admin --> uc5
+    admin --> uc6
+    admin --> uc7
+    admin --> uc1
+    admin --> uc2
+```

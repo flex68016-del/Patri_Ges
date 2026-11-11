@@ -1,0 +1,55 @@
+```mermaid
+flowchart TD
+    %% Acteurs
+    gestionnaire([Gestionnaire du patrimoine])
+    responsable([Responsable de service])
+    inspecteur([Inspecteur])
+
+    %% Cas d'utilisation - Service Patrimoine
+    uc1((Gérer les services))
+    uc2((Gérer les catégories))
+    uc3((Créer un bien))
+    uc4((Modifier un bien))
+    uc5((Consulter un bien))
+    uc6((Affecter un bien))
+    uc7((Transférer un bien))
+    uc8((Réformer un bien))
+    uc9((Céder un bien))
+    uc10((Calculer la valeur nette comptable))
+    uc11((Consulter l'historique))
+    uc12((Rechercher des biens))
+    uc13((Exporter la liste des biens))
+    uc14((Voir les statistiques))
+
+    %% Relations
+    gestionnaire --> uc1
+    gestionnaire --> uc2
+    gestionnaire --> uc3
+    gestionnaire --> uc4
+    gestionnaire --> uc5
+    gestionnaire --> uc6
+    gestionnaire --> uc7
+    gestionnaire --> uc8
+    gestionnaire --> uc9
+    gestionnaire --> uc10
+    gestionnaire --> uc11
+    gestionnaire --> uc12
+    gestionnaire --> uc13
+    gestionnaire --> uc14
+
+    responsable --> uc5
+    responsable --> uc11
+    responsable --> uc12
+
+    inspecteur --> uc5
+    inspecteur --> uc11
+    inspecteur --> uc12
+    inspecteur --> uc14
+
+    %% Relations entre cas d'utilisation
+    uc5 --> uc11
+    uc6 --> uc11
+    uc7 --> uc11
+    uc8 --> uc11
+    uc9 --> uc11
+```

@@ -1,0 +1,41 @@
+```mermaid
+flowchart TD
+    %% Acteurs
+    gestionnaire([Gestionnaire du patrimoine])
+    responsable([Responsable de service])
+    inspecteur([Inspecteur])
+
+    %% Cas d'utilisation - Service Opérations
+    uc1((Planifier une maintenance))
+    uc2((Démarrer une maintenance))
+    uc3((Clôturer une maintenance))
+    uc4((Voir les maintenances en retard))
+    uc5((Voir les maintenances à venir))
+    uc6((Ouvrir une campagne d'inventaire))
+    uc7((Saisir un constat d'inventaire))
+    uc8((Clôturer la campagne))
+    uc9((Produire le rapport des écarts))
+    uc10((Déclarer une anomalie))
+    uc11((Voir les statistiques de maintenance))
+
+    %% Relations
+    gestionnaire --> uc1
+    gestionnaire --> uc2
+    gestionnaire --> uc3
+    gestionnaire --> uc4
+    gestionnaire --> uc5
+    gestionnaire --> uc11
+
+    responsable --> uc10
+    responsable --> uc11
+
+    inspecteur --> uc6
+    inspecteur --> uc7
+    inspecteur --> uc8
+    inspecteur --> uc9
+
+    %% Relations entre cas d'utilisation
+    uc6 --> uc7
+    uc7 --> uc8
+    uc8 --> uc9
+```

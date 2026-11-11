@@ -1,0 +1,49 @@
+```mermaid
+flowchart TB
+    subgraph "Interface Utilisateur"
+        WEB[Web Interface<br/>Laravel Blade + Alpine + Tailwind]
+    end
+
+    subgraph "Passerelle"
+        GW[Gateway<br/>Nginx]
+    end
+
+    subgraph "Services Métier"
+        AUTH[Auth Service<br/>Laravel]
+        PAT[Patrimoine Service<br/>Laravel]
+        OPS[Operations Service<br/>Laravel]
+    end
+
+    subgraph "Base de Données"
+        DB[(PostgreSQL<br/>auth_db, patrimoine_db, operations_db)]
+    end
+
+    subgraph "Sécurité"
+        JWT[JWT Validation<br/>RS256]
+    end
+
+    WEB -->|HTTP| GW
+    GW -->|HTTP| AUTH
+    GW -->|HTTP| PAT
+    GW -->|HTTP| OPS
+
+    AUTH -->|Eloquent| DB
+    PAT -->|Eloquent| DB
+    OPS -->|Eloquent| DB
+
+    AUTH -->|Génère JWT| WEB
+    WEB -->|Vérifie JWT localement| JWT
+    PAT -->|Vérifie JWT localement| JWT
+    OPS -->|Vérifie JWT localement| JWT
+
+    OPS -->|REST/JSON| PAT
+    PAT -->|REST/JSON| OPS
+
+    style WEB fill:#e1f5e1
+    style GW fill:#fff4e1
+    style AUTH fill:#ffe1e1
+    style PAT fill:#ffe1e1
+    style OPS fill:#ffe1e1
+    style DB fill:#e1e1f5
+    style JWT fill:#f5e1f5
+```

@@ -1,0 +1,24 @@
+```mermaid
+sequenceDiagram
+    participant U as Utilisateur
+    participant W as Web
+    participant A as Auth Service
+    participant DB as Auth DB
+
+    U->>W: Saisit email et mot de passe
+    W->>A: POST /api/auth/login {email, password}
+    A->>DB: Recherche utilisateur par email
+    DB-->>A: Utilisateur trouvé
+    A->>A: Vérifie mot de passe (hash)
+    A->>A: Génère JWT (RS256) avec payload {id, role, service_id}
+    A->>DB: Enregistre connexion dans journal
+    A-->>W: {token, user: {id, email, role, service_id}}
+    W->>W: Stocke token en session chiffrée
+    W-->>U: Redirection vers tableau de bord
+
+    Note over U,W: Utilisation de l'application
+
+    U->>W: Clique sur Déconnexion
+    W->>W: Supprime token de session
+    W-->>U: Redirection vers page de connexion
+```

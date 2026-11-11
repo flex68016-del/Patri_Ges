@@ -1,0 +1,23 @@
+```mermaid
+sequenceDiagram
+    participant U as Gestionnaire
+    participant W as Web
+    participant P as Patrimoine Service
+    participant DBP as Patrimoine DB
+    participant AUD as Journal Audit
+
+    U->>W: Formulaire affectation (bien, service, date, motif)
+    W->>P: POST /api/biens/{id}/affectations {service_id, date_debut, motif, reference}
+    P->>P: Valide FormRequest
+    P->>DBP: BEGIN TRANSACTION
+    P->>DBP: Vérifie bien existe et statut compatible
+    DBP-->>P: Bien OK
+    P->>DBP: Clôture affectation active précédente (si existe)
+    P->>DBP: Crée nouvelle affectation
+    P->>DBP: Met à jour service_courant_id du bien
+    P->>DBP: Crée mouvement (type: affectation)
+    P->>DBP: COMMIT
+    P->>AUD: Enregistre action dans journal d'audit
+    P-->>W: 201 Created {affectation}
+    W-->>U: Confirmation et redirection vers fiche du bien
+```

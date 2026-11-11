@@ -1,0 +1,43 @@
+```mermaid
+flowchart TD
+    start([Début]) --> acquisition[Acquisition du bien]
+    acquisition --> generation[Generation code inventaire]
+    generation --> creation[Creation du bien en base]
+    creation --> decision{Affectation immediate?}
+
+    decision -->|Oui| affectation[Affectation à un service]
+    decision -->|Non| stock[Mise en stock]
+
+    stock --> decision2{Maintenance demandee?}
+    affectation --> decision2
+
+    decision2 -->|Oui| maintenance[Planification maintenance]
+    decision2 -->|Non| decision3{Reforme demandee?}
+
+    maintenance --> debut[Demarrage maintenance]
+    debut --> fin[Cloture maintenance]
+    fin --> decision3
+
+    decision3 -->|Oui| reforme[Mise en reforme]
+    decision3 -->|Non| decision4{Transfert?}
+
+    reforme --> decision5{Cession?}
+    decision5 -->|Oui| cession[Cession validee]
+    decision5 -->|Non| archive[Archivage]
+    cession --> archive
+
+    decision4 -->|Oui| transfert[Transfert vers autre service]
+    decision4 -->|Non| decision2
+
+    transfert --> decision2
+
+    archive --> end([Fin])
+
+    style acquisition fill:#e1f5e1
+    style creation fill:#e1f5e1
+    style affectation fill:#fff4e1
+    style maintenance fill:#ffe1e1
+    style reforme fill:#ffe1e1
+    style cession fill:#ffe1e1
+    style archive fill:#e1e1f5
+```

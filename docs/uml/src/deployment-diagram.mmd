@@ -1,0 +1,69 @@
+```mermaid
+flowchart TB
+    subgraph "Environnement de Développement (Docker Compose)"
+        subgraph "Conteneurs"
+            GW[Nginx Gateway<br/>Port 80]
+            AUTH[Auth Service<br/>PHP-FPM + Nginx<br/>Port 8001]
+            PAT[Patrimoine Service<br/>PHP-FPM + Nginx<br/>Port 8002]
+            OPS[Operations Service<br/>PHP-FPM + Nginx<br/>Port 8003]
+            WEB[Web Interface<br/>PHP-FPM + Nginx<br/>Port 8000]
+            PG[PostgreSQL<br/>Port 5432]
+        end
+
+        subgraph "Volumes"
+            VOLPG[(pgdata<br/>Persistance)]
+        end
+
+        subgraph "Réseau"
+            NET[patrimoine-network]
+        end
+    end
+
+    subgraph "Environnement de Production (Render)"
+        subgraph "Services Cloud"
+            GW_PROD[Nginx Gateway<br/>Render Web Service]
+            AUTH_PROD[Auth Service<br/>Render Web Service]
+            PAT_PROD[Patrimoine Service<br/>Render Web Service]
+            OPS_PROD[Operations Service<br/>Render Web Service]
+            WEB_PROD[Web Interface<br/>Render Web Service]
+        end
+
+        subgraph "Base de Données Externe"
+            PG_PROD[(PostgreSQL<br/>Render Database)]
+        end
+    end
+
+    %% Développement
+    GW --> NET
+    AUTH --> NET
+    PAT --> NET
+    OPS --> NET
+    WEB --> NET
+    PG --> NET
+    PG --> VOLPG
+
+    %% Production
+    GW_PROD --> AUTH_PROD
+    GW_PROD --> PAT_PROD
+    GW_PROD --> OPS_PROD
+    GW_PROD --> WEB_PROD
+    AUTH_PROD --> PG_PROD
+    PAT_PROD --> PG_PROD
+    OPS_PROD --> PG_PROD
+
+    style GW fill:#fff4e1
+    style AUTH fill:#ffe1e1
+    style PAT fill:#ffe1e1
+    style OPS fill:#ffe1e1
+    style WEB fill:#e1f5e1
+    style PG fill:#e1e1f5
+    style VOLPG fill:#f5f5f5
+    style NET fill:#f0f0f0
+
+    style GW_PROD fill:#fff4e1
+    style AUTH_PROD fill:#ffe1e1
+    style PAT_PROD fill:#ffe1e1
+    style OPS_PROD fill:#ffe1e1
+    style WEB_PROD fill:#e1f5e1
+    style PG_PROD fill:#e1e1f5
+```

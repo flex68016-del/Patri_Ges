@@ -1,0 +1,41 @@
+```mermaid
+sequenceDiagram
+    participant U as Gestionnaire
+    participant W as Web
+    participant O as Operations Service
+    participant DBO as Operations DB
+    participant P as Patrimoine Service
+    participant DBP as Patrimoine DB
+    participant AUD as Journal Audit
+
+    U->>W: Formulaire clôture maintenance (date_fin, cout, prestataire)
+    W->>O: POST /api/maintenances/{id}/cloturer {date_fin, cout, prestataire}
+    O->>O: Valide FormRequest
+    O->>DBO: BEGIN TRANSACTION
+    O->>DBO: Vérifie maintenance existe et statut = en_cours
+    DBO-->>O: Maintenance OK
+    O->>P: PUT /api/biens/{bien_id}/statut {statut: statut_precedent}
+    Note over O,P: Propagation du token utilisateur
+    P->>DBP: BEGIN TRANSACTION
+    P->>DBP: Vérifie bien existe
+    DBP-->>P: Bien OK
+    P->>DBP: Met à jour statut du bien
+    P->>DBP: Crée mouvement (type: maintenance_fin)
+    P->>DBP: COMMIT
+    P-->>O: 200 OK
+    Note over O: Succès appel Patrimoine
+    O->>DBO: Met à jour maintenance (statut=cloturee, date_fin, cout, prestataire)
+    O->>DBO: COMMIT
+    O->>AUD: Enregistre action dans journal d'audit
+    O-->>W: 200 OK {maintenance}
+    W-->>U: Confirmation
+
+    Note over U,W: Cas d'échec appel Patrimoine
+
+    O->>P: PUT /api/biens/{bien_id}/statut {statut: statut_precedent}
+    P-->>O: 500 Error
+    Note over O: Échec appel Patrimoine
+    O->>DBO: ROLLBACK
+    O-->>W: 500 Internal Server Error
+    W-->>U: Message d'erreur : impossible de clôturer (service indisponible)
+```
