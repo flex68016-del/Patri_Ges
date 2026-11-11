@@ -173,7 +173,6 @@ Ce projet est configuré pour être déployé sur Render (gratuit pour les proje
 
 ### À terminer
 
-- ⏳ Pint/Larastan (nécessitent PHP 8.3+, utilisateur a mis à jour PHP 8.5)
 - ⏳ Déploiement effectif sur Render (configuration effectuée, à déployer par l'utilisateur)
 
 ## Auteur
