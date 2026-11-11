@@ -198,11 +198,25 @@
 - Tests unitaires et d'intégration
 - Seeders pour données de démonstration
 
+**Fait (web) - initialisation et interface :**
+- Laravel 12 installé
+- Alpine.js installé et configuré
+- Tailwind CSS installé et configuré (couleurs primary vert institutionnel)
+- Configuration PostgreSQL activée
+- Migrations inutiles supprimées (users, cache, jobs)
+- Layout principal créé (layouts/app.blade.php)
+- Header avec navigation créé (partials/header.blade.php)
+- Vue de connexion créée (auth/login.blade.php) avec Alpine.js
+- Vue de tableau de bord créée (dashboard.blade.php) avec KPI et graphiques
+- Routes web configurées (login, dashboard, biens, maintenances, inventaires, logout)
+- Design tokens respectés (vert institutionnel, neutres, transitions)
+- Commit effectué
+
 **Reste (web) :**
-- Initialisation Laravel 12
-- Installation Alpine.js et Tailwind CSS
-- Création des vues Blade basées sur docs/design/ecrans.md
-- Intégration avec les services API
+- Vues supplémentaires (liste biens, fiche bien, formulaires, inventaire)
+- Intégration complète avec les API des services
+- Graphiques Chart.js pour le tableau de bord
+- Tests E2E
 
 **Écarts :**
 - Laravel 12 utilisé au lieu de Laravel 13 (PHP 8.2 ne supporte pas Laravel 13)
@@ -304,6 +318,7 @@ Répéter la procédure pour patrimoine-service, operations-service et web en ut
 9. `feat(operations): initialisation Laravel 12 et migrations MLD`
 10. `feat(patrimoine): modèles Eloquent et contrôleurs API`
 11. `feat(operations): modèles Eloquent et contrôleurs API`
+12. `feat(web): initialisation Laravel 12 avec Alpine.js et Tailwind CSS`
 
 ### Ce qui reste à faire
 
