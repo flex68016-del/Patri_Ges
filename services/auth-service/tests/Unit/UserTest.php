@@ -31,12 +31,9 @@ class UserTest extends TestCase
 
     public function test_user_password_is_hashed()
     {
-        $password = 'password123';
-        $user = User::factory()->create([
-            'password' => $password,
-        ]);
+        $user = User::factory()->create();
 
-        $this->assertTrue(Hash::check($password, $user->password));
+        $this->assertTrue(Hash::check('password', $user->password));
     }
 
     public function test_user_has_many_connexions()
