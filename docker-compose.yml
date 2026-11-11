@@ -1,0 +1,171 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: patrimoine-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - patrimoine-network
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+    container_name: patrimoine-auth-service
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_URL: http://localhost:8001
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: auth_db
+      DB_USERNAME: auth_user
+      DB_PASSWORD: auth_password
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+    ports:
+      - "8001:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - patrimoine-network
+
+  patrimoine-service:
+    build:
+      context: ./services/patrimoine-service
+      dockerfile: Dockerfile
+    container_name: patrimoine-patrimoine-service
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_URL: http://localhost:8002
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: patrimoine_db
+      DB_USERNAME: patrimoine_user
+      DB_PASSWORD: patrimoine_password
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      AUTH_SERVICE_URL: http://auth-service:8000
+    ports:
+      - "8002:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - patrimoine-network
+
+  operations-service:
+    build:
+      context: ./services/operations-service
+      dockerfile: Dockerfile
+    container_name: patrimoine-operations-service
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_URL: http://localhost:8003
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: operations_db
+      DB_USERNAME: operations_user
+      DB_PASSWORD: operations_password
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      AUTH_SERVICE_URL: http://auth-service:8000
+      PATRIMOINE_SERVICE_URL: http://patrimoine-service:8000
+    ports:
+      - "8003:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      patrimoine-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - patrimoine-network
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: patrimoine-web
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_URL: http://localhost:8000
+      AUTH_SERVICE_URL: http://auth-service:8000
+      PATRIMOINE_SERVICE_URL: http://patrimoine-service:8000
+      OPERATIONS_SERVICE_URL: http://operations-service:8000
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+    ports:
+      - "8000:8000"
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      patrimoine-service:
+        condition: service_healthy
+      operations-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - patrimoine-network
+
+  gateway:
+    image: nginx:alpine
+    container_name: patrimoine-gateway
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+      - auth-service
+      - patrimoine-service
+      - operations-service
+    networks:
+      - patrimoine-network
+
+volumes:
+  pgdata:
+
+networks:
+  patrimoine-network:
+    driver: bridge
