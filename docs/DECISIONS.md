@@ -8,9 +8,10 @@
 
 ## Accès Figma
 **Contexte :** Besoin de créer des maquettes pour l'interface.
-**Décision :** Utiliser le MCP Figma pour créer les maquettes directement.
-**Raison :** L'utilisateur a confirmé un accès complet à Figma via MCP.
-**Alternative écartée :** Maquettes HTML statiques (moins professionnelles).
+**Décision :** Alternative documentée dans docs/design/ (tokens, descriptions, HTML statiques).
+**Raison :** Le serveur Figma MCP n'a pas les droits d'édition nécessaires pour créer un fichier.
+**Alternative écartée :** Attendre les droits Figma (bloquerait le projet).
+**Note :** L'utilisateur devra créer les maquettes Figma lui-même en se basant sur la documentation fournie.
 
 ## Taux journalier
 **Contexte :** Besoin d'un taux pour la proposition financière.
