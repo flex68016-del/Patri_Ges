@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Categorie;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CategorieSeeder extends Seeder
 {
@@ -43,7 +44,7 @@ class CategorieSeeder extends Seeder
         ];
 
         foreach ($categories as $categorie) {
-            Categorie::create($categorie);
+            Categorie::create(array_merge($categorie, ['id' => (string) Str::uuid()]));
         }
     }
 }

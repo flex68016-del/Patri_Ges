@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Maintenance;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class MaintenanceSeeder extends Seeder
 {
@@ -11,31 +12,29 @@ class MaintenanceSeeder extends Seeder
     {
         $maintenances = [
             [
-                'bien_id' => '00000000-0000-0000-0000-000000000001',
+                'bien_id' => (string) Str::uuid(),
                 'type' => 'preventive',
-                'date_prevue' => '2026-12-15',
-                'date_realisee' => null,
+                'date_planifiee' => '2026-12-15',
+                'date_effective' => null,
+                'cout' => 50000,
                 'statut' => 'planifie',
-                'cout_estime' => 50000,
-                'cout_reel' => null,
+                'technicien' => 'Auto Service Côte d\'Ivoire',
                 'description' => 'Entretien annuel du véhicule',
-                'prestataire' => 'Auto Service Côte d\'Ivoire',
             ],
             [
-                'bien_id' => '00000000-0000-0000-0000-000000000002',
+                'bien_id' => (string) Str::uuid(),
                 'type' => 'corrective',
-                'date_prevue' => '2026-11-20',
-                'date_realisee' => '2026-11-22',
+                'date_planifiee' => '2026-11-20',
+                'date_effective' => '2026-11-22',
+                'cout' => 275000,
                 'statut' => 'termine',
-                'cout_estime' => 250000,
-                'cout_reel' => 275000,
+                'technicien' => 'Clim Express',
                 'description' => 'Réparation système de climatisation',
-                'prestataire' => 'Clim Express',
             ],
         ];
 
         foreach ($maintenances as $maintenance) {
-            Maintenance::create($maintenance);
+            Maintenance::create(array_merge($maintenance, ['id' => (string) Str::uuid(), 'auteur_id' => (string) Str::uuid()]));
         }
     }
 }
