@@ -13,7 +13,7 @@ Micro-services Laravel :
 
 ## Stack
 
-- PHP 8.2
+- PHP 8.5 (local) / PHP 8.4 (Docker)
 - Laravel 12.x
 - PostgreSQL 16
 - Docker
@@ -74,8 +74,12 @@ docker compose exec operations-service php artisan db:seed
 
 - [Analyse du besoin](docs/analyse-besoin.md)
 - [UML](docs/uml/README.md)
-- [Design](docs/design/README.md)
+- [Design](docs/design/README.md) - [Figma](https://www.figma.com/design/n0Ykk3lKV5zLpNfeRheqxe/Maquette-Patrimoine-Etat?node-id=0-1&t=61ltMT3pzjtT617G-1)
 - [Base de données](docs/database/README.md)
+- [Fiche technique](docs/FICHE_TECHNIQUE.md)
+- [Proposition financière](docs/PROPOSITION_FINANCIERE.md)
+- [Guide utilisateur](docs/GUIDE_UTILISATEUR.md)
+- [Déploiement Render](docs/DEPLOIEMENT_RENDER.md)
 - [Décisions d'architecture](docs/DECISIONS.md)
 - [Journal d'avancement](docs/JOURNAL.md)
 
@@ -169,11 +173,13 @@ Ce projet est configuré pour être déployé sur Render (gratuit pour les proje
 - ✅ Phase C - Maquettes Figma (disponibles sur Figma)
 - ✅ Phase D - Base de données
 - ✅ Phase E - Socle Docker
-- ✅ Phase F - Développement (backend + web de base)
+- ✅ Phase F - Développement (backend + web complet)
+- ✅ Phase G - Qualité et sécurité (Pint, Larastan, composer audit)
+- ✅ Phase I - Documents de livraison
 
 ### À terminer
 
-- ⏳ Déploiement effectif sur Render (configuration effectuée, à déployer par l'utilisateur)
+- ⏳ Déploiement effectif sur Render (guide disponible dans docs/DEPLOIEMENT_RENDER.md)
 
 ## Auteur
 
