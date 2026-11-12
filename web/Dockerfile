@@ -5,7 +5,7 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Étape 2: Application
-FROM php:8.2-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 # Installation des extensions PHP
 RUN apk add --no-cache \
