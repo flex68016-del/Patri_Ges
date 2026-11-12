@@ -2,19 +2,50 @@
 
 ## 📋 Résumé
 
-Le projet est **90% terminé**. Voici ce qu'il reste concrètement pour que l'application soit **totalement fonctionnelle**.
+Le projet est **95% terminé**. Voici ce qu'il reste concrètement pour que l'application soit **totalement fonctionnelle**.
 
 ---
 
-## 🔧 Option A : PostgreSQL Local (sans Docker)
+## � Option Recommandée : Docker Desktop
 
-### Étape 1 : Réinitialiser le mot de passe PostgreSQL
-**Méthode via pgAdmin** (que vous êtes en train de faire) :
-1. Ouvrir pgAdmin
-2. Connectez-vous avec le mot de passe actuel (ou réinitialisez)
-3. Notez le nouveau mot de passe
+### Étape 1 : Installer Docker Desktop
+- Télécharger depuis https://www.docker.com/products/docker-desktop/
+- Installer et démarrer Docker Desktop
+- Attendre que Docker soit complètement démarré (icône verte dans la barre des tâches)
 
-### Étape 2 : Créer les bases de données
+### Étape 2 : Démarrer l'infrastructure
+```bash
+cd C:\Users\ADN GOLFE 1\Projects\Patrimoine_Gouv
+docker compose up --build
+```
+
+### Étape 3 : Exécuter les migrations et seeders dans les conteneurs
+```bash
+# Auth service
+docker exec -it patrimoine-auth-service php artisan migrate:fresh
+docker exec -it patrimoine-auth-service php artisan db:seed
+
+# Patrimoine service
+docker exec -it patrimoine-patrimoine-service php artisan migrate:fresh
+docker exec -it patrimoine-patrimoine-service php artisan db:seed
+
+# Operations service
+docker exec -it patrimoine-operations-service php artisan migrate:fresh
+docker exec -it patrimoine-operations-service php artisan db:seed
+```
+
+### Étape 4 : Tester l'application
+- Ouvrir http://localhost:8000
+- Se connecter avec : admin@patrimoine.gouv / password123
+- Tester les fonctionnalités
+
+---
+
+## 🔧 Option Alternative : PostgreSQL Local (sans Docker)
+
+**Note : Cette option nécessite que PostgreSQL local soit configuré avec le mot de passe correct.**
+
+### Étape 1 : Créer les bases de données
 ```bash
 cd "C:\Program Files\PostgreSQL\16\bin"
 createdb -U postgres patrimoine_auth
@@ -23,7 +54,7 @@ createdb -U postgres patrimoine_operations
 createdb -U postgres patrimoine_web
 ```
 
-### Étape 3 : Mettre à jour les fichiers .env
+### Étape 2 : Mettre à jour les fichiers .env
 Modifier dans chaque service (auth-service, patrimoine-service, operations-service, web) :
 ```env
 DB_CONNECTION=pgsql
@@ -34,7 +65,7 @@ DB_USERNAME=postgres
 DB_PASSWORD=<votre_mot_de_passe>
 ```
 
-### Étape 4 : Exécuter les migrations
+### Étape 3 : Exécuter les migrations
 ```bash
 cd services/auth-service
 php artisan migrate:fresh
@@ -49,7 +80,7 @@ cd ../web
 php artisan migrate:fresh
 ```
 
-### Étape 5 : Exécuter les seeders
+### Étape 4 : Exécuter les seeders
 ```bash
 cd services/auth-service
 php artisan db:seed
@@ -61,15 +92,7 @@ cd ../operations-service
 php artisan db:seed
 ```
 
-### Étape 6 : Générer les clés JWT
-```bash
-cd services/auth-service
-mkdir -p storage/app/jwt
-openssl genrsa -out storage/app/jwt/private.pem 2048
-openssl rsa -in storage/app/jwt/private.pem -pubout -out storage/app/jwt/public.pem
-```
-
-### Étape 7 : Démarrer les 4 serveurs
+### Étape 5 : Démarrer les 4 serveurs
 ```bash
 cd services/auth-service
 php artisan serve --port=8001
@@ -84,34 +107,7 @@ cd ../web
 php artisan serve --port=8000
 ```
 
-### Étape 8 : Tester l'application
-- Ouvrir http://localhost:8000
-- Se connecter avec : admin@patrimoine.gouv / password123
-- Tester les fonctionnalités
-
----
-
-## 🐳 Option B : Docker Desktop
-
-### Étape 1 : Installer Docker Desktop
-- Télécharger depuis https://www.docker.com/products/docker-desktop/
-- Installer et démarrer Docker Desktop
-
-### Étape 2 : Démarrer l'infrastructure
-```bash
-cd C:\Users\ADN GOLFE 1\Projects\Patrimoine_Gouv
-docker compose up --build
-```
-
-### Étape 3 : Vérifier les services
-Docker gère automatiquement :
-- PostgreSQL conteneurisé
-- Migrations automatiques
-- Seeders automatiques
-- 4 services Laravel
-- Génération des clés JWT
-
-### Étape 4 : Tester l'application
+### Étape 6 : Tester l'application
 - Ouvrir http://localhost:8000
 - Se connecter avec : admin@patrimoine.gouv / password123
 - Tester les fonctionnalités
