@@ -6,11 +6,14 @@ RUN apk add --no-cache \
     unzip \
     libzip-dev \
     icu-dev \
-    oniguruma-dev
+    oniguruma-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev
 
 RUN docker-php-ext-install pdo pdo_pgsql zip intl mbstring
 
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-png
 RUN docker-php-ext-install gd
 
 COPY . .
