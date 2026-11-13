@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.4-cli-alpine
 
 RUN apk add --no-cache \
     postgresql-dev \
@@ -18,4 +18,5 @@ COPY . .
 RUN chown -R www-data:www-data /app
 RUN chmod -R 755 /app/storage
 
-CMD ["php-fpm"]
+EXPOSE 9000
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=9000"]
