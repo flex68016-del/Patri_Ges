@@ -18,10 +18,12 @@ return new class extends Migration
             $table->date('date_constatation');
             $table->date('date_resolution')->nullable();
             $table->uuid('declare_par_id');
+            $table->uuid('auteur_id')->nullable();
             $table->timestamps();
 
             $table->index('bien_id');
             $table->index('statut');
+            $table->index('declare_par_id');
             $table->index('auteur_id');
         });
     }
