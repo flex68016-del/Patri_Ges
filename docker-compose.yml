@@ -36,13 +36,12 @@ services:
       DB_DATABASE: auth_db
       DB_USERNAME: auth_user
       DB_PASSWORD: auth_password
-      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
-      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+    volumes:
+      - ./services/auth-service/storage/app/jwt:/app/storage/app/jwt
     ports:
       - "8001:9000"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     networks:
       - patrimoine-network
 
@@ -61,15 +60,14 @@ services:
       DB_DATABASE: patrimoine_db
       DB_USERNAME: patrimoine_user
       DB_PASSWORD: patrimoine_password
-      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
       AUTH_SERVICE_URL: http://auth-service:9000
+    volumes:
+      - ./services/patrimoine-service/storage/app/jwt:/app/storage/app/jwt
     ports:
       - "8002:9000"
     depends_on:
-      postgres:
-        condition: service_healthy
-      auth-service:
-        condition: service_healthy
+      - postgres
+      - auth-service
     networks:
       - patrimoine-network
 
@@ -88,18 +86,16 @@ services:
       DB_DATABASE: operations_db
       DB_USERNAME: operations_user
       DB_PASSWORD: operations_password
-      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
       AUTH_SERVICE_URL: http://auth-service:9000
       PATRIMOINE_SERVICE_URL: http://patrimoine-service:9000
+    volumes:
+      - ./services/operations-service/storage/app/jwt:/app/storage/app/jwt
     ports:
       - "8003:9000"
     depends_on:
-      postgres:
-        condition: service_healthy
-      auth-service:
-        condition: service_healthy
-      patrimoine-service:
-        condition: service_healthy
+      - postgres
+      - auth-service
+      - patrimoine-service
     networks:
       - patrimoine-network
 
@@ -115,16 +111,14 @@ services:
       AUTH_SERVICE_URL: http://auth-service:9000
       PATRIMOINE_SERVICE_URL: http://patrimoine-service:9000
       OPERATIONS_SERVICE_URL: http://operations-service:9000
-      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+    volumes:
+      - ./services/web/storage/app/jwt:/app/storage/app/jwt
     ports:
       - "8000:9000"
     depends_on:
-      auth-service:
-        condition: service_healthy
-      patrimoine-service:
-        condition: service_healthy
-      operations-service:
-        condition: service_healthy
+      - auth-service
+      - patrimoine-service
+      - operations-service
     networks:
       - patrimoine-network
 
