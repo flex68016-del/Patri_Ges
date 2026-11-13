@@ -36,6 +36,7 @@ services:
       DB_DATABASE: auth_db
       DB_USERNAME: auth_user
       DB_PASSWORD: auth_password
+      AUTH_SERVICE_URL: http://auth-service:9000
     volumes:
       - ./services/auth-service/storage/app/jwt:/app/storage/app/jwt
     ports:
@@ -111,6 +112,12 @@ services:
       AUTH_SERVICE_URL: http://auth-service:9000
       PATRIMOINE_SERVICE_URL: http://patrimoine-service:9000
       OPERATIONS_SERVICE_URL: http://operations-service:9000
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: web_db
+      DB_USERNAME: web_user
+      DB_PASSWORD: web_password
     volumes:
       - ./services/web/storage/app/jwt:/app/storage/app/jwt
     ports:
