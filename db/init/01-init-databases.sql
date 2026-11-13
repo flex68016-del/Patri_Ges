@@ -21,3 +21,24 @@ GRANT ALL PRIVILEGES ON DATABASE operations_db TO operations_user;
 -- Utilisateur pour web
 CREATE USER web_user WITH PASSWORD 'web_password';
 GRANT ALL PRIVILEGES ON DATABASE web_db TO web_user;
+
+-- Accorder les droits sur le schéma public pour chaque utilisateur
+\c auth_db
+GRANT ALL ON SCHEMA public TO auth_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO auth_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO auth_user;
+
+\c patrimoine_db
+GRANT ALL ON SCHEMA public TO patrimoine_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO patrimoine_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO patrimoine_user;
+
+\c operations_db
+GRANT ALL ON SCHEMA public TO operations_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO operations_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO operations_user;
+
+\c web_db
+GRANT ALL ON SCHEMA public TO web_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO web_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO web_user;
