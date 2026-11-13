@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('constate_at')->nullable();
             $table->timestamps();
 
-            $table->foreign('campagne_id')->references('id')->on('campagnes_inventaire')->onDelete('cascade');
+            $table->foreign('campagne_id')->references('id')->on('campagne_inventaires')->onDelete('cascade');
             $table->index('campagne_id');
             $table->index('bien_id');
             $table->index('constat');
