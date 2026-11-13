@@ -9,7 +9,8 @@ RUN apk add --no-cache \
     oniguruma-dev \
     libpng-dev \
     libjpeg-turbo-dev \
-    freetype-dev
+    freetype-dev \
+    composer
 
 RUN docker-php-ext-install pdo pdo_pgsql zip intl mbstring
 
@@ -21,6 +22,8 @@ COPY . .
 RUN mkdir -p /app/storage
 RUN chown -R www-data:www-data /app
 RUN chmod -R 755 /app/storage
+
+RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 9000
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=9000"]
