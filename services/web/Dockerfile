@@ -9,9 +9,10 @@ RUN apk add --no-cache \
     oniguruma-dev \
     libpng-dev \
     libjpeg-turbo-dev \
-    freetype-dev
+    freetype-dev \
+    libxml2-dev
 
-RUN docker-php-ext-install pdo pdo_pgsql zip intl mbstring session fileinfo tokenizer dom
+RUN docker-php-ext-install pdo pdo_pgsql zip intl mbstring dom
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
