@@ -109,6 +109,7 @@ services:
       APP_ENV: local
       APP_DEBUG: true
       APP_URL: http://localhost:8000
+      APP_KEY: base64:gKq0fcytSYomN4kLQNzPFbHm+jSSd16NwFIQZQXlCsQ=
       AUTH_SERVICE_URL: http://auth-service:9000
       PATRIMOINE_SERVICE_URL: http://patrimoine-service:9000
       OPERATIONS_SERVICE_URL: http://operations-service:9000
@@ -118,6 +119,9 @@ services:
       DB_DATABASE: web_db
       DB_USERNAME: web_user
       DB_PASSWORD: web_password
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
     volumes:
       - ./services/web/storage/app/jwt:/app/storage/app/jwt
       - ./services/web/resources:/app/resources
