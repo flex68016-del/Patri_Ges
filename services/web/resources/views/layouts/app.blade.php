@@ -17,7 +17,7 @@
 
     @if(!session()->has('user'))
         <footer class="fixed bottom-0 left-0 right-0 text-center py-4 text-sm text-gray-400">
-            © 2026 - République Togolaise
+            &copy; 2026 - R&eacute;publique Togolaise
         </footer>
     @endif
 
