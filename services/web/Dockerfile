@@ -1,5 +1,7 @@
 FROM php:8.4-cli-alpine
 
+WORKDIR /app
+
 RUN apk add --no-cache \
     postgresql-dev \
     git \
@@ -21,7 +23,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY . .
 
-RUN mkdir -p /app/storage
+RUN mkdir -p /app/storage /app/bootstrap /app/config /app/public
 RUN chown -R www-data:www-data /app
 RUN chmod -R 755 /app/storage
 

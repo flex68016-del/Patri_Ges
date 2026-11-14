@@ -18,21 +18,20 @@
                     <a href="{{ route('inventaires.index') }}" class="text-gray-600 hover:text-blue-600 font-medium">Inventaires</a>
                 </nav>
 
-                <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
+                <div class="relative">
+                    <div class="flex items-center space-x-2 text-gray-600">
                         <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                             <span class="text-sm font-medium text-blue-700">U</span>
                         </div>
                         <span class="hidden md:block text-sm font-medium">Utilisateur</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-
-                    <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
-                        <a href="#" @click.prevent="localStorage.removeItem('user'); localStorage.removeItem('token'); window.location.href = '/login'" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Deconnexion</a>
                     </div>
+
+                    <form method="POST" action="{{ route('logout') }}" class="absolute right-0 mt-2 w-48">
+                        @csrf
+                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                            Deconnexion
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

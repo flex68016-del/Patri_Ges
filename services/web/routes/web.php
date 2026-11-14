@@ -1,14 +1,15 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -45,7 +46,3 @@ Route::get('/inventaires', function () {
 Route::get('/inventaires/create', function () {
     return view('inventaires.create');
 })->name('inventaires.create');
-
-Route::post('/logout', function () {
-    return redirect()->route('login');
-})->name('logout');

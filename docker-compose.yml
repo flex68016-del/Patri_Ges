@@ -125,6 +125,10 @@ services:
     volumes:
       - ./services/web/storage/app/jwt:/app/storage/app/jwt
       - ./services/web/resources:/app/resources
+      - ./services/web/routes:/app/routes
+      - ./services/web/app:/app/app
+      - ./services/web/bootstrap:/app/bootstrap
+      - ./services/web/config:/app/config
       - ./services/web/storage:/app/storage
     ports:
       - "8000:9000"
