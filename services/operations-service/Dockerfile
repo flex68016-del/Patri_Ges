@@ -28,4 +28,4 @@ RUN chmod -R 755 /app/storage
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 EXPOSE 9000
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=9000"]
+CMD ["sh", "-c", "mkdir -p /app/storage/app/jwt && if [ -n \"$JWT_PRIVATE_KEY\" ]; then printf '%s' \"$JWT_PRIVATE_KEY\" | base64 -d > /app/storage/app/jwt/private.pem; fi && if [ -n \"$JWT_PUBLIC_KEY\" ]; then printf '%s' \"$JWT_PUBLIC_KEY\" | base64 -d > /app/storage/app/jwt/public.pem; fi && php artisan serve --host=0.0.0.0 --port=${PORT:-9000}"]

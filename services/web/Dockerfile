@@ -30,4 +30,4 @@ RUN chmod -R 755 /app/storage
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts
 
 EXPOSE 9000
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=9000"]
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-9000}"]
