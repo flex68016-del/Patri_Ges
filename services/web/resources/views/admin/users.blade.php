@@ -9,9 +9,9 @@
     <div class="bg-white rounded-md shadow-sm p-6">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-semibold text-[#1f2937]">Liste des utilisateurs</h2>
-            <button class="bg-[#047857] text-white px-4 py-2 rounded-md hover:bg-[#065f46] transition-colors duration-200">
+            <a href="{{ route('admin.users.create') }}" class="bg-[#047857] text-white px-4 py-2 rounded-md hover:bg-[#065f46] transition-colors duration-200">
                 Nouvel utilisateur
-            </button>
+            </a>
         </div>
 
         <table class="w-full">

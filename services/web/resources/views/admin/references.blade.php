@@ -11,9 +11,9 @@
         <div class="bg-white rounded-md shadow-sm p-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold text-[#1f2937]">Services</h2>
-                <button class="bg-[#047857] text-white px-4 py-2 rounded-md hover:bg-[#065f46] transition-colors duration-200">
+                <a href="{{ route('admin.services.create') }}" class="bg-[#047857] text-white px-4 py-2 rounded-md hover:bg-[#065f46] transition-colors duration-200">
                     Nouveau service
-                </button>
+                </a>
             </div>
             <table class="w-full">
                 <thead>
@@ -43,9 +43,9 @@
         <div class="bg-white rounded-md shadow-sm p-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold text-[#1f2937]">Catégories de biens</h2>
-                <button class="bg-[#047857] text-white px-4 py-2 rounded-md hover:bg-[#065f46] transition-colors duration-200">
+                <a href="{{ route('admin.categories.create') }}" class="bg-[#047857] text-white px-4 py-2 rounded-md hover:bg-[#065f46] transition-colors duration-200">
                     Nouvelle catégorie
-                </button>
+                </a>
             </div>
             <table class="w-full">
                 <thead>

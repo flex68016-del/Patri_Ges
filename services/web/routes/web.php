@@ -59,6 +59,18 @@ Route::get('/admin/users', function () {
     return view('admin.users');
 })->name('admin.users');
 
+Route::get('/admin/users/create', function () {
+    return view('admin.users-create');
+})->name('admin.users.create');
+
 Route::get('/admin/references', function () {
     return view('admin.references');
 })->name('admin.references');
+
+Route::get('/admin/references/services/create', function () {
+    return view('admin.service-create');
+})->name('admin.services.create');
+
+Route::get('/admin/references/categories/create', function () {
+    return view('admin.category-create');
+})->name('admin.categories.create');
