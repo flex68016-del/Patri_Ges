@@ -12,39 +12,39 @@ Route::get('/login', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->name('dashboard')->middleware('auth');
+})->name('dashboard');
 
 Route::get('/biens', function () {
     return view('biens.index');
-})->name('biens.index')->middleware('auth');
+})->name('biens.index');
 
 Route::get('/biens/{id}', function ($id) {
     return view('biens.show', ['id' => $id]);
-})->name('biens.show')->middleware('auth');
+})->name('biens.show');
 
 Route::get('/biens/create', function () {
     return view('biens.create');
-})->name('biens.create')->middleware('auth');
+})->name('biens.create');
 
 Route::get('/biens/{id}/edit', function ($id) {
     return view('biens.edit', ['id' => $id]);
-})->name('biens.edit')->middleware('auth');
+})->name('biens.edit');
 
 Route::get('/maintenances', function () {
     return view('maintenances.index');
-})->name('maintenances.index')->middleware('auth');
+})->name('maintenances.index');
 
 Route::get('/maintenances/create', function () {
     return view('maintenances.create');
-})->name('maintenances.create')->middleware('auth');
+})->name('maintenances.create');
 
 Route::get('/inventaires', function () {
     return view('inventaires.index');
-})->name('inventaires.index')->middleware('auth');
+})->name('inventaires.index');
 
 Route::get('/inventaires/create', function () {
     return view('inventaires.create');
-})->name('inventaires.create')->middleware('auth');
+})->name('inventaires.create');
 
 Route::post('/logout', function () {
     return redirect()->route('login');
