@@ -120,6 +120,8 @@ services:
       DB_PASSWORD: web_password
     volumes:
       - ./services/web/storage/app/jwt:/app/storage/app/jwt
+      - ./services/web/resources:/app/resources
+      - ./services/web/storage:/app/storage
     ports:
       - "8000:9000"
     depends_on:
