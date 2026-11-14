@@ -3,7 +3,7 @@
 @section('title', 'Nouveau bien')
 
 @section('content')
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div>
     <div class="mb-8">
         <a href="{{ route('biens.index') }}" class="text-blue-600 hover:text-blue-700">← Retour aux biens</a>
     </div>
