@@ -46,3 +46,19 @@ Route::get('/inventaires', function () {
 Route::get('/inventaires/create', function () {
     return view('inventaires.create');
 })->name('inventaires.create');
+
+Route::get('/inventaires/constats', function () {
+    return view('inventaires.constats');
+})->name('inventaires.constats');
+
+Route::get('/inventaires/rapport', function () {
+    return view('inventaires.rapport');
+})->name('inventaires.rapport');
+
+Route::get('/admin/users', function () {
+    return view('admin.users');
+})->name('admin.users');
+
+Route::get('/admin/references', function () {
+    return view('admin.references');
+})->name('admin.references');
