@@ -19,10 +19,6 @@ Route::get('/biens', function () {
     return view('biens.index');
 })->name('biens.index');
 
-Route::get('/biens/{id}', function ($id) {
-    return view('biens.show', ['id' => $id]);
-})->name('biens.show');
-
 Route::get('/biens/create', function () {
     return view('biens.create');
 })->name('biens.create');
@@ -30,6 +26,10 @@ Route::get('/biens/create', function () {
 Route::get('/biens/{id}/edit', function ($id) {
     return view('biens.edit', ['id' => $id]);
 })->name('biens.edit');
+
+Route::get('/biens/{id}', function ($id) {
+    return view('biens.show', ['id' => $id]);
+})->name('biens.show');
 
 Route::get('/maintenances', function () {
     return view('maintenances.index');
