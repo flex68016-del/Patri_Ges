@@ -1,5 +1,29 @@
 # Décisions d'architecture
 
+## Design et Interface
+
+### Contexte
+Le fichier HTML exporté de Figma ne contient que le code de chargement du bundler JavaScript, pas le design réel des maquettes. Impossible d'extraire les couleurs, typographie, espacements, composants graphiques et structure des 14 écrans directement de ce fichier.
+
+### Décision
+L'utilisateur a demandé de reproduire fidèlement les 14 écrans de la maquette Figma, mais le fichier HTML fourni ne contient pas les données visuelles nécessaires.
+
+**Options disponibles :**
+1. Utiliser le lien Figma direct (https://www.figma.com/design/n0Ykk3lKV5zLpNfeRheqxe/Maquette-Patrimoine-Etat?node-id=0-1) - nécessite l'accès au serveur Figma MCP
+2. Adapter l'interface selon les exigences du brief (section 2.2) :
+   - Couleur d'accent unique : vert institutionnel (emerald green)
+   - Design sobre et institutionnel
+   - Typographie : Inter
+   - Transitions : 200-250 ms
+   - Responsive mobile d'abord
+   - Contrastes AA, accessibilité
+
+### Alternative écartée
+Extraction directe des tokens de design depuis le fichier HTML exporté (impossible - fichier ne contient que le bundler).
+
+### Besoin d'accès Figma
+Pour reproduire fidèlement les 14 écrans, l'accès direct au fichier Figma est nécessaire. Le serveur Figma MCP est disponible mais n'a pas pu être initialisé (erreur de validation des paramètres).
+
 ## Hébergeur
 **Contexte :** Besoin d'un hébergeur gratuit pour la démonstration.
 **Décision :** Render choisi comme hébergeur gratuit.

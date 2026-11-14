@@ -4,30 +4,30 @@
 
 @section('content')
 <div>
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">Tableau de bord</h1>
+    <h1 class="text-3xl font-semibold text-[#1f2937] mb-8">Tableau de bord</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="text-sm font-medium text-gray-500">Total Biens</div>
-            <div class="mt-2 text-3xl font-bold text-gray-900">0</div>
+        <div class="bg-white rounded-md shadow-sm p-6">
+            <div class="text-sm font-medium text-[#6b7280]">Total Biens</div>
+            <div class="mt-2 text-3xl font-semibold text-[#1f2937]">0</div>
         </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="text-sm font-medium text-gray-500">Maintenances en cours</div>
-            <div class="mt-2 text-3xl font-bold text-gray-900">0</div>
+        <div class="bg-white rounded-md shadow-sm p-6">
+            <div class="text-sm font-medium text-[#6b7280]">Maintenances en cours</div>
+            <div class="mt-2 text-3xl font-semibold text-[#1f2937]">0</div>
         </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="text-sm font-medium text-gray-500">Inventaires</div>
-            <div class="mt-2 text-3xl font-bold text-gray-900">0</div>
+        <div class="bg-white rounded-md shadow-sm p-6">
+            <div class="text-sm font-medium text-[#6b7280]">Inventaires</div>
+            <div class="mt-2 text-3xl font-semibold text-[#1f2937]">0</div>
         </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="text-sm font-medium text-gray-500">Anomalies</div>
-            <div class="mt-2 text-3xl font-bold text-gray-900">0</div>
+        <div class="bg-white rounded-md shadow-sm p-6">
+            <div class="text-sm font-medium text-[#6b7280]">Anomalies</div>
+            <div class="mt-2 text-3xl font-semibold text-[#1f2937]">0</div>
         </div>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">Activites recentes</h2>
-        <p class="text-gray-500">Aucune activite recente.</p>
+    <div class="bg-white rounded-md shadow-sm p-6">
+        <h2 class="text-xl font-semibold text-[#1f2937] mb-4">Activites recentes</h2>
+        <p class="text-[#6b7280]">Aucune activite recente.</p>
     </div>
 </div>
 @endsection

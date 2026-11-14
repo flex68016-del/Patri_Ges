@@ -528,3 +528,38 @@ Répéter la procédure pour patrimoine-service, operations-service et web en ut
 - Commit effectué (ced3e15)
 
 **Score sécurité amélioré :** OWASP Top 10 passé de 8/10 à 9.5/10
+
+---
+
+## Phase F (suite) - Reproduction Fidèle des Maquettes Figma
+
+**Probleme identifié :**
+- L'utilisateur a fourni un fichier HTML exporté de Figma (`Patrimoine de l'État — Maquettes.html`)
+- Ce fichier ne contient que le code de chargement du bundler JavaScript, pas le design réel des maquettes
+- Impossible d'extraire les couleurs, typographie, espacements, composants graphiques et structure des 14 écrans
+- Le serveur Figma MCP est disponible mais n'a pas pu être initialisé (erreur de validation des paramètres)
+
+**14 écrans à reproduire (selon la demande utilisateur) :**
+1. Connexion
+2. Tableau de bord
+3. Liste des biens
+4. Fiche détaillée d'un bien
+5. Formulaire de création d'un nouveau bien
+6. Modale d'affectation
+7. Modales de maintenance
+8. Modales de réforme et de cession
+9. Inventaire : constats
+10. Rapport des écarts
+11. Administration : gestion des utilisateurs
+12. Administration : gestion des référentiels
+13. Tableau de bord mobile (390 × 844)
+14. Liste des biens mobile (390 × 844)
+
+**Décision prise :**
+- Documenter le problème dans docs/DECISIONS.md
+- Proposer des alternatives à l'utilisateur :
+  1. Accès direct au fichier Figma via le lien : https://www.figma.com/design/n0Ykk3lKV5zLpNfeRheqxe/Maquette-Patrimoine-Etat?node-id=0-1
+  2. Capture d'écrans manuelles des 14 écrans à fournir
+  3. Continuer avec le design institutionnel basé sur le brief (vert emerald, sobre, professionnel)
+
+**En attente :** Décision de l'utilisateur sur la méthode d'accès aux maquettes
