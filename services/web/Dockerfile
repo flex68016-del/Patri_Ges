@@ -27,7 +27,7 @@ RUN mkdir -p /app/storage /app/bootstrap /app/config /app/public
 RUN chown -R www-data:www-data /app
 RUN chmod -R 755 /app/storage
 
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts
 
 EXPOSE 9000
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=9000"]

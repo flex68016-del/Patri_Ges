@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\ServiceProvider;
+
 return [
 
     /*
@@ -121,6 +123,34 @@ return [
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Service Provider Discovery
+    |--------------------------------------------------------------------------
+    |
+    | Service providers are automatically discovered in the service provider
+    | directory. However, you may disable discovery for specific providers.
+    |
+    */
+
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        // Package Service Providers...
+    ])->toArray(),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Auto-Discovery Settings
+    |--------------------------------------------------------------------------
+    |
+    | Service providers are automatically discovered in the service provider
+    | directory. However, you may disable discovery for specific providers.
+    |
+    */
+
+    'dont_discover' => [
+        'Laravel\\Pail\\PailServiceProvider',
     ],
 
 ];
