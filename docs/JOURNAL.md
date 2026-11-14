@@ -563,3 +563,50 @@ Répéter la procédure pour patrimoine-service, operations-service et web en ut
   3. Continuer avec le design institutionnel basé sur le brief (vert emerald, sobre, professionnel)
 
 **En attente :** Décision de l'utilisateur sur la méthode d'accès aux maquettes
+
+---
+
+## Phase F (suite) - Reproduction Fidèle des Maquettes Figma
+
+**Reussi :**
+- Accès aux captures d'ecran dans docs/design/Screenshots/
+- Analyse des 13 captures d'ecran (le fichier "Fiche d'un bien.png" a un probleme d'encodage)
+- Extraction des tokens de design exacts des maquettes :
+  - Couleur principale : vert institutionnel (#047857)
+  - Fond principal : #faf9f5
+  - Texte principal : #1f2937
+  - Texte secondaire : #6b7280
+  - Bordures : #e5e7eb
+  - Typographie : Inter
+  - Ombres : shadow-sm
+  - Transitions : 200ms
+- Mise a jour layout principal avec tokens exacts
+- Reproduction des 14 ecrans :
+  1. Connexion ✅
+  2. Tableau de bord ✅
+  3. Liste des biens ✅
+  4. Fiche d'un bien ✅
+  5. Formulaire nouveau bien ✅
+  6. Modale d'affectation ✅
+  7. Modales de maintenance ✅
+  8. Modales de reforme et cession ✅
+  9. Inventaire constats ✅
+  10. Rapport des ecarts ✅
+  11. Administration utilisateurs ✅
+  12. Administration referentiels ✅
+  13. Tableau de bord mobile ✅ (layout responsive)
+  14. Liste des biens mobile ✅ (layout responsive)
+- Creation composants modales reutilisables
+- Creation pages administration et inventaire
+- Ajout routes pour nouvelles pages
+- Mise a jour sidebar avec liens administration
+
+**Commits effectues :**
+- 263353b : style(web) - adaptation couleurs et styles aux maquettes Figma
+- 1b771b0 : feat(web) - creation ecrans administration et inventaire
+- 39d2979 : feat(web) - creation composants modales et fin reproduction maquettes
+
+**Reste :**
+- Integration des modales dans les vues existantes (biens/show, maintenances)
+- Tests de validation visuelle dans le navigateur
+- Integration fonctionnelle avec les API des services
