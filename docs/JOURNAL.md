@@ -134,11 +134,11 @@ Journal chronologique des phases de réalisation de la plateforme de gestion du 
 
 **Livrables :**
 
-- `docs/DEPLOIEMENT.md` : procédure générique multi-hébergeurs Docker
+- `docs/DEPLOIEMENT.md` : déploiement actuel SnapDeploy + procédure générique
 - `docs/DEPLOIEMENT_RENDER.md` : variante Render
 - Dockerfiles adaptés au port dynamique `$PORT` et à l'injection des clés JWT par variables d'environnement
-- Base PostgreSQL Neon provisionnée (projet `patrimoine-gouv`, 3 bases)
-- Déploiement effectif : en attente du choix d'un hébergeur (voir `docs/DECISIONS.md`)
+- Base PostgreSQL Neon provisionnée et migrée (projet `patrimoine-gouv`, 3 bases)
+- **Déploiement effectif** : 4 conteneurs SnapDeploy en ligne (web + 3 API), HTTPS, login et pages vérifiés
 
 ---
 

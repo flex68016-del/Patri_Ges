@@ -232,11 +232,26 @@ Une base de démonstration a été alimentée **exclusivement via l'interface** 
 ## 5.1 Environnements
 
 - **Développement** : `docker compose up --build` — tout le stack en local (voir README) ;
-- **Production** : conteneurs Docker déployables tels quels ; les variables d'environnement et les clés JWT sont injectées hors code source (jamais commitées).
+- **Production** : **SnapDeploy** — 4 conteneurs Docker (web + 3 API) avec HTTPS automatique, et **Neon** pour PostgreSQL managé.
 
-## 5.2 Options d'hébergement
+## 5.2 Déploiement effectif
 
-Le stack étant conteneurisé, il est déployable sur tout hébergeur supportant Docker : Render, Railway, un VPS, ou Oracle Cloud (Always Free). Le guide `docs/DEPLOIEMENT.md` décrit la marche à suivre ; une variante propre à Render figure dans `docs/DEPLOIEMENT_RENDER.md`.
+La plateforme est déployée et accessible :
+
+| Service | URL |
+|---------|-----|
+| Interface web | https://patrimoine-web.containers.snapdeploy.app |
+| Auth API | https://patrimoine-auth.containers.snapdeploy.app |
+| Patrimoine API | https://patrimoine-patrimoine.containers.snapdeploy.app |
+| Operations API | https://patrimoine-operations.containers.snapdeploy.app |
+
+- Base Neon PostgreSQL (projet `patrimoine-gouv`, région Francfort) : `auth_db`, `patrimoine_db`, `operations_db` — migrations et données de démonstration chargées ;
+- Authentification JWT RS256 avec clés injectées par variables d'environnement (jamais commitées) ;
+- Redéploiement continu : chaque push sur les branches `deploy/*` déclenche un rebuild.
+
+## 5.3 Options d'hébergement
+
+Le stack étant conteneurisé, il est déployable sur tout hébergeur acceptant Docker. Le déploiement actuel (SnapDeploy) et la procédure générique sont documentés dans `docs/DEPLOIEMENT.md` ; une variante propre à Render figure dans `docs/DEPLOIEMENT_RENDER.md`.
 
 ## 5.3 Exploitation
 
@@ -253,7 +268,7 @@ Le stack étant conteneurisé, il est déployable sur tout hébergeur supportant
 
 - **Pas de tests unitaires automatisés** : la validation est fonctionnelle/manuelle (à industrialiser avec PHPUnit/Pest) ;
 - **Notifications absentes** : pas d'alertes e-mail pour maintenances en retard ou anomalies critiques ;
-- **Hébergement non encore effectif** : le déploiement production reste à exécuter ;
+- **Plan gratuit SnapDeploy** : les conteneurs s'endorment après ~15 min d'inactivité (réveil ~1 min) ;
 - **Pagination fixe** (20/page) sans sélecteur ;
 - **Droits du responsable de service** : lecture globale plutôt que restreinte à son service (affinage possible via `service_id` dans le JWT) ;
 - **Évolutions métier** : pas de workflow de validation hiérarchique des actes (réforme/cession validés par un second niveau).

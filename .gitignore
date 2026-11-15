@@ -61,3 +61,6 @@ services/auth-service/storage/app/jwt/*.pem
 **/storage/framework/sessions/
 **/storage/framework/cache/
 **/storage/logs/
+
+# Deployment secrets
+deploy/

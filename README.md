@@ -58,7 +58,16 @@ scripts\\generate-jwt-keys.bat      # Windows (invite de commandes)
 docker compose up --build
 ```
 
-### URLs
+## URLs
+
+### Production (SnapDeploy)
+
+- **Interface web** : https://patrimoine-web.containers.snapdeploy.app
+- **Auth API** : https://patrimoine-auth.containers.snapdeploy.app
+- **Patrimoine API** : https://patrimoine-patrimoine.containers.snapdeploy.app
+- **Operations API** : https://patrimoine-operations.containers.snapdeploy.app
+
+### Développement local
 
 - **Interface web** : http://localhost (gateway) ou http://localhost:8000
 - **Auth API** : http://localhost:8001
@@ -126,8 +135,8 @@ docker compose exec <service> composer audit
 - ✅ Modélisation base de données (MCD/MLD)
 - ✅ Développement complet (4 services + interface web)
 - ✅ Tests fonctionnels et de sécurité
+- ✅ Déploiement en production : SnapDeploy + Neon PostgreSQL
 - ✅ Documentation de livraison
-- ⏳ Déploiement en production (guide : [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md))
 
 ## Auteur
 

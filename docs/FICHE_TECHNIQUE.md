@@ -296,4 +296,4 @@ La solution technique est complète et opérationnelle avec :
 - Documentation complète
 - Infrastructure Docker prête au déploiement
 
-Le projet est prêt pour la mise en production : le déploiement effective reste à exécuter selon l'hébergeur choisi (`docs/DEPLOIEMENT.md`).
+La solution est **déployée en production** sur SnapDeploy + Neon PostgreSQL : https://patrimoine-web.containers.snapdeploy.app (voir `docs/DEPLOIEMENT.md`).

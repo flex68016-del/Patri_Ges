@@ -105,9 +105,9 @@ Journal des décisions techniques et organisationnelles du projet, avec leur con
 
 **Contexte :** La stack conteneurisée doit être déployée sur un hébergeur accessible.
 
-**Décision :** Déploiement générique documenté dans `docs/DEPLOIEMENT.md` (tout hébergeur acceptant Docker : Render, SnapDeploy, VPS, Oracle Cloud). Une base PostgreSQL Neon a été provisionnée (projet `patrimoine-gouv`, bases `auth_db`, `patrimoine_db`, `operations_db`). Le déploiement effectif reste à exécuter.
+**Décision :** Déploiement effectué sur **SnapDeploy** (4 conteneurs `small` gratuits, un par service) avec **Neon** pour PostgreSQL managé (projet `patrimoine-gouv`, 3 bases). La procédure générique multi-hébergeurs reste documentée dans `docs/DEPLOIEMENT.md`.
 
-**Raison :** Les plateformes PaaS gratuites évoluent rapidement (exigences de carte bancaire, limites de plan) ; la conteneurisation garantit la portabilité.
+**Raison :** SnapDeploy est la seule plateforme gratuite sans carte bancaire acceptant 4 conteneurs Docker (limite exacte du besoin) ; Neon fournit le PostgreSQL managé gratuitement.
 
 **Alternatives écartées :** Dépendre d'un seul hébergeur (fragilité) ; fusionner les services en un conteneur unique (perte de l'isolation microservices, risque mémoire).
 

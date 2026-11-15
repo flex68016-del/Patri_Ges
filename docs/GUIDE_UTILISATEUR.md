@@ -11,7 +11,7 @@ Ce guide vous explique comment utiliser l'application de gestion du patrimoine d
 ### 2.1 URL de Connexion
 
 - **Développement local :** http://localhost:8000
-- **Production :** URL fournie après déploiement (voir `docs/DEPLOIEMENT.md`)
+- **Production :** https://patrimoine-web.containers.snapdeploy.app
 
 ### 2.2 Identifiants de Connexion
 
