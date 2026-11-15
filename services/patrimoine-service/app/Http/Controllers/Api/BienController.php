@@ -15,10 +15,10 @@ class BienController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = Bien::with(['categorie', 'serviceCourant', 'specialisation']);
+        $query = Bien::with(['categorie', 'service']);
 
         if ($request->has('service_id')) {
-            $query->where('service_courant_id', $request->service_id);
+            $query->where('service_id', $request->service_id);
         }
 
         if ($request->has('categorie_id')) {
@@ -31,7 +31,7 @@ class BienController extends Controller
 
         if ($request->has('search')) {
             $query->where('designation', 'like', '%'.$request->search.'%')
-                ->orWhere('code_inventaire', 'like', '%'.$request->search.'%');
+                ->orWhere('code', 'like', '%'.$request->search.'%');
         }
 
         $biens = $query->where('actif', true)->paginate(20);
@@ -41,7 +41,7 @@ class BienController extends Controller
 
     public function show(string $id): JsonResponse
     {
-        $bien = Bien::with(['categorie', 'serviceCourant', 'specialisation', 'affectations', 'mouvements', 'cession'])
+        $bien = Bien::with(['categorie', 'service', 'immobilier', 'vehicule', 'equipement', 'affectations', 'mouvements', 'cession'])
             ->findOrFail($id);
 
         $bien->valeur_net_comptable = $bien->calculerValeurNetComptable();
@@ -52,16 +52,17 @@ class BienController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'code_inventaire' => 'required|string|max:50|unique:biens',
+            'code' => 'required|string|max:50|unique:biens,code',
             'designation' => 'required|string|max:255',
             'categorie_id' => 'required|uuid|exists:categories,id',
+            'service_id' => 'nullable|uuid|exists:services,id',
             'date_acquisition' => 'required|date',
-            'mode_acquisition' => 'required|in:achat,don,transfert,construction',
             'valeur_acquisition' => 'required|numeric|min:0',
-            'etat' => 'required|in:neuf,bon,moyen,degrade,hors_service',
-            'statut' => 'required|in:en_stock,affecte,en_maintenance,reforme,cede',
-            'service_courant_id' => 'nullable|uuid|exists:services,id',
+            'statut' => 'sometimes|in:disponible,affecte,en_maintenance,reforme,cede',
+            'emplacement' => 'nullable|string|max:255',
         ]);
+
+        $validated['statut'] ??= 'disponible';
 
         return DB::transaction(function () use ($validated, $request) {
             $bien = Bien::create($validated);
@@ -83,9 +84,9 @@ class BienController extends Controller
 
         $validated = $request->validate([
             'designation' => 'sometimes|string|max:255',
-            'etat' => 'sometimes|in:neuf,bon,moyen,degrade,hors_service',
-            'statut' => 'sometimes|in:en_stock,affecte,en_maintenance,reforme,cede',
-            'service_courant_id' => 'nullable|uuid|exists:services,id',
+            'statut' => 'sometimes|in:disponible,affecte,en_maintenance,reforme,cede',
+            'service_id' => 'nullable|uuid|exists:services,id',
+            'emplacement' => 'nullable|string|max:255',
         ]);
 
         $bien->update($validated);
@@ -101,21 +102,23 @@ class BienController extends Controller
             'service_id' => 'required|uuid|exists:services,id',
             'date_debut' => 'required|date',
             'motif' => 'nullable|string',
-            'reference_acte' => 'nullable|string|max:255',
         ]);
 
         return DB::transaction(function () use ($bien, $validated, $request) {
+            Affectation::where('bien_id', $bien->id)
+                ->where('actif', true)
+                ->update(['date_fin' => $validated['date_debut'], 'actif' => false]);
+
             $affectation = Affectation::create([
                 'bien_id' => $bien->id,
                 'service_id' => $validated['service_id'],
                 'date_debut' => $validated['date_debut'],
                 'motif' => $validated['motif'],
-                'reference_acte' => $validated['reference_acte'],
                 'auteur_id' => $request->attributes->get('user_id'),
             ]);
 
             $bien->update([
-                'service_courant_id' => $validated['service_id'],
+                'service_id' => $validated['service_id'],
                 'statut' => 'affecte',
             ]);
 

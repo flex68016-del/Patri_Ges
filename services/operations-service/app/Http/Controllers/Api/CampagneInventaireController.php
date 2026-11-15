@@ -21,7 +21,7 @@ class CampagneInventaireController extends Controller
             $query->where('service_id', $request->service_id);
         }
 
-        $campagnes = $query->orderBy('periode_debut', 'desc')->paginate(20);
+        $campagnes = $query->orderBy('date_debut', 'desc')->paginate(20);
 
         return response()->json($campagnes);
     }
@@ -54,7 +54,7 @@ class CampagneInventaireController extends Controller
     public function cloturer(string $id): JsonResponse
     {
         $campagne = CampagneInventaire::findOrFail($id);
-        $campagne->update(['statut' => 'cloturee']);
+        $campagne->update(['statut' => 'termine']);
 
         return response()->json($campagne);
     }

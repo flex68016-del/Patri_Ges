@@ -27,11 +27,11 @@ class JwtMiddleware
 
             $user = User::find($decoded->sub);
 
-            if (! $user || ! $user->actif) {
+            if (! $user || $user->statut !== 'actif') {
                 return response()->json(['error' => 'Utilisateur invalide ou inactif'], 401);
             }
 
-            $request->setUser($user);
+            $request->setUserResolver(fn () => $user);
 
             return $next($request);
         } catch (ExpiredException $e) {

@@ -21,7 +21,7 @@ class MaintenanceController extends Controller
             $query->where('type', $request->type);
         }
 
-        $maintenances = $query->orderBy('date_prevue')->paginate(20);
+        $maintenances = $query->orderBy('date_planifiee')->paginate(20);
 
         return response()->json($maintenances);
     }
@@ -37,14 +37,12 @@ class MaintenanceController extends Controller
     {
         $validated = $request->validate([
             'bien_id' => 'required|uuid',
-            'bien_libelle' => 'required|string|max:255',
             'type' => 'required|in:preventive,corrective',
-            'statut' => 'required|in:planifiee,en_cours,cloturee,annulee',
-            'date_prevue' => 'required|date',
-            'date_debut' => 'nullable|date',
-            'date_fin' => 'nullable|date|after_or_equal:date_debut',
+            'statut' => 'required|in:planifie,en_cours,termine,annule',
+            'date_planifiee' => 'required|date',
+            'date_effective' => 'nullable|date',
             'cout' => 'nullable|numeric|min:0',
-            'prestataire' => 'nullable|string|max:255',
+            'technicien' => 'nullable|string|max:255',
             'description' => 'nullable|string',
         ]);
 
@@ -60,11 +58,10 @@ class MaintenanceController extends Controller
         $maintenance = Maintenance::findOrFail($id);
 
         $validated = $request->validate([
-            'statut' => 'sometimes|in:planifiee,en_cours,cloturee,annulee',
-            'date_debut' => 'sometimes|date',
-            'date_fin' => 'sometimes|date|after_or_equal:date_debut',
+            'statut' => 'sometimes|in:planifie,en_cours,termine,annule',
+            'date_effective' => 'sometimes|date',
             'cout' => 'sometimes|numeric|min:0',
-            'prestataire' => 'sometimes|string|max:255',
+            'technicien' => 'sometimes|string|max:255',
             'description' => 'sometimes|string',
         ]);
 
@@ -78,13 +75,13 @@ class MaintenanceController extends Controller
         $maintenance = Maintenance::findOrFail($id);
 
         $validated = $request->validate([
-            'date_fin' => 'required|date',
+            'date_effective' => 'required|date',
             'cout' => 'required|numeric|min:0',
         ]);
 
         $maintenance->update([
-            'statut' => 'cloturee',
-            'date_fin' => $validated['date_fin'],
+            'statut' => 'termine',
+            'date_effective' => $validated['date_effective'],
             'cout' => $validated['cout'],
         ]);
 

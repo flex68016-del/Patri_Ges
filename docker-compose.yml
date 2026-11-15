@@ -37,6 +37,9 @@ services:
       DB_USERNAME: auth_user
       DB_PASSWORD: auth_password
       AUTH_SERVICE_URL: http://auth-service:9000
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
     volumes:
       - ./services/auth-service/storage/app/jwt:/app/storage/app/jwt
     ports:
@@ -62,6 +65,9 @@ services:
       DB_USERNAME: patrimoine_user
       DB_PASSWORD: patrimoine_password
       AUTH_SERVICE_URL: http://auth-service:9000
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
     volumes:
       - ./services/patrimoine-service/storage/app/jwt:/app/storage/app/jwt
     ports:
@@ -89,6 +95,9 @@ services:
       DB_PASSWORD: operations_password
       AUTH_SERVICE_URL: http://auth-service:9000
       PATRIMOINE_SERVICE_URL: http://patrimoine-service:9000
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
     volumes:
       - ./services/operations-service/storage/app/jwt:/app/storage/app/jwt
     ports:

@@ -13,7 +13,7 @@ class RoleMiddleware
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, string ...$roles): Response
     {
         $user = $request->user();
 
@@ -24,8 +24,8 @@ class RoleMiddleware
             ], 401);
         }
 
-        // Vérifier si l'utilisateur a le rôle requis
-        if ($user->role !== $role) {
+        // Vérifier si l'utilisateur a l'un des rôles requis
+        if (! in_array($user->role, $roles, true)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Autorisation insuffisante',

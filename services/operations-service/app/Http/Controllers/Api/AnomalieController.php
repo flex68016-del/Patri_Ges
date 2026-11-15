@@ -37,10 +37,11 @@ class AnomalieController extends Controller
     {
         $validated = $request->validate([
             'bien_id' => 'required|uuid',
-            'bien_libelle' => 'required|string|max:255',
-            'type' => 'required|in:panne,degradation,perte',
+            'type' => 'required|in:disparition,degradation,inventaire_ecart,autre',
             'description' => 'required|string',
-            'statut' => 'required|in:signalee,en_cours,resolue',
+            'gravite' => 'required|in:faible,moyenne,elevee,critique',
+            'statut' => 'required|in:signale,en_cours,resolu,clos',
+            'date_constatation' => 'required|date',
         ]);
 
         $validated['declare_par_id'] = $request->attributes->get('user_id');
@@ -55,8 +56,9 @@ class AnomalieController extends Controller
         $anomalie = Anomalie::findOrFail($id);
 
         $validated = $request->validate([
-            'statut' => 'sometimes|in:signalee,en_cours,resolue',
+            'statut' => 'sometimes|in:signale,en_cours,resolu,clos',
             'description' => 'sometimes|string',
+            'date_resolution' => 'sometimes|date',
         ]);
 
         $anomalie->update($validated);
@@ -67,7 +69,7 @@ class AnomalieController extends Controller
     public function resoudre(string $id): JsonResponse
     {
         $anomalie = Anomalie::findOrFail($id);
-        $anomalie->update(['statut' => 'resolue']);
+        $anomalie->update(['statut' => 'resolu', 'date_resolution' => now()->toDateString()]);
 
         return response()->json($anomalie);
     }
