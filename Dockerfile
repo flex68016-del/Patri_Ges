@@ -23,7 +23,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY services/web/ /app/
 
-RUN mkdir -p /app/storage /app/bootstrap /app/config /app/public
+RUN mkdir -p /app/storage/framework/views /app/storage/framework/cache/data /app/storage/framework/sessions /app/storage/logs /app/bootstrap/cache
 RUN chown -R www-data:www-data /app
 RUN chmod -R 755 /app/storage
 
