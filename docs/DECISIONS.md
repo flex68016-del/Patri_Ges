@@ -54,3 +54,9 @@ Pour reproduire fidèlement les 14 écrans, l'accès direct au fichier Figma est
 **Décision :** Vert institutionnel comme couleur d'accent, identité sobre.
 **Raison :** Direction institutionnelle demandée dans le brief, vert institutionnel recommandé.
 **Alternative écartée :** Dégradés violet/bleu (vibe coder interdit).
+
+## Déploiement effectif
+**Contexte :** Le déploiement sur Render s'est heurté à l'exigence d'un moyen de paiement (erreur 402) ; EthioDeploy free est limité à un seul projet de 256 MB.
+**Décision :** Le déploiement effectif est reporté ; la procédure générique multi-hébergeurs est documentée dans `docs/DEPLOIEMENT.md` (Render, SnapDeploy, VPS Oracle Always Free). Une base Neon PostgreSQL a été préparée (projet `patrimoine-gouv`, 3 bases).
+**Raison :** Pas de carte bancaire disponible ; la stack conteneurisée reste déployable telle quelle sur tout hébergeur Docker.
+**Alternative écartée :** Fusionner les 4 services en un conteneur unique (risque mémoire, perte de l'isolation microservices).

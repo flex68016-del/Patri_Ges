@@ -1,5 +1,7 @@
 # Guide de Déploiement sur Render
 
+> **Note :** Render exige désormais un moyen de paiement même pour le plan gratuit. Pour les alternatives sans carte (SnapDeploy, VPS Oracle, etc.), voir `docs/DEPLOIEMENT.md`. Ce guide reste valide si un compte Render avec moyen de paiement est disponible.
+
 ## 1. Prérequis
 
 - Compte Render (gratuit pour les projets open-source)

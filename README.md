@@ -1,190 +1,138 @@
 # Gestion du Patrimoine de l'État
 
-Solution numérique de gestion du patrimoine de l'État (bâtiments, terrains, véhicules, équipements).
+Solution numérique de gestion du patrimoine de l'État (bâtiments, terrains, véhicules, équipements) — mission de développement pour la République Togolaise.
+
+**Auteur :** Duah Prince Yao AMANKWAAH
 
 ## Architecture
 
-Micro-services Laravel :
-- `auth-service` : identité et accès (JWT RS256)
-- `patrimoine-service` : référentiels, biens, affectations, valorisation, réforme/cession
-- `operations-service` : maintenance, inventaire
-- `web` : interface Laravel Blade + Alpine.js + Tailwind CSS
-- `gateway` : Nginx (point d'entrée unique)
+Architecture **microservices** Laravel 12 + PostgreSQL, conteneurisée avec Docker :
+
+| Service | Port | Rôle |
+|---------|------|------|
+| `web` | 8000 | Interface utilisateur (Blade + Alpine.js + Tailwind CSS) |
+| `auth-service` | 8001 | Authentification, JWT RS256, gestion des utilisateurs |
+| `patrimoine-service` | 8002 | Biens, catégories, services, affectations, réforme/cession |
+| `operations-service` | 8003 | Maintenances, campagnes d'inventaire, anomalies |
+| `gateway` | 80 | Nginx, point d'entrée unique |
+| `postgres` | 5432 | PostgreSQL 16, une base par service |
+
+Le service `web` est **sans base de données** : il s'authentifie auprès d'`auth-service` (JWT stocké en session) et consomme les APIs des services métier via un client HTTP interne (`ApiClient`).
 
 ## Stack
 
-- PHP 8.5 (local) / PHP 8.4 (Docker)
-- Laravel 12.x
+- PHP 8.4 (Docker) / Laravel 12.x
 - PostgreSQL 16
-- Docker
-- Alpine.js
-- Tailwind CSS
-- Chart.js
+- JWT RS256 (`firebase/php-jwt`)
+- Blade, Alpine.js, Tailwind CSS
+- Docker / Docker Compose
+- Nginx (gateway + services)
+
+## Comptes de test
+
+| Rôle | Email | Mot de passe |
+|------|-------|--------------|
+| Administrateur | `admin@patrimoine.gouv` | `password123` |
+| Gestionnaire | `gestionnaire@patrimoine.gouv` | `password123` |
+| Responsable | `responsable@patrimoine.gouv` | `password123` |
+| Inspecteur | `inspecteur@patrimoine.gouv` | `password123` |
 
 ## Lancement
 
 ### Prérequis
 
 - Docker Desktop installé
-- PHP 8.2+ installé localement
-- Composer installé localement
-
-### Configuration
-
-```bash
-# Cloner le dépôt
-git clone <url>
-cd Patrimoine_Gouv
-
-# Générer les clés JWT (Windows)
-scripts\generate-jwt-keys.bat
-
-# Configurer l'environnement
-cp .env.example .env
-# Éditer .env avec vos clés JWT encodées en base64
-```
+- Git
 
 ### Démarrage
 
 ```bash
+git clone https://github.com/flex68016-del/Patri_Ges.git
+cd Patrimoine_Gouv
+
+# Générer les clés JWT (première fois uniquement)
+scripts/generate-jwt-keys.sh        # Linux / Git Bash
+scripts\\generate-jwt-keys.bat      # Windows (invite de commandes)
+
 # Démarrer tous les services
 docker compose up --build
-
-# Les services seront accessibles sur :
-# - web : http://localhost:8000
-# - auth-service : http://localhost:8001
-# - patrimoine-service : http://localhost:8002
-# - operations-service : http://localhost:8003
 ```
+
+### URLs
+
+- **Interface web** : http://localhost (gateway) ou http://localhost:8000
+- **Auth API** : http://localhost:8001
+- **Patrimoine API** : http://localhost:8002
+- **Operations API** : http://localhost:8003
+- Healthchecks : `GET /api/health` sur chaque service API
 
 ### Migrations et Seeders
 
 ```bash
-# Exécuter les migrations (dans un autre terminal)
-docker compose exec auth-service php artisan migrate
-docker compose exec patrimoine-service php artisan migrate
-docker compose exec operations-service php artisan migrate
-
-# Exécuter les seeders
-docker compose exec patrimoine-service php artisan db:seed
-docker compose exec operations-service php artisan db:seed
+docker compose exec auth-service php artisan migrate --seed
+docker compose exec patrimoine-service php artisan migrate --seed
+docker compose exec operations-service php artisan migrate --seed
 ```
 
 ## Documentation
 
-- [Analyse du besoin](docs/analyse-besoin.md)
-- [UML](docs/uml/README.md)
-- [Design](docs/design/README.md) - [Figma](https://www.figma.com/design/n0Ykk3lKV5zLpNfeRheqxe/Maquette-Patrimoine-Etat?node-id=0-1&t=61ltMT3pzjtT617G-1)
-- [Base de données](docs/database/README.md)
-- [Fiche technique](docs/FICHE_TECHNIQUE.md)
-- [Proposition financière](docs/PROPOSITION_FINANCIERE.md)
-- [Guide utilisateur](docs/GUIDE_UTILISATEUR.md)
-- [Déploiement Render](docs/DEPLOIEMENT_RENDER.md)
-- [Décisions d'architecture](docs/DECISIONS.md)
-- [Journal d'avancement](docs/JOURNAL.md)
+| Document | Contenu |
+|----------|---------|
+| [Rapport de soutenance](docs/RAPPORT_SOUTENANCE.md) | Rapport formel complet du projet |
+| [Analyse du besoin](docs/analyse-besoin.md) | Contexte, acteurs, périmètre, besoins |
+| [Fiche technique](docs/FICHE_TECHNIQUE.md) | Architecture et stack détaillées |
+| [API](docs/API.md) | Référence complète des endpoints REST |
+| [Base de données](docs/database/README.md) | MCD, MLD, normalisation (3 services) |
+| [UML](docs/uml/README.md) | Diagrammes de cas d'utilisation, classes, séquences |
+| [Design](docs/design/README.md) | Maquettes et captures d'écran |
+| [Guide utilisateur](docs/GUIDE_UTILISATEUR.md) | Manuel d'utilisation de l'interface |
+| [Tests](docs/TESTS.md) | Plan de test et résultats |
+| [Décisions d'architecture](docs/DECISIONS.md) | ADR et justifications techniques |
+| [Journal d'avancement](docs/JOURNAL.md) | Historique du développement |
+| [Proposition financière](docs/PROPOSITION_FINANCIERE.md) | Estimation budgétaire |
+| [Déploiement](docs/DEPLOIEMENT.md) | Guide de déploiement |
+| [Sécurité](docs/SECURITY_REVIEW.md) | Revue de sécurité |
+| [Revue de code](docs/CODE_REVIEW.md) | Revue de qualité du code |
 
-## API Endpoints
+## API Endpoints (résumé)
 
-### Auth Service
-- `POST /login` - Connexion (retourne token JWT)
-- `POST /logout` - Déconnexion
-- `GET /me` - Profil utilisateur connecté
-- `GET /health` - Healthcheck
+Authentification : `POST /api/login`, `POST /api/logout`, `GET /api/me`, `GET /api/users` (admin), `POST /api/users` (admin).
 
-### Patrimoine Service
-- `GET /api/services` - Liste des services
-- `GET /api/categories` - Liste des catégories
-- `GET /api/biens` - Liste des biens (avec filtres)
-- `POST /api/biens` - Créer un bien
-- `POST /api/biens/{id}/affecter` - Affecter un bien
-- `POST /api/biens/{id}/reformer` - Réformer un bien
-- `POST /api/biens/{id}/ceder` - Céder un bien
-- `GET /api/biens/{id}/historique` - Historique des mouvements
+Patrimoine : `GET/POST /api/biens`, `GET/PUT /api/biens/{id}`, `POST /api/biens/{id}/affecter|reformer|ceder`, `GET /api/biens/{id}/historique`, `GET/POST /api/services`, `GET/POST /api/categories`, `GET /api/affectations`.
 
-### Operations Service
-- `GET /api/maintenances` - Liste des maintenances
-- `POST /api/maintenances` - Créer une maintenance
-- `POST /api/maintenances/{id}/cloturer` - Clôturer une maintenance
-- `GET /api/campagnes-inventaire` - Liste des campagnes
-- `POST /api/campagnes-inventaire` - Créer une campagne
-- `POST /api/campagnes-inventaire/{id}/cloturer` - Clôturer une campagne
-- `GET /api/anomalies` - Liste des anomalies
-- `POST /api/anomalies` - Signaler une anomalie
-- `POST /api/anomalies/{id}/resoudre` - Résoudre une anomalie
+Opérations : `GET/POST /api/maintenances`, `POST /api/maintenances/{id}/cloturer`, `GET/POST /api/campagnes-inventaire`, `POST /api/campagnes-inventaire/{id}/cloturer`, `GET/POST /api/campagnes-inventaire/{id}/lignes`, `GET/POST /api/anomalies`, `POST /api/anomalies/{id}/resoudre`.
+
+→ Référence complète avec rôles et exemples : [docs/API.md](docs/API.md)
 
 ## Développement
 
-### Tests
-
 ```bash
-# Tests par service
+# Tests
 docker compose exec auth-service php artisan test
 docker compose exec patrimoine-service php artisan test
 docker compose exec operations-service php artisan test
 docker compose exec web php artisan test
+
+# Qualité (Pint / Larastan / composer audit)
+docker compose exec <service> ./vendor/bin/pint
+docker compose exec <service> ./vendor/bin/phpstan analyse
+docker compose exec <service> composer audit
 ```
 
-### Qualité
+## Statut du projet
 
-```bash
-# Linting (Pint)
-docker compose exec auth-service ./vendor/bin/pint
-docker compose exec patrimoine-service ./vendor/bin/pint
-docker compose exec operations-service ./vendor/bin/pint
-docker compose exec web ./vendor/bin/pint
-
-# Analyse statique (Larastan)
-docker compose exec auth-service ./vendor/bin/phpstan analyse
-docker compose exec patrimoine-service ./vendor/bin/phpstan analyse
-docker compose exec operations-service ./vendor/bin/phpstan analyse
-docker compose exec web ./vendor/bin/phpstan analyse
-
-# Audit de sécurité
-docker compose exec auth-service composer audit
-docker compose exec patrimoine-service composer audit
-docker compose exec operations-service composer audit
-docker compose exec web composer audit
-```
-
-## Déploiement
-
-Ce projet est configuré pour être déployé sur Render (gratuit pour les projets open-source).
-
-### Étapes de déploiement
-
-1. Créer un compte Render
-2. Connecter le dépôt GitHub
-3. Créer les services Render :
-   - PostgreSQL
-   - auth-service
-   - patrimoine-service
-   - operations-service
-   - web
-4. Configurer les variables d'environnement
-5. Configurer les clés JWT
-6. Déployer
-
-## Statut du Projet
-
-### Complété
-
-- ✅ Phase A - Initialisation
-- ✅ Phase B - Conception UML
-- ✅ Phase C - Maquettes Figma (disponibles sur Figma)
-- ✅ Phase D - Base de données
-- ✅ Phase E - Socle Docker
-- ✅ Phase F - Développement (backend + web complet)
-- ✅ Phase G - Qualité et sécurité (Pint, Larastan, composer audit)
-- ✅ Phase I - Documents de livraison
-
-### À terminer
-
-- ⏳ Déploiement effectif sur Render (guide disponible dans docs/DEPLOIEMENT_RENDER.md)
+- ✅ Analyse du besoin et conception UML
+- ✅ Maquettes d'interface
+- ✅ Modélisation base de données (MCD/MLD)
+- ✅ Développement complet (4 services + interface web)
+- ✅ Tests fonctionnels et de sécurité
+- ✅ Documentation de livraison
+- ⏳ Déploiement en production (guide : [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md))
 
 ## Auteur
 
-Duah Prince Yao AMANKWAAH
+Duah Prince Yao AMANKWAAH — République Togolaise
 
 ## Licence
 
-Propriétaire - République Togolaise
+Propriétaire — République Togolaise

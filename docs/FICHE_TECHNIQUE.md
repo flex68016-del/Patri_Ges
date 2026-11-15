@@ -31,7 +31,7 @@ L'application adopte une architecture microservices pour la scalabilité et la m
 | Composant | Technologie | Version |
 |-----------|-------------|---------|
 | Backend | Laravel | 12.x |
-| PHP | PHP | 8.2.12 |
+| PHP | PHP | 8.4 |
 | Base de données | PostgreSQL | 16 |
 | Frontend | Blade, Alpine.js, Tailwind CSS | - |
 | Graphiques | Chart.js | 4.4.0 |
@@ -43,7 +43,7 @@ L'application adopte une architecture microservices pour la scalabilité et la m
 ### 2.3 Infrastructure
 
 - **Conteneurisation** : Docker Compose pour le développement local
-- **Déploiement** : Render (hébergement gratuit)
+- **Déploiement** : tout hébergeur acceptant Docker (Render, VPS, Oracle Cloud…) — voir `docs/DEPLOIEMENT.md`
 - **Base de données** : PostgreSQL 16 avec schemas séparés par service
 - **Réseau** : Réseau interne Docker pour la communication inter-services
 
@@ -151,57 +151,48 @@ Script d'initialisation : `db/init/01-init-databases.sql`
 
 ## 6. API REST
 
-### 6.1 Auth Service
+La référence complète (champs, rôles, formats de réponse, exemples) figure dans **`docs/API.md`**. Synthèse :
 
-- `POST /api/login` - Connexion
-- `POST /api/logout` - Déconnexion
-- `GET /api/me` - Profil utilisateur
-- `GET /api/health` - Healthcheck
+### 6.1 Auth Service (:8001)
 
-### 6.2 Patrimoine Service
+- `POST /api/login`, `POST /api/logout`, `GET /api/me`, `GET /api/health`
+- `GET /api/users`, `POST /api/users` (administrateur)
 
-- `GET /api/services` - Liste des services
-- `GET /api/categories` - Liste des catégories
-- `GET /api/biens` - Liste des biens (avec filtres)
-- `POST /api/biens` - Créer un bien
-- `PUT /api/biens/{id}` - Modifier un bien
-- `POST /api/biens/{id}/affecter` - Affecter un bien
-- `POST /api/biens/{id}/reformer` - Réformer un bien
-- `POST /api/biens/{id}/ceder` - Céder un bien
-- `GET /api/biens/{id}/historique` - Historique des mouvements
+### 6.2 Patrimoine Service (:8002)
 
-### 6.3 Operations Service
+- `GET/POST /api/services`, `GET/POST /api/categories`
+- `GET/POST /api/biens`, `PUT /api/biens/{id}`, `GET /api/biens/{id}`, `GET /api/biens/{id}/historique`
+- `POST /api/biens/{id}/affecter`, `/reformer`, `/ceder`
+- `GET /api/affectations`
 
-- `GET /api/maintenances` - Liste des maintenances
-- `POST /api/maintenances` - Créer une maintenance
-- `POST /api/maintenances/{id}/cloturer` - Clôturer une maintenance
-- `GET /api/campagnes-inventaire` - Liste des campagnes
-- `POST /api/campagnes-inventaire` - Créer une campagne
-- `POST /api/campagnes-inventaire/{id}/cloturer` - Clôturer une campagne
-- `GET /api/anomalies` - Liste des anomalies
-- `POST /api/anomalies` - Signaler une anomalie
-- `POST /api/anomalies/{id}/resoudre` - Résoudre une anomalie
+### 6.3 Operations Service (:8003)
+
+- `GET/POST /api/maintenances`, `POST /api/maintenances/{id}/cloturer`
+- `GET/POST /api/campagnes-inventaire`, `GET /api/campagnes-inventaire/{id}`, `POST /{id}/cloturer`, `GET/POST /{id}/lignes`
+- `GET/POST /api/anomalies`, `POST /api/anomalies/{id}/resoudre`
 
 ---
 
 ## 7. Tests
 
-### 7.1 Tests Unitaires
+La campagne de tests complète (fonctionnels via interface + API, autorisation par rôle, validation, non fonctionnels) est documentée dans **`docs/TESTS.md`**.
 
-- **auth-service** : 13 tests, 31 assertions
-- **patrimoine-service** : 11 tests, 17 assertions
-- **operations-service** : 13 tests, 17 assertions
+### 7.1 Synthèse des résultats
 
-### 7.2 Couverture
+- **Authentification** : 10/10 scénarios validés
+- **Fonctionnel web** : 19/19 parcours (CRUD, cycle de vie des biens, inventaires, anomalies, administration)
+- **Autorisation** : 10/10 (401/403/201 conformes aux 4 rôles)
+- **Validation** : 6/6 cas (doublons, champs requis, enums, UUID, dates)
+- **Non fonctionnels** : healthchecks, cohérence web↔API, rate limiting, sessions
 
-- Tests des modèles Eloquent
-- Tests des relations
-- Tests des calculateurs (VNC)
-- Tests des UUID
+### 7.2 Données de test
+
+Base de démonstration alimentée **via l'interface** : biens (dont réformé et cédé), maintenance clôturée, campagne d'inventaire avec constats et rapport, anomalies, service, catégorie, utilisateur.
 
 ### 7.3 Sécurité
 
-- Composer audit : 0 vulnérabilités détectées
+- `composer audit` : 0 vulnérabilité détectée
+- JWT RS256, RBAC, CSRF, validation des entrées — voir `docs/SECURITY_REVIEW.md`
 
 ---
 
@@ -234,12 +225,9 @@ docker compose exec patrimoine-service php artisan db:seed
 docker compose exec operations-service php artisan db:seed
 ```
 
-### 8.2 Déploiement sur Render
+### 8.2 Déploiement en production
 
-- Configuration des services Render
-- Variables d'environnement
-- Clés JWT encodées en base64
-- Base de données PostgreSQL gérée par Render
+Le stack est déployable sur tout hébergeur acceptant Docker. La procédure complète (variables d'environnement, clés JWT, migrations, options sans carte bancaire) figure dans **`docs/DEPLOIEMENT.md`**. Une variante spécifique à Render est décrite dans `docs/DEPLOIEMENT_RENDER.md`.
 
 ---
 
@@ -263,8 +251,7 @@ docker compose exec operations-service php artisan db:seed
 
 ### 10.2 Sauvegardes
 
-- Sauvegardes automatiques PostgreSQL sur Render
-- Script de sauvegarde manuel disponible
+- Sauvegardes PostgreSQL à planifier (selon l'hébergeur retenu)
 
 ### 10.3 Mises à jour
 
@@ -293,7 +280,7 @@ docker compose exec operations-service php artisan db:seed
 
 1. **Clés JWT** : Ne jamais commiter les clés privées
 2. **Variables d'environnement** : Configurer correctement en production
-3. **PHP 8.2** : Laravel 12 nécessite PHP 8.2 (non compatible avec PHP 8.3 pour Pint)
+3. **PHP 8.4** : version utilisée dans les images Docker (`php:8.4-cli-alpine`) ; PHP 8.2+ requis en local
 4. **Migrations** : Exécuter les migrations dans l'ordre
 5. **Seeders** : Exécuter les seeders après les migrations
 
@@ -309,4 +296,4 @@ La solution technique est complète et opérationnelle avec :
 - Documentation complète
 - Infrastructure Docker prête au déploiement
 
-Le projet est prêt pour la mise en production sur Render après configuration des variables d'environnement et des clés JWT.
+Le projet est prêt pour la mise en production : le déploiement effective reste à exécuter selon l'hébergeur choisi (`docs/DEPLOIEMENT.md`).

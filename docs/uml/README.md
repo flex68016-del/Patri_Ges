@@ -2,6 +2,8 @@
 
 Ce dossier contient les diagrammes UML du projet de gestion du patrimoine de l'État.
 
+Les versions **rasterisées PNG** destinées à la soutenance se trouvent dans [`png/`](png/) (13 images générées avec Mermaid CLI).
+
 ## Diagramme de cas d'utilisation global
 
 **Explication :** Ce diagramme présente l'ensemble des cas d'utilisation du système, regroupés par acteur (Administrateur, Gestionnaire du patrimoine, Responsable de service, Inspecteur). Il montre les interactions principales entre les acteurs et le système, ainsi que les dépendances entre cas d'utilisation (par exemple, consulter un bien inclut la consultation de son historique).
