@@ -67,11 +67,79 @@ class BienController extends Controller
         }
 
         $services = $this->api->get('patrimoine', '/api/services')->json();
+        $historique = $this->api->get('patrimoine', "/api/biens/{$id}/historique")->json();
 
         return view('biens.show', [
             'bien' => $response->json(),
             'services' => is_array($services) ? $services : [],
+            'historique' => is_array($historique) ? $historique : [],
         ]);
+    }
+
+    public function edit(string $id)
+    {
+        $response = $this->api->get('patrimoine', "/api/biens/{$id}");
+
+        if (! $response->successful()) {
+            abort(404);
+        }
+
+        $services = $this->api->get('patrimoine', '/api/services')->json();
+
+        return view('biens.edit', [
+            'bien' => $response->json(),
+            'services' => is_array($services) ? $services : [],
+        ]);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $validated = $request->validate([
+            'designation' => 'required|string|max:255',
+            'statut' => 'required|in:disponible,affecte,en_maintenance,reforme,cede',
+            'service_id' => 'nullable|uuid',
+            'emplacement' => 'nullable|string|max:255',
+        ]);
+
+        $response = $this->api->put('patrimoine', "/api/biens/{$id}", $validated);
+
+        if (! $response->successful()) {
+            return back()->withErrors(['bien' => $response->json('message', 'Erreur lors de la modification.')])->withInput();
+        }
+
+        return redirect()->route('biens.show', $id)->with('success', 'Bien modifié avec succès.');
+    }
+
+    public function reformer(Request $request, string $id)
+    {
+        $validated = $request->validate([
+            'motif' => 'required|string',
+        ]);
+
+        $response = $this->api->post('patrimoine', "/api/biens/{$id}/reformer", $validated);
+
+        if (! $response->successful()) {
+            return back()->withErrors(['reforme' => $response->json('message', 'Erreur lors de la réforme.')]);
+        }
+
+        return back()->with('success', 'Bien réformé avec succès.');
+    }
+
+    public function ceder(Request $request, string $id)
+    {
+        $validated = $request->validate([
+            'type' => 'required|in:vente,don,destruction',
+            'date' => 'required|date',
+            'valeur_cession' => 'nullable|numeric|min:0',
+        ]);
+
+        $response = $this->api->post('patrimoine', "/api/biens/{$id}/ceder", $validated);
+
+        if (! $response->successful()) {
+            return back()->withErrors(['cession' => $response->json('message', 'Erreur lors de la cession.')]);
+        }
+
+        return back()->with('success', 'Bien cédé avec succès.');
     }
 
     public function affecter(Request $request, string $id)

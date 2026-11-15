@@ -98,4 +98,15 @@ class InventaireController extends Controller
 
         return view('inventaires.rapport', ['campagne' => $campagne->json()]);
     }
+
+    public function cloturer(string $id)
+    {
+        $response = $this->api->post('operations', "/api/campagnes-inventaire/{$id}/cloturer");
+
+        if (! $response->successful()) {
+            return back()->withErrors(['campagne' => $response->json('message', 'Erreur lors de la clôture.')]);
+        }
+
+        return redirect()->route('inventaires.index')->with('success', 'Campagne clôturée avec succès.');
+    }
 }

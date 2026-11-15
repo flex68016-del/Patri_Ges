@@ -16,6 +16,11 @@ class ApiClient
         return $this->request('post', $service, $path, ['json' => $data]);
     }
 
+    public function put(string $service, string $path, array $data = [])
+    {
+        return $this->request('put', $service, $path, ['json' => $data]);
+    }
+
     private function request(string $method, string $service, string $path, array $options = [])
     {
         $baseUrl = match ($service) {

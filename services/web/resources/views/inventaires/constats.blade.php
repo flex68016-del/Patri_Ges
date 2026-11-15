@@ -45,6 +45,7 @@
             </table>
         </div>
 
+        @if(in_array(session('user.role'), ['gestionnaire', 'administrateur', 'inspecteur']))
         <div class="bg-white rounded-md shadow-sm p-6">
             <h2 class="text-xl font-semibold text-[#1f2937] mb-4">Nouveau constat</h2>
             <form method="POST" action="{{ route('inventaires.lignes.store', $campagne['id']) }}" class="space-y-4">
@@ -74,6 +75,7 @@
                 <button type="submit" class="w-full bg-[#047857] text-white px-4 py-2 rounded-md hover:bg-[#065f46]">Enregistrer le constat</button>
             </form>
         </div>
+        @endif
     </div>
 </div>
 @endsection

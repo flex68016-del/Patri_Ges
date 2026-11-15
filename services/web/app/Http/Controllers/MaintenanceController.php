@@ -12,10 +12,17 @@ class MaintenanceController extends Controller
     public function index()
     {
         $response = $this->api->get('operations', '/api/maintenances');
+        $biens = $this->api->get('patrimoine', '/api/biens')->json('data', []);
+
+        $labels = [];
+        foreach ((array) $biens as $bien) {
+            $labels[$bien['id']] = ($bien['code'] ?? '').' - '.($bien['designation'] ?? '');
+        }
 
         return view('maintenances.index', [
             'maintenances' => $response->json('data', []),
             'pagination' => $response->json(),
+            'biens_labels' => $labels,
         ]);
     }
 
@@ -46,5 +53,32 @@ class MaintenanceController extends Controller
         }
 
         return redirect()->route('maintenances.index')->with('success', 'Maintenance créée avec succès.');
+    }
+
+    public function cloturerForm(string $id)
+    {
+        $maintenance = $this->api->get('operations', "/api/maintenances/{$id}");
+
+        if (! $maintenance->successful()) {
+            abort(404);
+        }
+
+        return view('maintenances.cloturer', ['maintenance' => $maintenance->json()]);
+    }
+
+    public function cloturer(Request $request, string $id)
+    {
+        $validated = $request->validate([
+            'date_effective' => 'required|date',
+            'cout' => 'required|numeric|min:0',
+        ]);
+
+        $response = $this->api->post('operations', "/api/maintenances/{$id}/cloturer", $validated);
+
+        if (! $response->successful()) {
+            return back()->withErrors(['cloture' => $response->json('message', 'Erreur lors de la clôture.')])->withInput();
+        }
+
+        return redirect()->route('maintenances.index')->with('success', 'Maintenance clôturée avec succès.');
     }
 }
