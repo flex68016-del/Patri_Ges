@@ -1,3 +1,4 @@
+{{-- Rapport final d'une campagne d'inventaire : synthese des constats et ecarts constates. --}}
 @extends('layouts.app')
 
 @section('title', 'Rapport des écarts')

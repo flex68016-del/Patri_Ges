@@ -1,3 +1,4 @@
+{{-- Formulaire de creation d'une categorie de biens (type, duree de vie pour l'amortissement). --}}
 @extends('layouts.app')
 
 @section('title', 'Administration - Nouvelle catégorie')

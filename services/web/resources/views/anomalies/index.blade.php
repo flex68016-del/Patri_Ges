@@ -1,3 +1,4 @@
+{{-- Liste des anomalies avec filtres par statut et type, et action de resolution. --}}
 @extends('layouts.app')
 
 @section('title', 'Anomalies')

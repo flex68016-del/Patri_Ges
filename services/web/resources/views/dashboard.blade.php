@@ -1,3 +1,4 @@
+{{-- Tableau de bord : compteurs cles (biens, maintenances, campagnes, anomalies) et elements recents. --}}
 @extends('layouts.app')
 
 @section('title', 'Tableau de bord')

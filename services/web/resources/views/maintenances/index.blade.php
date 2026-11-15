@@ -1,3 +1,4 @@
+{{-- Liste des maintenances avec filtres et acces a la cloture. --}}
 @extends('layouts.app')
 
 @section('title', 'Maintenances')

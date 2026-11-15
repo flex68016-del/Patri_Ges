@@ -1,3 +1,4 @@
+{{-- Formulaire de modification des champs mutables d'un bien (designation, statut, service, emplacement). --}}
 @extends('layouts.app')
 
 @section('title', 'Modifier le bien')

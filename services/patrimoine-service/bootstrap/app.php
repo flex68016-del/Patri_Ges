@@ -14,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // jwt  : verification du token + revalidation via auth-service
+        // role : autorisation par role, placee apres jwt dans les routes
         $middleware->alias([
             'role' => RoleMiddleware::class,
             'jwt' => JwtMiddleware::class,

@@ -1,3 +1,4 @@
+{{-- Page de connexion : envoie email et mot de passe a auth-service via le formulaire POST. --}}
 @extends('layouts.app')
 
 @section('title', 'Connexion')

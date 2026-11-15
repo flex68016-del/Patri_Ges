@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+// Modele par defaut de Laravel : operations-service ne gere pas les
+// comptes (auth-service s'en charge). L'identite arrive via JWT.
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */

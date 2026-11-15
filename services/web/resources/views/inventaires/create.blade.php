@@ -1,3 +1,4 @@
+{{-- Formulaire de creation d'une campagne d'inventaire (dates, inspecteur affecte). --}}
 @extends('layouts.app')
 
 @section('title', 'Nouvelle campagne d\'inventaire')

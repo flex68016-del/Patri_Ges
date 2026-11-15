@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
+/**
+ * Affectation d'un bien a un service sur une periode donnee.
+ * Une seule affectation est "active" (actif=true, sans date_fin) a la
+ * fois par bien : la cloture precedente precede toujours la nouvelle.
+ */
 class Affectation extends Model
 {
     /** @use HasFactory<AffectationFactory> */
@@ -44,11 +49,13 @@ class Affectation extends Model
         'actif' => 'boolean',
     ];
 
+    /** Bien objet de l'affectation. */
     public function bien(): BelongsTo
     {
         return $this->belongsTo(Bien::class);
     }
 
+    /** Service destinataire du bien. */
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);

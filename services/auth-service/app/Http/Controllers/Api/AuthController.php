@@ -10,10 +10,21 @@ use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Controleur d'authentification : point d'entree unique pour le login,
+ * la deconnexion, le profil courant et la gestion des comptes.
+ * C'est ce service qui signe les JWT (cle privee RS256).
+ */
 class AuthController extends Controller
 {
+    /**
+     * Authentifie un utilisateur : verifie le mot de passe (bcrypt),
+     * signe un JWT de 8 heures et journalise la connexion.
+     */
     public function login(LoginRequest $request)
     {
+        // Seuls les comptes au statut "actif" peuvent se connecter :
+        // les comptes suspendus ou desactives sont rejetes ici.
         $user = User::where('email', $request->email)->where('statut', 'actif')->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
@@ -26,12 +37,17 @@ class AuthController extends Controller
         $payload = [
             'iss' => config('app.url'),
             'iat' => time(),
-            'exp' => time() + 8 * 60 * 60, // 8 heures
+            // Duree de vie limitee a 8 heures pour reduire la fenetre
+            // d'exposition d'un token intercepte.
+            'exp' => time() + 8 * 60 * 60,
+            // sub = identifiant de l'utilisateur, verifie par JwtMiddleware
+            // dans chaque microservice pour retrouver le role.
             'sub' => $user->id,
             'role' => $user->role,
         ];
 
-        // Pour les tests, utiliser HS256 au lieu de RS256
+        // En environnement de test, on utilise HS256 avec la APP_KEY pour
+        // eviter de distribuer les cles RSA ; en production c'est RS256.
         if (app()->environment('testing')) {
             $secret = config('app.key');
             $token = JWT::encode($payload, $secret, 'HS256');
@@ -40,6 +56,8 @@ class AuthController extends Controller
             $token = JWT::encode($payload, $privateKey, 'RS256');
         }
 
+        // Tracabilite : chaque session est enregistree avec IP et user-agent
+        // dans la table connexions pour l'audit des acces.
         Connexion::create([
             'user_id' => $user->id,
             'ip_adresse' => $request->ip(),
@@ -65,6 +83,12 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Cloture la session : marque la derniere connexion active comme
+     * inacte. Le JWT reste techniquement valide jusqu'a son expiration
+     * (stateless), la revocation reelle est assuree par le statut
+     * utilisateur verifie a chaque appel /api/me.
+     */
     public function logout(Request $request)
     {
         $user = $request->user();
@@ -87,6 +111,7 @@ class AuthController extends Controller
         ]);
     }
 
+    /** Retourne le profil de l'utilisateur authentifie (endpoint /api/me). */
     public function me(Request $request)
     {
         return response()->json([
@@ -102,6 +127,7 @@ class AuthController extends Controller
         ]);
     }
 
+    /** Liste de tous les comptes (admin uniquement via middleware role). */
     public function users()
     {
         $users = User::orderBy('nom')->get(['id', 'email', 'nom', 'prenom', 'role', 'statut', 'derniere_connexion_at']);
@@ -112,6 +138,7 @@ class AuthController extends Controller
         ]);
     }
 
+    /** Cree un nouveau compte utilisateur avec son role metier. */
     public function storeUser(Request $request)
     {
         $validated = $request->validate([

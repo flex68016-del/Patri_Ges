@@ -1,3 +1,4 @@
+{{-- Layout principal : sidebar de navigation Alpine.js, header et conteneur des vues. --}}
 <!DOCTYPE html>
 <html lang="fr">
 <head>

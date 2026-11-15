@@ -1,3 +1,4 @@
+{{-- Formulaire de creation d'un service (ministere, direction) qui accueillera les affectations. --}}
 @extends('layouts.app')
 
 @section('title', 'Administration - Nouveau service')

@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Alias des middlewares metier utilises dans routes/web.php :
+        //  - authenticated : session web valide (token + utilisateur)
+        //  - admin         : role administrateur uniquement
+        //  - role          : liste de roles autorises passee en parametre
         $middleware->alias([
             'authenticated' => EnsureAuthenticated::class,
             'admin' => EnsureAdmin::class,

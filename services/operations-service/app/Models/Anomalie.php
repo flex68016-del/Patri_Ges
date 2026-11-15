@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * Anomalie constatee sur le patrimoine : disappearance, degradation,
+ * ecart d'inventaire ou autre incident. La gravite (faible a critique)
+ * et le cycle de vie (signale -> en_cours -> resolu -> clos) pilotent
+ * le suivi operationnel.
+ */
 class Anomalie extends Model
 {
     /** @use HasFactory<AnomalieFactory> */

@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+// Modele conserve par defaut de Laravel. Le service web n'utilise PAS
+// l'authentification Eloquent : l'identite est transportee par la session
+// (token JWT + profil) et verifiee par auth-service. Ce modele reste
+// present pour compatibilite avec le socle Laravel.
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */

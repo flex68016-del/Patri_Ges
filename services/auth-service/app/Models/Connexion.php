@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
+/**
+ * Journal des sessions : une ligne par login, avec IP, user-agent et
+ * horodatage de connexion/deconnexion. Sert a la tracabilite des acces.
+ */
 class Connexion extends Model
 {
     use HasFactory;
@@ -40,6 +44,7 @@ class Connexion extends Model
         'deconnexion_at' => 'datetime',
     ];
 
+    /** Utilisateur associe a cette session. */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

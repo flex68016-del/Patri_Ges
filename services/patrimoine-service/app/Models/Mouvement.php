@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
+/**
+ * Mouvement de patrimoine : journal d'audit immuable tracant chaque
+ * evenement du cycle de vie d'un bien (creation, affectation, maintenance,
+ * reforme, cession...). Le champ detail (JSON) stocke le contexte
+ * specifique de chaque evenement.
+ */
 class Mouvement extends Model
 {
     protected $keyType = 'uuid';
@@ -36,6 +42,7 @@ class Mouvement extends Model
         'detail' => 'array',
     ];
 
+    /** Bien concerne par ce mouvement. */
     public function bien(): BelongsTo
     {
         return $this->belongsTo(Bien::class);

@@ -1,3 +1,4 @@
+{{-- Formulaire de planification d'une maintenance preventive ou corrective. --}}
 @extends('layouts.app')
 
 @section('title', 'Nouvelle maintenance')

@@ -6,6 +6,8 @@ use App\Models\Categorie;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
+// Categories de biens de reference avec leur duree de vie
+// (annees) utilisee pour le calcul d'amortissement et de la VNC.
 class CategorieSeeder extends Seeder
 {
     public function run(): void

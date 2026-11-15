@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Services\ApiClient;
 use Illuminate\Http\Request;
 
+/**
+ * Gestion des anomalies : signalement et suivi des ecarts detectes sur les
+ * biens (disparitions, degradations, ecarts d'inventaire). L'inspecteur
+ * peut signaler ; la resolution est ouverte aux gestionnaires.
+ */
 class AnomalieController extends Controller
 {
     public function __construct(private ApiClient $api) {}
 
+    /** Liste des anomalies avec filtres statut/type. */
     public function index(Request $request)
     {
         $query = [];
@@ -19,6 +25,7 @@ class AnomalieController extends Controller
         }
 
         $response = $this->api->get('operations', '/api/anomalies', $query);
+        // Les libelles des biens servent a afficher un nom lisible dans le tableau.
         $biens = $this->api->get('patrimoine', '/api/biens')->json('data', []);
 
         $labels = [];
@@ -61,6 +68,7 @@ class AnomalieController extends Controller
         return redirect()->route('anomalies.index')->with('success', 'Anomalie signalée avec succès.');
     }
 
+    /** Marque l'anomalie comme resolue (action POST cote operations-service). */
     public function resoudre(string $id)
     {
         $response = $this->api->post('operations', "/api/anomalies/{$id}/resoudre");

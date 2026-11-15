@@ -1,3 +1,4 @@
+{{-- Liste des comptes utilisateurs de la plateforme avec leurs roles et statuts. --}}
 @extends('layouts.app')
 
 @section('title', 'Administration - Utilisateurs')

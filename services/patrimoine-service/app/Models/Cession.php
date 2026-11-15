@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
+/**
+ * Acte de cession d'un bien : vente, don ou destruction.
+ * Conserve la date, le type et la valeur eventuelle de la transaction,
+ * ainsi que l'administrateur qui a valide l'acte.
+ */
 class Cession extends Model
 {
     protected $keyType = 'uuid';
@@ -36,6 +41,7 @@ class Cession extends Model
         'valeur_cession' => 'decimal:2',
     ];
 
+    /** Bien ayant fait l'objet de la cession. */
     public function bien(): BelongsTo
     {
         return $this->belongsTo(Bien::class);

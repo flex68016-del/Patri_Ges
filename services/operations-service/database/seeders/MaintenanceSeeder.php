@@ -6,6 +6,8 @@ use App\Models\Maintenance;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
+// Exemples de maintenances (preventive planifiee et corrective terminee)
+// pour illustrer le suivi des interventions.
 class MaintenanceSeeder extends Seeder
 {
     public function run(): void

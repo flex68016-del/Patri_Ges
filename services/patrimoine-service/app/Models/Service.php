@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
+/**
+ * Service (ministere, direction, administration) : entite
+ * organisationnelle qui recoit les affectations de biens et porte la
+ * responsabilite metier sur le patrimoine confie.
+ */
 class Service extends Model
 {
     /** @use HasFactory<ServiceFactory> */
@@ -42,6 +47,7 @@ class Service extends Model
         'actif' => 'boolean',
     ];
 
+    /** Biens actuellement ou historiquement rattaches au service. */
     public function biens(): HasMany
     {
         return $this->hasMany(Bien::class, 'service_id');

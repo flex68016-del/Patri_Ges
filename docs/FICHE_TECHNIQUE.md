@@ -227,7 +227,7 @@ docker compose exec operations-service php artisan db:seed
 
 ### 8.2 Déploiement en production
 
-Le stack est déployable sur tout hébergeur acceptant Docker. La procédure complète (variables d'environnement, clés JWT, migrations, options sans carte bancaire) figure dans **`docs/DEPLOIEMENT.md`**. Une variante spécifique à Render est décrite dans `docs/DEPLOIEMENT_RENDER.md`.
+Le stack est déployable sur tout hébergeur acceptant Docker. La procédure complète (variables d'environnement, clés JWT, migrations, options sans carte bancaire) figure dans **`docs/DEPLOIEMENT.md`**.
 
 ---
 

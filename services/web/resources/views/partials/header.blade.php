@@ -1,3 +1,4 @@
+{{-- Partie header du layout : titre de page, menu mobile et informations utilisateur. --}}
 <header class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">

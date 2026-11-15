@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Services\ApiClient;
 use Illuminate\Http\Request;
 
+/**
+ * Campagnes d'inventaire physique : creation de la campagne, saisie des
+ * constats bien par bien (present/absent/degrade) et edition du rapport.
+ */
 class InventaireController extends Controller
 {
     public function __construct(private ApiClient $api) {}
 
+    /** Liste des campagnes d'inventaire. */
     public function index()
     {
         $response = $this->api->get('operations', '/api/campagnes-inventaire');
@@ -36,6 +41,7 @@ class InventaireController extends Controller
             'inspecteur_id' => 'required|uuid',
         ]);
 
+        // Toute nouvelle campagne demarre au statut "planifie".
         $validated['statut'] = 'planifie';
 
         $response = $this->api->post('operations', '/api/campagnes-inventaire', $validated);
@@ -47,6 +53,10 @@ class InventaireController extends Controller
         return redirect()->route('inventaires.index')->with('success', 'Campagne créée avec succès.');
     }
 
+    /**
+     * Page de saisie des constats : la campagne et les lignes deja
+     * enregistrees sont chargees avec la liste des biens a inventorier.
+     */
     public function constats(string $id)
     {
         $campagne = $this->api->get('operations', "/api/campagnes-inventaire/{$id}");
@@ -74,6 +84,8 @@ class InventaireController extends Controller
             'observation' => 'nullable|string',
         ]);
 
+        // Si aucun libelle n'est fourni, on reconstruit "designation (code)"
+        // a partir de la fiche du bien pour garder un libelle explicite.
         if (empty($validated['bien_libelle'])) {
             $bien = $this->api->get('patrimoine', "/api/biens/{$validated['bien_id']}")->json();
             $validated['bien_libelle'] = ($bien['designation'] ?? 'Bien').' ('.($bien['code'] ?? '').')';
@@ -99,6 +111,7 @@ class InventaireController extends Controller
         return view('inventaires.rapport', ['campagne' => $campagne->json()]);
     }
 
+    /** Cloture la campagne : le rapport final devient disponible. */
     public function cloturer(string $id)
     {
         $response = $this->api->post('operations', "/api/campagnes-inventaire/{$id}/cloturer");

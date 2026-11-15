@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+// Le service web n'a pas de base propre : l'authentification
+// est geree par auth-service. Ce seeder reste celui de Laravel.
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;

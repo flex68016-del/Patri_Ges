@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Services\ApiClient;
 use Illuminate\Http\Request;
 
+/**
+ * Administration : gestion des utilisateurs (auth-service) et des
+ * referentiels services/categories (patrimoine-service). Reserve a
+ * l'administrateur via le middleware EnsureAdmin.
+ */
 class AdminController extends Controller
 {
     public function __construct(private ApiClient $api) {}
 
+    /** Liste des comptes utilisateurs de la plateforme. */
     public function users()
     {
         $response = $this->api->get('auth', '/api/users');
@@ -27,6 +33,7 @@ class AdminController extends Controller
         ]);
     }
 
+    /** Formulaire de creation d'un utilisateur avec choix du role. */
     public function userStore(Request $request)
     {
         $validated = $request->validate([
@@ -46,6 +53,7 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('success', 'Utilisateur créé avec succès.');
     }
 
+    /** Page des referentiels : liste les services et categories existants. */
     public function references()
     {
         $services = $this->api->get('patrimoine', '/api/services')->json();

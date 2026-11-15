@@ -1,3 +1,4 @@
+{{-- Liste des campagnes d'inventaire avec acces aux constats, au rapport et a la cloture. --}}
 @extends('layouts.app')
 
 @section('title', 'Inventaires')

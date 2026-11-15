@@ -1,3 +1,4 @@
+{{-- Formulaire de cloture d'une maintenance : date effective et cout final. --}}
 @extends('layouts.app')
 
 @section('title', 'Clôturer la maintenance')

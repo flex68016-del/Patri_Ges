@@ -7,8 +7,14 @@ use App\Models\Categorie;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * CRUD des categories de biens : regroupent les biens par nature
+ * (immobilier, vehicule, equipement) avec une duree de vie moyenne
+ * utilisee pour le calcul d'amortissement et de la VNC.
+ */
 class CategorieController extends Controller
 {
+    /** Liste de toutes les categories. */
     public function index(): JsonResponse
     {
         $categories = Categorie::all();
@@ -16,6 +22,7 @@ class CategorieController extends Controller
         return response()->json($categories);
     }
 
+    /** Detail d'une categorie. */
     public function show(string $id): JsonResponse
     {
         $categorie = Categorie::findOrFail($id);
@@ -23,6 +30,7 @@ class CategorieController extends Controller
         return response()->json($categorie);
     }
 
+    /** Cree une categorie ; duree_vie obligatoire (annees) pour l'amortissement. */
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -38,6 +46,7 @@ class CategorieController extends Controller
         return response()->json($categorie, 201);
     }
 
+    /** Mise a jour partielle de la categorie. */
     public function update(Request $request, string $id): JsonResponse
     {
         $categorie = Categorie::findOrFail($id);
@@ -56,6 +65,7 @@ class CategorieController extends Controller
         return response()->json($categorie);
     }
 
+    /** Supprime la categorie (a n'utiliser que si aucun bien n'y est rattache). */
     public function destroy(string $id): JsonResponse
     {
         $categorie = Categorie::findOrFail($id);

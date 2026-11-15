@@ -7,8 +7,15 @@ use App\Models\Anomalie;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * API des anomalies : ecarts constates sur le terrain (disparition,
+ * degradation, ecart d'inventaire). Ouverte en lecture a tous les
+ * roles authentifies ; signalement et resolution par gestionnaire,
+ * administrateur et inspecteur.
+ */
 class AnomalieController extends Controller
 {
+    /** Liste paginee des anomalies, filtrable par statut et type. */
     public function index(Request $request): JsonResponse
     {
         $query = Anomalie::query();
@@ -26,6 +33,7 @@ class AnomalieController extends Controller
         return response()->json($anomalies);
     }
 
+    /** Detail d'une anomalie. */
     public function show(string $id): JsonResponse
     {
         $anomalie = Anomalie::findOrFail($id);
@@ -44,6 +52,8 @@ class AnomalieController extends Controller
             'date_constatation' => 'required|date',
         ]);
 
+        // L'auteur du signalement est l'utilisateur du JWT, jamais
+        // une valeur fournie par le client.
         $validated['declare_par_id'] = $request->attributes->get('user_id');
 
         $anomalie = Anomalie::create($validated);
@@ -51,6 +61,7 @@ class AnomalieController extends Controller
         return response()->json($anomalie, 201);
     }
 
+    /** Mise a jour partielle : suivi du statut et de la resolution. */
     public function update(Request $request, string $id): JsonResponse
     {
         $anomalie = Anomalie::findOrFail($id);
@@ -66,6 +77,7 @@ class AnomalieController extends Controller
         return response()->json($anomalie);
     }
 
+    /** Cloture rapide : passe l'anomalie en "resolu" avec la date du jour. */
     public function resoudre(string $id): JsonResponse
     {
         $anomalie = Anomalie::findOrFail($id);

@@ -1,3 +1,4 @@
+{{-- Inventaire des biens : tableau pagine avec recherche et filtres par categorie et statut. --}}
 @extends('layouts.app')
 
 @section('title', 'Biens')

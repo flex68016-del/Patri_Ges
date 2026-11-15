@@ -1,3 +1,4 @@
+{{-- Composant modal Alpine.js : affectation d'un bien a un service avec date de debut et motif. --}}
 @props(['open' => false])
 
 <div x-data="{ open: $open }" x-show="open" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">

@@ -7,8 +7,14 @@ use App\Models\Maintenance;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * API des maintenances : interventions preventives et correctives
+ * sur les biens. Le cycle de vie va de "planifie" a "termine" via la
+ * cloture, qui exige la date effective et le cout final.
+ */
 class MaintenanceController extends Controller
 {
+    /** Liste paginee des maintenances, filtrable par statut/type. */
     public function index(Request $request): JsonResponse
     {
         $query = Maintenance::query();
@@ -26,6 +32,7 @@ class MaintenanceController extends Controller
         return response()->json($maintenances);
     }
 
+    /** Detail d'une maintenance. */
     public function show(string $id): JsonResponse
     {
         $maintenance = Maintenance::findOrFail($id);
@@ -46,6 +53,7 @@ class MaintenanceController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        // Auteur = utilisateur du JWT, jamais fourni par le client.
         $validated['auteur_id'] = $request->attributes->get('user_id');
 
         $maintenance = Maintenance::create($validated);
@@ -53,6 +61,7 @@ class MaintenanceController extends Controller
         return response()->json($maintenance, 201);
     }
 
+    /** Mise a jour partielle du suivi (statut, technicien, cout...). */
     public function update(Request $request, string $id): JsonResponse
     {
         $maintenance = Maintenance::findOrFail($id);
@@ -70,6 +79,10 @@ class MaintenanceController extends Controller
         return response()->json($maintenance);
     }
 
+    /**
+     * Cloture la maintenance : impose statut "termine" et enregistre
+     * la date effective reelle ainsi que le cout final de l'intervention.
+     */
     public function cloturer(Request $request, string $id): JsonResponse
     {
         $maintenance = Maintenance::findOrFail($id);

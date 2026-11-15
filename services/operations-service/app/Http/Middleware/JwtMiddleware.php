@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Middleware JWT : verifie la signature RS256 localement puis
+ * revalide l'utilisateur via GET /api/me d'auth-service. Le role et
+ * l'identifiant sont exposes aux controleurs via les attributs de
+ * requete (user_id, user_role, user_data).
+ */
 class JwtMiddleware
 {
     public function handle(Request $request, Closure $next): Response
@@ -23,7 +29,8 @@ class JwtMiddleware
         }
 
         try {
-            // Pour les tests, utiliser HS256
+            // Verification cryptographique locale, puis revalidation
+            // distante pour rejeter les tokens de comptes desactives.
             if (app()->environment('testing')) {
                 $secret = config('app.key');
                 $decoded = JWT::decode($token, new Key($secret, 'HS256'));
@@ -32,7 +39,6 @@ class JwtMiddleware
                 $decoded = JWT::decode($token, new Key($publicKey, 'RS256'));
             }
 
-            // Valider le token avec auth-service
             $response = Http::withToken($token)
                 ->get(env('AUTH_SERVICE_URL', 'http://localhost:8001').'/api/me');
 
@@ -45,7 +51,7 @@ class JwtMiddleware
 
             $userData = $response->json();
 
-            // Ajouter les données utilisateur à la requête
+            // Propagation de l'identite pour la suite du pipeline.
             $request->attributes->set('user_id', $decoded->sub);
             $request->attributes->set('user_role', $decoded->role);
             $request->attributes->set('user_data', $userData['data']);

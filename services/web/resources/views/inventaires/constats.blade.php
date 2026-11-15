@@ -1,3 +1,4 @@
+{{-- Saisie des constats d'inventaire : chaque bien est marque present, absent ou degrade. --}}
 @extends('layouts.app')
 
 @section('title', 'Constats d\'inventaire')

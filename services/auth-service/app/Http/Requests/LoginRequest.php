@@ -4,8 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Validation des identifiants de connexion : format email + mot de
+ * passe d'au moins 8 caracteres (regle alignee sur la creation de compte).
+ */
 class LoginRequest extends FormRequest
 {
+    // La connexion est publique : aucune autorisation prealable requise.
     public function authorize(): bool
     {
         return true;

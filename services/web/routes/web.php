@@ -9,18 +9,25 @@ use App\Http\Controllers\InventaireController;
 use App\Http\Controllers\MaintenanceController;
 use Illuminate\Support\Facades\Route;
 
+// Routes publiques : authentification uniquement.
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
+// Le logout est en POST (jamais GET) pour respecter la protection CSRF
+// et eviter les deconnexions declenchees par un simple lien suivi.
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Toutes les pages metier exigent une session valide (middleware 'authenticated').
+// Les ecritures sont ensuite filtrees par role pour refleter les permissions
+// definies dans les API backend (RBAC a deux niveaux : web + API).
 Route::middleware('authenticated')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/biens', [BienController::class, 'index'])->name('biens.index');
+    // Creation, edition et affectation : gestionnaire et administrateur.
     Route::middleware('role:gestionnaire,administrateur')->group(function () {
         Route::get('/biens/create', [BienController::class, 'create'])->name('biens.create');
         Route::post('/biens', [BienController::class, 'store'])->name('biens.store');
@@ -28,6 +35,7 @@ Route::middleware('authenticated')->group(function () {
         Route::post('/biens/{id}', [BienController::class, 'update'])->name('biens.update');
         Route::post('/biens/{id}/affecter', [BienController::class, 'affecter'])->name('biens.affecter');
     });
+    // Reforme et cession : actes administratifs reserves a l'administrateur.
     Route::middleware('admin')->group(function () {
         Route::post('/biens/{id}/reformer', [BienController::class, 'reformer'])->name('biens.reformer');
         Route::post('/biens/{id}/ceder', [BienController::class, 'ceder'])->name('biens.ceder');
@@ -45,6 +53,7 @@ Route::middleware('authenticated')->group(function () {
     Route::get('/inventaires', [InventaireController::class, 'index'])->name('inventaires.index');
     Route::get('/inventaires/{id}/constats', [InventaireController::class, 'constats'])->name('inventaires.constats');
     Route::get('/inventaires/{id}/rapport', [InventaireController::class, 'rapport'])->name('inventaires.rapport');
+    // Saisie des constats : ouverte a l'inspecteur qui realise le comptage.
     Route::middleware('role:gestionnaire,administrateur,inspecteur')->group(function () {
         Route::post('/inventaires/{id}/lignes', [InventaireController::class, 'storeLigne'])->name('inventaires.lignes.store');
     });
@@ -54,6 +63,7 @@ Route::middleware('authenticated')->group(function () {
         Route::post('/inventaires/{id}/cloturer', [InventaireController::class, 'cloturer'])->name('inventaires.cloturer');
     });
 
+    // Anomalies : signalement et resolution (inspecteur inclus).
     Route::get('/anomalies', [AnomalieController::class, 'index'])->name('anomalies.index');
     Route::middleware('role:gestionnaire,administrateur,inspecteur')->group(function () {
         Route::get('/anomalies/create', [AnomalieController::class, 'create'])->name('anomalies.create');
@@ -61,6 +71,8 @@ Route::middleware('authenticated')->group(function () {
         Route::post('/anomalies/{id}/resoudre', [AnomalieController::class, 'resoudre'])->name('anomalies.resoudre');
     });
 
+    // Administration : gestion des comptes et des referentiels,
+    // exclusivement reservee au role administrateur.
     Route::middleware('admin')->group(function () {
         Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
         Route::get('/admin/users/create', [AdminController::class, 'userCreate'])->name('admin.users.create');

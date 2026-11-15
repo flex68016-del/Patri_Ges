@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
+/**
+ * Ligne de constat d'inventaire : resultat du controle physique d'un
+ * bien precis dans une campagne (present, absent, degrade), avec
+ * observation libre et identification de l'agent ayant constate.
+ */
 class LigneInventaire extends Model
 {
+    // Nom de table explicite pour correspondre au schema migrations.
     protected $table = 'lignes_inventaire';
 
     protected $keyType = 'uuid';

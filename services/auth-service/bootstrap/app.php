@@ -14,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // jwt   : verification signature + expiration + utilisateur actif
+        // role  : autorisation par role, place apres jwt dans les routes
         $middleware->alias([
             'jwt' => JwtMiddleware::class,
             'role' => RoleMiddleware::class,

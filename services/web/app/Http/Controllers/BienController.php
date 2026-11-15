@@ -5,13 +5,19 @@ namespace App\Http\Controllers;
 use App\Services\ApiClient;
 use Illuminate\Http\Request;
 
+/**
+ * Controleur des biens : coquille web qui valide les formulaires puis
+ * delegue toutes les regles metier a l'API patrimoine-service.
+ */
 class BienController extends Controller
 {
     public function __construct(private ApiClient $api) {}
 
+    /** Liste paginee des biens, avec filtres recherche/categorie/statut. */
     public function index(Request $request)
     {
         $query = [];
+        // On ne transmet a l'API que les filtres reellement renseignes.
         foreach (['search', 'categorie_id', 'statut'] as $param) {
             if ($request->filled($param)) {
                 $query[$param] = $request->input($param);
@@ -28,6 +34,7 @@ class BienController extends Controller
 
     public function create()
     {
+        // Les categories et services servent a remplir les selects du formulaire.
         $categories = $this->api->get('patrimoine', '/api/categories')->json();
         $services = $this->api->get('patrimoine', '/api/services')->json();
 
@@ -58,6 +65,11 @@ class BienController extends Controller
         return redirect()->route('biens.index')->with('success', 'Bien créé avec succès.');
     }
 
+    /**
+     * Fiche detail d'un bien : informations, liste des services pour
+     * l'affectation et historique complet des mouvements (affectations,
+     * maintenances, reformes, cessions).
+     */
     public function show(string $id)
     {
         $response = $this->api->get('patrimoine', "/api/biens/{$id}");
@@ -76,6 +88,7 @@ class BienController extends Controller
         ]);
     }
 
+    /** Formulaire d'edition : seuls les champs mutables sont envoyes (PUT). */
     public function edit(string $id)
     {
         $response = $this->api->get('patrimoine', "/api/biens/{$id}");
@@ -142,6 +155,10 @@ class BienController extends Controller
         return back()->with('success', 'Bien cédé avec succès.');
     }
 
+    /**
+     * Affecte le bien a un service : la date de debut est obligatoire car
+     * elle determine la periode d'occupation dans le historique.
+     */
     public function affecter(Request $request, string $id)
     {
         $validated = $request->validate([

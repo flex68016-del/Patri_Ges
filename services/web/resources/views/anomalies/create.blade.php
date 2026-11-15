@@ -1,3 +1,4 @@
+{{-- Formulaire de signalement d'une anomalie sur un bien (type, gravite, description). --}}
 @extends('layouts.app')
 
 @section('title', 'Signaler une anomalie')

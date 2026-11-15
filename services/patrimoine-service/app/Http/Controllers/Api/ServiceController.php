@@ -7,8 +7,14 @@ use App\Models\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * CRUD des services (ministeres, directions) : referentiel utilise
+ * pour l'affectation des biens et la responsabilite metier.
+ * La suppression est logique (actif=false) pour preserver l'historique.
+ */
 class ServiceController extends Controller
 {
+    /** Liste des services actifs uniquement. */
     public function index(): JsonResponse
     {
         $services = Service::where('actif', true)->get();
@@ -16,6 +22,7 @@ class ServiceController extends Controller
         return response()->json($services);
     }
 
+    /** Detail d'un service. */
     public function show(string $id): JsonResponse
     {
         $service = Service::findOrFail($id);
@@ -23,6 +30,7 @@ class ServiceController extends Controller
         return response()->json($service);
     }
 
+    /** Cree un service ; le code doit etre unique. */
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -39,6 +47,7 @@ class ServiceController extends Controller
         return response()->json($service, 201);
     }
 
+    /** Mise a jour partielle ; la regle unique exclut l'enregistrement courant. */
     public function update(Request $request, string $id): JsonResponse
     {
         $service = Service::findOrFail($id);
@@ -58,6 +67,7 @@ class ServiceController extends Controller
         return response()->json($service);
     }
 
+    /** Desactive le service (suppression logique) pour garder la tracabilite. */
     public function destroy(string $id): JsonResponse
     {
         $service = Service::findOrFail($id);

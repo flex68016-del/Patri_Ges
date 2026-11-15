@@ -1,3 +1,4 @@
+{{-- Fiche detail d'un bien : caracteristiques, VNC, actions (affectation, edition, reforme, cession) et historique. --}}
 @extends('layouts.app')
 
 @section('title', 'Detail du bien')

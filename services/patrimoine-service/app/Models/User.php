@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+// Modele conserve par defaut : le patrimoine-service ne gere pas les
+// comptes (c'est auth-service qui les possede). L'identite arrive via
+// le JWT et est transportee par les attributs de requete.
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */

@@ -1,3 +1,4 @@
+{{-- Composant modal Alpine.js : planification ou suivi d'une maintenance sur un bien. --}}
 @props(['open' => false])
 
 <div x-data="{ open: $open }" x-show="open" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">

@@ -1,3 +1,4 @@
+{{-- Formulaire de creation d'un compte utilisateur avec choix du role metier. --}}
 @extends('layouts.app')
 
 @section('title', 'Administration - Nouvel utilisateur')

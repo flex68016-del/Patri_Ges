@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\LigneInventaireController;
 use App\Http\Controllers\Api\MaintenanceController;
 use Illuminate\Support\Facades\Route;
 
+// Toutes les routes exigent un JWT valide ; le throttle global evite
+// les abus sur les endpoints de saisie.
 Route::middleware('throttle:100,1')->group(function () {
     Route::middleware('jwt')->group(function () {
         // Maintenances
@@ -29,6 +31,8 @@ Route::middleware('throttle:100,1')->group(function () {
         // Lignes d'inventaire (constats)
         Route::get('/campagnes-inventaire/{id}/lignes', [LigneInventaireController::class, 'index']);
 
+        // Saisie des constats d'inventaire : ouverte a l'inspecteur
+        // qui effectue physiquement le comptage sur le terrain.
         Route::middleware('role:gestionnaire,administrateur,inspecteur')->group(function () {
             Route::post('/campagnes-inventaire/{id}/lignes', [LigneInventaireController::class, 'store']);
         });
@@ -44,6 +48,7 @@ Route::middleware('throttle:100,1')->group(function () {
     });
 });
 
+// Healthcheck public pour le monitoring.
 Route::get('/health', function () {
     return response()->json([
         'status' => 'ok',

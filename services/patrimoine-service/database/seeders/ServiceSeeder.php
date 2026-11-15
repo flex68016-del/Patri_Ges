@@ -6,6 +6,8 @@ use App\Models\Service;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
+// Services de demonstration : ministeres et directions
+// qui recevront les affectations de biens.
 class ServiceSeeder extends Seeder
 {
     public function run(): void

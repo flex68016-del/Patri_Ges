@@ -1,3 +1,4 @@
+{{-- Formulaire de creation d'un bien : identification, categorie, service et valeur d'acquisition. --}}
 @extends('layouts.app')
 
 @section('title', 'Nouveau bien')

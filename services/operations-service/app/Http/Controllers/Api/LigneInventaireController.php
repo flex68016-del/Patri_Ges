@@ -7,8 +7,14 @@ use App\Models\LigneInventaire;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * API des lignes de constat : chaque ligne enregistre le resultat du
+ * controle physique d'un bien dans une campagne (present, absent,
+ * degrade) avec l'auteur et l'horodatage du constat.
+ */
 class LigneInventaireController extends Controller
 {
+    /** Liste des constats d'une campagne donnee. */
     public function index(string $campagneId): JsonResponse
     {
         $lignes = LigneInventaire::where('campagne_id', $campagneId)->get();
@@ -19,6 +25,7 @@ class LigneInventaireController extends Controller
         ]);
     }
 
+    /** Enregistre un constat pour un bien dans la campagne. */
     public function store(Request $request, string $campagneId): JsonResponse
     {
         $validated = $request->validate([
@@ -28,6 +35,8 @@ class LigneInventaireController extends Controller
             'observation' => 'nullable|string',
         ]);
 
+        // L'auteur du constat vient du JWT ; la date est celle du serveur
+        // pour garantir la coherence temporelle du rapport.
         $ligne = LigneInventaire::create([
             'campagne_id' => $campagneId,
             'bien_id' => $validated['bien_id'],

@@ -251,7 +251,7 @@ La plateforme est déployée et accessible :
 
 ## 5.3 Options d'hébergement
 
-Le stack étant conteneurisé, il est déployable sur tout hébergeur acceptant Docker. Le déploiement actuel (SnapDeploy) et la procédure générique sont documentés dans `docs/DEPLOIEMENT.md` ; une variante propre à Render figure dans `docs/DEPLOIEMENT_RENDER.md`.
+Le stack étant conteneurisé, il est déployable sur tout hébergeur acceptant Docker. Le déploiement actuel (SnapDeploy) et la procédure générique sont documentés dans `docs/DEPLOIEMENT.md`.
 
 ## 5.3 Exploitation
 

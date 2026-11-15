@@ -6,10 +6,16 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Autorisation par role : lit le role pose par JwtMiddleware et le
+ * compare a la liste de roles autorises passee en parametre de route.
+ */
 class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
+        // Le role provient du JWT (user_role) ; son absence signifie
+        // que le middleware jwt n'a pas ete traverse.
         $userRole = $request->attributes->get('user_role');
 
         if (! $userRole) {

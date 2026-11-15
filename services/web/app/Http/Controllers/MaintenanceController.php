@@ -5,13 +5,21 @@ namespace App\Http\Controllers;
 use App\Services\ApiClient;
 use Illuminate\Http\Request;
 
+/**
+ * Maintenances : planification preventive/corrective, suivi d'avancement
+ * et cloture avec cout final. Toutes les ecritures passent par
+ * operations-service.
+ */
 class MaintenanceController extends Controller
 {
     public function __construct(private ApiClient $api) {}
 
+    /** Liste des maintenances, avec libelles des biens resolus. */
     public function index()
     {
         $response = $this->api->get('operations', '/api/maintenances');
+        // La liste des biens sert uniquement a traduire bien_id en libelle
+        // lisible (code - designation) dans le tableau.
         $biens = $this->api->get('patrimoine', '/api/biens')->json('data', []);
 
         $labels = [];
@@ -55,6 +63,7 @@ class MaintenanceController extends Controller
         return redirect()->route('maintenances.index')->with('success', 'Maintenance créée avec succès.');
     }
 
+    /** Formulaire de cloture : date effective et cout final obligatoires. */
     public function cloturerForm(string $id)
     {
         $maintenance = $this->api->get('operations', "/api/maintenances/{$id}");

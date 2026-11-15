@@ -1,3 +1,4 @@
+{{-- Page des referentiels : liste et creation des services et categories de biens. --}}
 @extends('layouts.app')
 
 @section('title', 'Administration - Référentiels')

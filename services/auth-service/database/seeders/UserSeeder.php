@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+// Jeu de comptes de demonstration : un compte par role metier
+// (administrateur, gestionnaire, responsable, inspecteur).
 class UserSeeder extends Seeder
 {
     /**
@@ -53,6 +55,7 @@ class UserSeeder extends Seeder
             ],
         ];
 
+                // UUID genere cote application pour coller au schema PostgreSQL.
         foreach ($users as $user) {
             User::create(array_merge($user, ['id' => (string) Str::uuid()]));
         }

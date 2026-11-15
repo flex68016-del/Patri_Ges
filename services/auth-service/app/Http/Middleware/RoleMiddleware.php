@@ -6,6 +6,11 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Controle d'autorisation par role : a placer APRES le middleware jwt.
+ * Les roles autorises sont passes en parametres de route
+ * (ex : role:administrateur,gestionnaire).
+ */
 class RoleMiddleware
 {
     /**

@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
+/**
+ * Categorie de bien : regroupe les biens par nature
+ * (immobilier, vehicule, equipement). Porte la duree de vie moyenne
+ * qui pilote le calcul d'amortissement et de la valeur nette comptable.
+ */
 class Categorie extends Model
 {
     /** @use HasFactory<CategorieFactory> */
@@ -41,6 +46,7 @@ class Categorie extends Model
         'actif' => 'boolean',
     ];
 
+    /** Biens rattaches a cette categorie. */
     public function biens(): HasMany
     {
         return $this->hasMany(Bien::class);

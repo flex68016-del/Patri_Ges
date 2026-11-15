@@ -8,11 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
+/**
+ * Campagne d'inventaire physique : operation planifiee sur une periode
+ * donnee, confiee a un inspecteur, avec un statut de cycle de vie
+ * (planifie -> en_cours -> termine/annule) et ses lignes de constat.
+ */
 class CampagneInventaire extends Model
 {
     /** @use HasFactory<CampagneInventaireFactory> */
     use HasFactory;
 
+    // Nom de table explicite : le pluriel "campagnes_inventaires" n'est
+    // pas celui que devinerait Eloquent.
     protected $table = 'campagne_inventaires';
 
     protected $keyType = 'uuid';

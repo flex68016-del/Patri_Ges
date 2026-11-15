@@ -10,11 +10,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
+/**
+ * Bien du patrimoine de l'Etat : entite centrale du systeme.
+ * Chaque bien possede une categorie (qui porte la duree de vie pour
+ * l'amortissement), un service responsable eventuel, une specialisation
+ * selon son type (immobilier, vehicule, equipement) et un historique
+ * complet trace dans la table mouvements.
+ */
 class Bien extends Model
 {
     /** @use HasFactory<BienFactory> */
     use HasFactory;
 
+    // Cle primaire UUID : identifiants opaques, sans sequence.
     protected $keyType = 'uuid';
 
     public $incrementing = false;
@@ -23,6 +31,7 @@ class Bien extends Model
     {
         parent::boot();
 
+        // Genere l'UUID a l'insertion si aucun id n'est fourni.
         static::creating(function ($model) {
             if (empty($model->id)) {
                 $model->id = (string) Str::uuid();
@@ -78,6 +87,7 @@ class Bien extends Model
         return $this->hasMany(Affectation::class);
     }
 
+    /** Affectation en cours (sans date de fin), s'il y en a une. */
     public function affectationCourante(): HasOne
     {
         return $this->hasOne(Affectation::class)->whereNull('date_fin');
@@ -93,6 +103,10 @@ class Bien extends Model
         return $this->hasOne(Cession::class);
     }
 
+    /**
+     * Retourne la fiche de specialisation correspondant au type de la
+     * categorie (immobilier, vehicule ou equipement), ou null.
+     */
     public function getSpecialisationAttribute()
     {
         if (! $this->categorie) {
@@ -107,6 +121,12 @@ class Bien extends Model
         };
     }
 
+    /**
+     * Calcule la valeur nette comptable (VNC) : valeur d'acquisition
+     * amortie linearement sur la duree de vie de la categorie.
+     * L'amortissement est plafonne a 100 % (la VNC ne devient jamais
+     * negative) et le resultat est plancher a 0.
+     */
     public function calculerValeurNetComptable(): float
     {
         if (! $this->categorie || ! $this->categorie->duree_vie) {
@@ -115,6 +135,7 @@ class Bien extends Model
 
         $joursDepuisAcquisition = $this->date_acquisition->diffInDays(now());
         $joursDureeVie = $this->categorie->duree_vie * 365;
+        // Taux d'amortissement cumule : proportion de la duree de vie ecoulee.
         $tauxAmortissement = $joursDepuisAcquisition / $joursDureeVie;
         $cumulAmortissement = min($tauxAmortissement * 100, 100);
 

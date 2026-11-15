@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * Maintenance d'un bien : intervention preventive (planifiee) ou
+ * corrective (suite a panne/anomalie). Suit le cycle planifie ->
+ * en_cours -> termine/annule, avec cout et technicien.
+ */
 class Maintenance extends Model
 {
     /** @use HasFactory<MaintenanceFactory> */
