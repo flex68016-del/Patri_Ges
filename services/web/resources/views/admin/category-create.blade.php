@@ -11,52 +11,57 @@
         </a>
     </div>
 
-    <div class="bg-white rounded-md shadow-sm p-6">
-        <form method="POST" action="#">
-            @csrf
-            <div class="space-y-6">
-                <div>
-                    <label class="block text-sm font-medium text-[#1f2937] mb-2">Libellé</label>
-                    <input type="text" name="libelle" required
-                        class="w-full border border-[#e5e7eb] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:border-transparent"
-                        placeholder="Ex: Véhicules, Mobilier, Informatique">
-                </div>
+    @if($errors->any())
+        <div class="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-md">
+            @foreach($errors->all() as $error)<div>{{ $error }}</div>@endforeach
+        </div>
+    @endif
 
+    <div class="bg-white rounded-md shadow-sm p-6">
+        <form method="POST" action="{{ route('admin.categories.store') }}">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-[#1f2937] mb-2">Type de bien</label>
-                    <select name="type" required
+                    <label class="block text-sm font-medium text-[#1f2937] mb-2">Code *</label>
+                    <input type="text" name="code" value="{{ old('code') }}" required
+                        class="w-full border border-[#e5e7eb] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:border-transparent"
+                        placeholder="Ex: VEH, IMM, EQU">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#1f2937] mb-2">Nom *</label>
+                    <input type="text" name="nom" value="{{ old('nom') }}" required
+                        class="w-full border border-[#e5e7eb] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:border-transparent"
+                        placeholder="Ex: Véhicules">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[#1f2937] mb-2">Type de bien *</label>
+                    <select name="type_bien" required
                         class="w-full border border-[#e5e7eb] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:border-transparent">
                         <option value="">Sélectionner un type</option>
-                        <option value="vehicule">Véhicule</option>
-                        <option value="mobilier">Mobilier</option>
-                        <option value="informatique">Informatique</option>
-                        <option value="imobilier">Immobilier</option>
-                        <option value="autre">Autre</option>
+                        <option value="vehicule" @selected(old('type_bien') === 'vehicule')>Véhicule</option>
+                        <option value="equipement" @selected(old('type_bien') === 'equipement')>Équipement</option>
+                        <option value="immobilier" @selected(old('type_bien') === 'immobilier')>Immobilier</option>
                     </select>
                 </div>
-
                 <div>
-                    <label class="block text-sm font-medium text-[#1f2937] mb-2">Durée d'amortissement (années)</label>
-                    <input type="number" name="duree_amortissement" required min="1"
+                    <label class="block text-sm font-medium text-[#1f2937] mb-2">Durée de vie (années) *</label>
+                    <input type="number" name="duree_vie" value="{{ old('duree_vie') }}" required min="1"
                         class="w-full border border-[#e5e7eb] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:border-transparent"
                         placeholder="Ex: 5">
                 </div>
-
-                <div>
+                <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-[#1f2937] mb-2">Description</label>
-                    <textarea name="description" rows="3"
-                        class="w-full border border-[#e5e7eb] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:border-transparent"
-                        placeholder="Description optionnelle de la catégorie"></textarea>
+                    <textarea name="description" rows="3" class="w-full border border-[#e5e7eb] rounded-md px-4 py-2">{{ old('description') }}</textarea>
                 </div>
+            </div>
 
-                <div class="flex justify-end space-x-4">
-                    <a href="{{ route('admin.references') }}" class="px-4 py-2 border border-[#e5e7eb] rounded-md text-[#1f2937] hover:bg-[#f9fafb] transition-colors duration-200">
-                        Annuler
-                    </a>
-                    <button type="submit" class="bg-[#047857] text-white px-4 py-2 rounded-md hover:bg-[#065f46] transition-colors duration-200">
-                        Créer la catégorie
-                    </button>
-                </div>
+            <div class="flex justify-end space-x-4 mt-6">
+                <a href="{{ route('admin.references') }}" class="px-4 py-2 border border-[#e5e7eb] rounded-md text-[#1f2937] hover:bg-[#f9fafb] transition-colors duration-200">
+                    Annuler
+                </a>
+                <button type="submit" class="bg-[#047857] text-white px-4 py-2 rounded-md hover:bg-[#065f46] transition-colors duration-200">
+                    Créer la catégorie
+                </button>
             </div>
         </form>
     </div>

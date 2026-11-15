@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AnomalieController;
 use App\Http\Controllers\Api\CampagneInventaireController;
+use App\Http\Controllers\Api\LigneInventaireController;
 use App\Http\Controllers\Api\MaintenanceController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,13 @@ Route::middleware('throttle:100,1')->group(function () {
         Route::middleware('role:gestionnaire,administrateur')->group(function () {
             Route::post('/campagnes-inventaire', [CampagneInventaireController::class, 'store']);
             Route::post('/campagnes-inventaire/{id}/cloturer', [CampagneInventaireController::class, 'cloturer']);
+        });
+
+        // Lignes d'inventaire (constats)
+        Route::get('/campagnes-inventaire/{id}/lignes', [LigneInventaireController::class, 'index']);
+
+        Route::middleware('role:gestionnaire,administrateur,inspecteur')->group(function () {
+            Route::post('/campagnes-inventaire/{id}/lignes', [LigneInventaireController::class, 'store']);
         });
 
         // Anomalies

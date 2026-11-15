@@ -101,4 +101,39 @@ class AuthController extends Controller
             ],
         ]);
     }
+
+    public function users()
+    {
+        $users = User::orderBy('nom')->get(['id', 'email', 'nom', 'prenom', 'role', 'statut', 'derniere_connexion_at']);
+
+        return response()->json([
+            'success' => true,
+            'data' => $users,
+        ]);
+    }
+
+    public function storeUser(Request $request)
+    {
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8',
+            'role' => 'required|in:administrateur,gestionnaire,responsable,inspecteur',
+        ]);
+
+        $user = User::create([
+            'nom' => $validated['nom'],
+            'prenom' => $validated['prenom'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => $validated['role'],
+            'statut' => 'actif',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $user->only(['id', 'email', 'nom', 'prenom', 'role', 'statut']),
+        ], 201);
+    }
 }

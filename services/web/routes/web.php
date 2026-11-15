@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BienController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InventaireController;
+use App\Http\Controllers\MaintenanceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,66 +16,35 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware('authenticated')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/biens', function () {
-    return view('biens.index');
-})->name('biens.index');
+    Route::get('/biens', [BienController::class, 'index'])->name('biens.index');
+    Route::get('/biens/create', [BienController::class, 'create'])->name('biens.create');
+    Route::post('/biens', [BienController::class, 'store'])->name('biens.store');
+    Route::get('/biens/{id}', [BienController::class, 'show'])->name('biens.show');
+    Route::post('/biens/{id}/affecter', [BienController::class, 'affecter'])->name('biens.affecter');
 
-Route::get('/biens/create', function () {
-    return view('biens.create');
-})->name('biens.create');
+    Route::get('/maintenances', [MaintenanceController::class, 'index'])->name('maintenances.index');
+    Route::get('/maintenances/create', [MaintenanceController::class, 'create'])->name('maintenances.create');
+    Route::post('/maintenances', [MaintenanceController::class, 'store'])->name('maintenances.store');
 
-Route::get('/biens/{id}/edit', function ($id) {
-    return view('biens.edit', ['id' => $id]);
-})->name('biens.edit');
+    Route::get('/inventaires', [InventaireController::class, 'index'])->name('inventaires.index');
+    Route::get('/inventaires/create', [InventaireController::class, 'create'])->name('inventaires.create');
+    Route::post('/inventaires', [InventaireController::class, 'store'])->name('inventaires.store');
+    Route::get('/inventaires/{id}/constats', [InventaireController::class, 'constats'])->name('inventaires.constats');
+    Route::post('/inventaires/{id}/lignes', [InventaireController::class, 'storeLigne'])->name('inventaires.lignes.store');
+    Route::get('/inventaires/{id}/rapport', [InventaireController::class, 'rapport'])->name('inventaires.rapport');
 
-Route::get('/biens/{id}', function ($id) {
-    return view('biens.show', ['id' => $id]);
-})->name('biens.show');
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+        Route::get('/admin/users/create', [AdminController::class, 'userCreate'])->name('admin.users.create');
+        Route::post('/admin/users', [AdminController::class, 'userStore'])->name('admin.users.store');
 
-Route::get('/maintenances', function () {
-    return view('maintenances.index');
-})->name('maintenances.index');
-
-Route::get('/maintenances/create', function () {
-    return view('maintenances.create');
-})->name('maintenances.create');
-
-Route::get('/inventaires', function () {
-    return view('inventaires.index');
-})->name('inventaires.index');
-
-Route::get('/inventaires/create', function () {
-    return view('inventaires.create');
-})->name('inventaires.create');
-
-Route::get('/inventaires/constats', function () {
-    return view('inventaires.constats');
-})->name('inventaires.constats');
-
-Route::get('/inventaires/rapport', function () {
-    return view('inventaires.rapport');
-})->name('inventaires.rapport');
-
-Route::get('/admin/users', function () {
-    return view('admin.users');
-})->name('admin.users');
-
-Route::get('/admin/users/create', function () {
-    return view('admin.users-create');
-})->name('admin.users.create');
-
-Route::get('/admin/references', function () {
-    return view('admin.references');
-})->name('admin.references');
-
-Route::get('/admin/references/services/create', function () {
-    return view('admin.service-create');
-})->name('admin.services.create');
-
-Route::get('/admin/references/categories/create', function () {
-    return view('admin.category-create');
-})->name('admin.categories.create');
+        Route::get('/admin/references', [AdminController::class, 'references'])->name('admin.references');
+        Route::get('/admin/references/services/create', [AdminController::class, 'serviceCreate'])->name('admin.services.create');
+        Route::post('/admin/references/services', [AdminController::class, 'serviceStore'])->name('admin.services.store');
+        Route::get('/admin/references/categories/create', [AdminController::class, 'categoryCreate'])->name('admin.categories.create');
+        Route::post('/admin/references/categories', [AdminController::class, 'categoryStore'])->name('admin.categories.store');
+    });
+});

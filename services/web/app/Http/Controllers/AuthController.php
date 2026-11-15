@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ApiClient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
+    public function __construct(private ApiClient $api) {}
+
     public function showLogin()
     {
+        if (session('user')) {
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.login');
     }
 
@@ -19,27 +25,29 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // Test temporaire avec identifiants en dur
-        if ($credentials['email'] === 'admin@patrimoine.gouv' && $credentials['password'] === 'password123') {
-            session([
-                'user' => [
-                    'id' => 1,
-                    'email' => 'admin@patrimoine.gouv',
-                    'nom' => 'Admin',
-                    'prenom' => 'Système',
-                    'role' => 'admin',
-                ]
-            ]);
-            return redirect()->route('dashboard');
+        $response = $this->api->post('auth', '/api/login', $credentials);
+        $data = $response->json();
+
+        if (! $response->successful() || ! ($data['success'] ?? false)) {
+            return back()->withErrors([
+                'email' => $data['message'] ?? 'Les identifiants fournis ne correspondent pas a nos enregistrements.',
+            ])->withInput($request->only('email'));
         }
 
-        return back()->withErrors([
-            'email' => 'Les identifiants fournis ne correspondent pas a nos enregistrements.',
+        session([
+            'token' => $data['data']['token'],
+            'user' => $data['data']['user'],
         ]);
+
+        return redirect()->route('dashboard');
     }
 
     public function logout(Request $request)
     {
+        if (session('token')) {
+            $this->api->post('auth', '/api/logout');
+        }
+
         $request->session()->forget(['token', 'user']);
         $request->session()->invalidate();
         $request->session()->regenerateToken();

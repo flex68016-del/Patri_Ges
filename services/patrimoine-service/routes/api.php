@@ -28,6 +28,8 @@ Route::middleware('throttle:100,1')->group(function () {
         });
 
         Route::middleware('role:administrateur')->group(function () {
+            Route::post('/services', [ServiceController::class, 'store']);
+            Route::post('/categories', [CategorieController::class, 'store']);
             Route::post('/biens/{id}/reformer', [BienController::class, 'reformer']);
             Route::post('/biens/{id}/ceder', [BienController::class, 'ceder']);
         });

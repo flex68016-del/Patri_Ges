@@ -26,10 +26,11 @@ class CategorieController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'libelle' => 'required|string|max:255|unique:categories',
+            'code' => 'required|string|max:50|unique:categories,code',
+            'nom' => 'required|string|max:255',
             'type_bien' => 'required|in:immobilier,vehicule,equipement',
-            'duree_amortissement' => 'required|integer|min:1',
-            'amortissable' => 'required|boolean',
+            'duree_vie' => 'required|integer|min:1',
+            'description' => 'nullable|string',
         ]);
 
         $categorie = Categorie::create($validated);
@@ -42,10 +43,12 @@ class CategorieController extends Controller
         $categorie = Categorie::findOrFail($id);
 
         $validated = $request->validate([
-            'libelle' => 'sometimes|string|max:255|unique:categories,libelle,'.$id,
+            'code' => 'sometimes|string|max:50|unique:categories,code,'.$id,
+            'nom' => 'sometimes|string|max:255',
             'type_bien' => 'sometimes|in:immobilier,vehicule,equipement',
-            'duree_amortissement' => 'sometimes|integer|min:1',
-            'amortissable' => 'sometimes|boolean',
+            'duree_vie' => 'sometimes|integer|min:1',
+            'description' => 'sometimes|nullable|string',
+            'actif' => 'sometimes|boolean',
         ]);
 
         $categorie->update($validated);
