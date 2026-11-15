@@ -1,201 +1,123 @@
-# Proposition Financière - Gestion du Patrimoine de l'État
+# Proposition Financière — Gestion du Patrimoine de l'État
 
 ## 1. Références
 
-**Projet :** Gestion du Patrimoine de l'État
-
-**Client :** République Togolaise
-
-**Prestataire :** Duah Prince Yao AMANKWAAH
-
-**Durée de la mission :** 6 jours (10-15 Novembre 2026)
-
-**Taux journalier :** 200 000 FCFA
+| | |
+|---|---|
+| **Projet** | Gestion du Patrimoine de l'État |
+| **Client** | République Togolaise |
+| **Prestataire** | Duah Prince Yao AMANKWAAH |
+| **Durée de la mission** | 6 jours (10–15 novembre 2026) |
+| **Taux journalier** | 200 000 FCFA |
 
 ---
 
-## 2. Budget Global
+## 2. Budget global
 
-| Poste | Jours | Taux Journalier | Montant |
+| Poste | Jours | Taux journalier | Montant |
 |-------|-------|-----------------|---------|
-| Développement | 6 | 200 000 FCFA | 1 200 000 FCFA |
-| **Total** | **6** | **200 000 FCFA** | **1 200 000 FCFA** |
+| Développement complet | 6 | 200 000 FCFA | **1 200 000 FCFA** |
+| **Total** | **6** | | **1 200 000 FCFA** |
 
 ---
 
-## 3. Détail des Activités
+## 3. Détail des activités
 
-### Phase A - Initialisation (1 jour)
-- Structure du dépôt et configuration Git
-- Documentation de base (README, .gitignore, .editorconfig)
-- Analyse du besoin et décisions d'architecture
-- **Coût :** 200 000 FCFA
-
-### Phase B - Conception UML (1 jour)
-- Diagrammes de cas d'utilisation
-- Diagrammes de classes
-- Diagrammes de séquence
-- Diagrammes d'états et d'activités
-- Diagrammes de composants et de déploiement
-- **Coût :** 200 000 FCFA
-
-### Phase C - Maquettes Figma (0.5 jour)
-- Tokens de design (couleurs, typographie, espacements)
-- Description détaillée des écrans
-- Documentation pour création manuelle
-- **Coût :** 100 000 FCFA
-
-### Phase D - Base de Données (0.5 jour)
-- MCD pour les 3 services
-- MLD avec normalisation
-- Plan d'index
-- **Coût :** 100 000 FCFA
-
-### Phase E - Socle Docker (0.5 jour)
-- Configuration docker-compose
-- Dockerfiles multi-étapes
-- Configuration Nginx gateway
-- Scripts d'initialisation
-- **Coût :** 100 000 FCFA
-
-### Phase F - Développement (2 jours)
-- Initialisation des 4 services Laravel
-- Implémentation des API REST
-- Création des modèles et contrôleurs
-- Interface web (Blade + Alpine + Tailwind)
-- Tests unitaires
-- Seeders pour données de démonstration
-- **Coût :** 400 000 FCFA
-
-### Phase G - Qualité et Sécurité (0.5 jour)
-- Composer audit
-- Tests PHPUnit
-- Validation de sécurité
-- Middleware d'autorisation et rate limiting
-- **Coût :** 100 000 FCFA
-
-### Phase H - Déploiement (0.5 jour)
-- Configuration Render
-- Variables d'environnement
-- Tests de déploiement
-- **Coût :** 100 000 FCFA
-
-### Phase I - Documents (0.5 jour)
-- Fiche technique
-- Proposition financière
-- Guide utilisateur
-- **Coût :** 100 000 FCFA
-
-### Phase J - Soutenance (0.5 jour)
-- Préparation de la soutenance
-- Script de présentation
-- Réponses aux questions
-- **Coût :** 37 500 FCFA
+| Phase | Contenu | Durée | Coût |
+|-------|---------|-------|------|
+| A — Initialisation | Dépôt, conventions, analyse du besoin, décisions d'architecture | 0,5 j | 100 000 FCFA |
+| B — Conception UML | 13 diagrammes : cas d'utilisation, classes, séquences, états, activités, composants, déploiement | 0,5 j | 100 000 FCFA |
+| C — Design de l'interface | Tokens de design, 14 maquettes, captures d'écran | 0,5 j | 100 000 FCFA |
+| D — Modélisation des données | MCD/MLD des 3 services, normalisation, plan d'index | 0,5 j | 100 000 FCFA |
+| E — Infrastructure Docker | Docker Compose, Dockerfiles, Nginx, healthchecks | 0,5 j | 100 000 FCFA |
+| F — Développement | 4 services Laravel : API REST, interface web, tests, seeders | 2 j | 400 000 FCFA |
+| G — Qualité et sécurité | Revues de code et de sécurité, durcissement, audit des dépendances | 0,5 j | 100 000 FCFA |
+| H — Déploiement | Procédures de déploiement, variables d'environnement, clés JWT | 0,5 j | 100 000 FCFA |
+| I — Documentation et soutenance | Rapport, référence API, guides, fiche technique, préparation | 0,5 j | 100 000 FCFA |
+| **Total** | | **6 j** | **1 200 000 FCFA** |
 
 ---
 
-## 4. Livrables Inclus
+## 4. Livrables inclus
 
-### 4.1 Code Source
-- Dépôt GitHub complet
-- 4 microservices Laravel
-- Infrastructure Docker
-- Tests unitaires
+### 4.1 Code source
+
+- Dépôt GitHub complet et public
+- 4 services Laravel 12 (PHP 8.4) : auth, patrimoine, opérations, web
+- Infrastructure Docker Compose + Nginx
 
 ### 4.2 Documentation
-- UML (11 diagrammes Mermaid)
-- Base de données (MCD, MLD, normalisation)
-- Design tokens et maquettes
-- Fiche technique
-- Guide utilisateur
 
-### 4.3 Déploiement
-- Configuration Render
-- Scripts de déploiement
-- Documentation d'installation
+- Rapport de soutenance (`docs/RAPPORT_SOUTENANCE.md`)
+- Analyse du besoin, fiche technique, guide utilisateur
+- Référence API complète (`docs/API.md`)
+- Base de données : MCD, MLD, normalisation (`docs/database/`)
+- 13 diagrammes UML + versions PNG (`docs/uml/`)
+- Maquettes et captures d'écran (`docs/design/`)
+- Plan et résultats des tests (`docs/TESTS.md`)
+- Revue de code et revue de sécurité
+- Journal du projet et décisions d'architecture
+
+### 4.3 Exploitation
+
+- Guides de déploiement générique et Render
+- Scripts de génération des clés JWT
+- Comptes de démonstration documentés
 
 ### 4.4 Support
-- Guide d'utilisation
-- Documentation API
-- Journal de développement
+
+- 1 mois de support technique après livraison
+- Correction des anomalies
+- Assistance au déploiement
 
 ---
 
-## 5. Conditions de Paiement
+## 5. Conditions de paiement
 
-### 5.1 Modalités
+| Échéance | Taux | Montant | Moment |
+|----------|------|---------|--------|
+| **Acompte** | 60 % | **720 000 FCFA** | À la signature de la présente proposition |
+| **Solde** | 40 % | **480 000 FCFA** | À la livraison et validation du projet |
+| **Total** | **100 %** | **1 200 000 FCFA** | |
 
-- **Paiement à la livraison** : 100% à la fin de la mission
-- **Validation** : Validation par le client avant paiement
+- **Validation** : validation par le client avant le solde
 - **Garantie** : 1 mois de support après livraison
 
-### 5.2 Coûts Non Inclus
+### Coûts non inclus
 
-- Hébergement Render (gratuit pour open-source)
+- Hébergement (selon la plateforme retenue)
 - Nom de domaine
-- Certificat SSL (inclus avec Render)
-- Formation des utilisateurs (optionnel)
+- Formation des utilisateurs (optionnelle)
 
 ---
 
 ## 6. Garanties
 
-### 6.1 Qualité
-
 - Code conforme aux standards Laravel
-- Tests unitaires couvrants
-- Documentation complète
-- Sécurité validée (composer audit)
-
-### 6.2 Support
-
-- 1 mois de support technique
-- Correction des bugs mineurs
-- Assistance pour le déploiement
-
-### 6.3 Maintenance
-
-- Maintenance optionnelle disponible
-- Contrat de maintenance annuel à définir
+- Campagne de tests fonctionnels et de sécurité documentée
+- Documentation complète et à jour
+- Secrets et clés jamais commités (variables d'environnement)
 
 ---
 
-## 7. Avantages
+## 7. Avantages de la solution
 
-### 7.1 Technologiques
-
-- Architecture microservices moderne
-- Stack technologique actuel (Laravel 12, PHP 8.2)
-- Sécurité JWT RS256
-- Interface web réactive
-- Conteneurisation Docker
-
-### 7.2 Opérationnels
-
-- Interface intuitive
-- Performances optimisées
-- Scalabilité
-- Traçabilité complète
-
-### 7.3 Financiers
-
-- Taux compétitif (75 000 FCFA/jour)
-- Hébergement gratuit (Render)
-- Pas de coûts récurrents
-- ROI rapide
+- **Technologiques** : architecture microservices moderne, Laravel 12 / PHP 8.4 / PostgreSQL 16, JWT RS256, interface responsive
+- **Opérationnels** : traçabilité complète des biens, rôles et permissions, tableaux de bord
+- **Financiers** : coût maîtrisé, hébergement flexible (stack conteneurisée portable), pas de coût de licence
 
 ---
 
 ## 8. Planning
 
-| Journée | Activités |
-|---------|-----------|
-| Jour 1 | Phase A + B (Initialisation + UML) |
-| Jour 2 | Phase C + D (Maquettes + Base de données) |
-| Jour 3 | Phase E + F (Docker + Développement début) |
-| Jour 4 | Phase F (Développement suite) |
-| Jour 5 | Phase G + H (Qualité + Déploiement) |
-| Jour 6 | Phase I + J (Documents + Soutenance) |
+| Journée | Contenu |
+|---------|---------|
+| Jour 1 | Initialisation, analyse, UML, design, BDD, Docker |
+| Jour 2 | Développement des 3 services API |
+| Jour 3 | Développement de l'interface web |
+| Jour 4 | Tests, corrections, revue de code et sécurité |
+| Jour 5 | Documentation, déploiement, finalisation |
+| Jour 6 | Soutenance et restitution |
 
 ---
 
@@ -203,19 +125,17 @@
 
 **Montant total de la proposition : 1 200 000 FCFA**
 
-Cette proposition inclut :
-- Développement complet de la solution
-- Documentation technique et utilisateur
-- Tests et validation de sécurité
-- Déploiement sur Render
-- Support technique (1 mois)
+réglée selon les modalités suivantes :
 
-La solution est prête à être mise en production immédiatement après livraison.
+- **Acompte de 60 % — 720 000 FCFA** à la signature
+- **Solde de 40 % — 480 000 FCFA** à la livraison
+
+Cette proposition couvre le développement complet de la plateforme, l'ensemble de sa documentation, les tests de validation et la préparation de la soutenance.
 
 ---
 
-**Signature du Prestataire**
+**Signature du prestataire**
 
 Duah Prince Yao AMANKWAAH
 
-15 Novembre 2026
+15 novembre 2026

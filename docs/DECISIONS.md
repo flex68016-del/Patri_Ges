@@ -1,62 +1,124 @@
 # Décisions d'architecture
 
-## Design et Interface
+Journal des décisions techniques et organisationnelles du projet, avec leur contexte, la décision retenue, sa justification et les alternatives écartées.
 
-### Contexte
-Le fichier HTML exporté de Figma ne contient que le code de chargement du bundler JavaScript, pas le design réel des maquettes. Impossible d'extraire les couleurs, typographie, espacements, composants graphiques et structure des 14 écrans directement de ce fichier.
+---
 
-### Décision
-L'utilisateur a demandé de reproduire fidèlement les 14 écrans de la maquette Figma, mais le fichier HTML fourni ne contient pas les données visuelles nécessaires.
+## Architecture microservices
 
-**Options disponibles :**
-1. Utiliser le lien Figma direct (https://www.figma.com/design/n0Ykk3lKV5zLpNfeRheqxe/Maquette-Patrimoine-Etat?node-id=0-1) - nécessite l'accès au serveur Figma MCP
-2. Adapter l'interface selon les exigences du brief (section 2.2) :
-   - Couleur d'accent unique : vert institutionnel (emerald green)
-   - Design sobre et institutionnel
-   - Typographie : Inter
-   - Transitions : 200-250 ms
-   - Responsive mobile d'abord
-   - Contrastes AA, accessibilité
+**Contexte :** La plateforme gère trois domaines métier distincts (identité, patrimoine, opérations) devant pouvoir évoluer et être déployés indépendamment.
 
-### Alternative écartée
-Extraction directe des tokens de design depuis le fichier HTML exporté (impossible - fichier ne contient que le bundler).
+**Décision :** Architecture en 4 services Laravel + gateway Nginx : `auth-service`, `patrimoine-service`, `operations-service`, `web`, chacun avec sa propre base PostgreSQL.
 
-### Besoin d'accès Figma
-Pour reproduire fidèlement les 14 écrans, l'accès direct au fichier Figma est nécessaire. Le serveur Figma MCP est disponible mais n'a pas pu être initialisé (erreur de validation des paramètres).
+**Raison :** Isolation des contextes bornés, scalabilité indépendante, alignement avec l'exigence de découpage du brief.
 
-## Hébergeur
-**Contexte :** Besoin d'un hébergeur gratuit pour la démonstration.
-**Décision :** Render choisi comme hébergeur gratuit.
-**Raison :** Support Docker, générosité de temps d'exécution, interface simple.
-**Alternative écartée :** Railway (crédits limités), Fly.io (complexité régions).
+**Alternatives écartées :** Monolithe Laravel (plus simple mais ne répond pas à l'exigence d'architecture microservices) ; découpage plus fin (coût de complexité disproportionné pour le périmètre).
 
-## Accès Figma
-**Contexte :** Besoin de créer des maquettes pour l'interface.
-**Décision :** Alternative documentée dans docs/design/ (tokens, descriptions, HTML statiques).
-**Raison :** Le serveur Figma MCP n'a pas les droits d'édition nécessaires pour créer un fichier.
-**Alternative écartée :** Attendre les droits Figma (bloquerait le projet).
-**Note :** L'utilisateur devra créer les maquettes Figma lui-même en se basant sur la documentation fournie.
+---
 
-## Taux journalier
-**Contexte :** Besoin d'un taux pour la proposition financière.
-**Décision :** 75 000 FCFA/jour.
-**Raison :** Taux intermédiaire standard demandé par l'utilisateur.
-**Alternative écartée :** Aucune.
+## Service web sans base de données
 
-## Auteur documents
-**Contexte :** Nom à faire figurer sur les documents.
-**Décision :** Duah Prince Yao AMANKWAAH.
-**Raison :** Nom indiqué dans le brief et confirmé par l'utilisateur.
-**Alternative écartée :** Aucune.
+**Contexte :** Le service `web` sert l'interface utilisateur et doit consommer les API métier.
+
+**Décision :** `web` est un Backend-for-Frontend sans base propre : il conserve le JWT en session serveur et appelle les API via un client HTTP interne (`ApiClient`).
+
+**Raison :** Évite la duplication des données et des règles métier ; l'interface ne contient aucune logique de persistance.
+
+**Alternatives écartées :** Données en localStorage côté navigateur (exposition du token) ; base partagée entre services (couplage fort).
+
+---
+
+## Authentification JWT RS256
+
+**Contexte :** Les services doivent s'authentifier mutuellement sans session partagée.
+
+**Décision :** Jetons JWT signés en RS256 ; la clé privée est confinée à `auth-service`, les autres services vérifient la signature avec la clé publique et valident l'utilisateur via `GET /api/me`.
+
+**Raison :** Signature asymétrique — vérification locale possible sans exposer la clé de signature ; validation de l'utilisateur actif à chaque requête.
+
+**Alternatives écartées :** Jetons HS256 (clé symétrique partagée entre services, moins sûre) ; sessions serveur partagées (couplage infrastructurel).
+
+---
+
+## Base de données par service
+
+**Contexte :** Trois domaines métier aux cycles de vie et volumes différents.
+
+**Décision :** Une base PostgreSQL par service (`auth_db`, `patrimoine_db`, `operations_db`), communication inter-services par UUID sans clé étrangère physique.
+
+**Raison :** Isolation des données, migrations indépendantes, cohérence avec le découpage microservices.
+
+**Alternatives écartées :** Schéma unique partagé (couplage, migrations conflictuelles) ; base par table (complexité inutile).
+
+---
+
+## Spécialisation des biens
+
+**Contexte :** Les biens sont de trois types (immobilier, véhicule, équipement) avec des attributs spécifiques.
+
+**Décision :** Table `biens` commune + tables `biens_immobiliers`, `biens_vehicules`, `biens_equipements` en relation 1:1, le type étant porté par la catégorie.
+
+**Raison :** Attributs propres à chaque type sans alourdir la table principale ; requêtes simples.
+
+**Alternatives écartées :** Colonnes nullable pour tous les types (table large, intégrité faible) ; table unique avec JSON (perte des contraintes).
+
+---
+
+## Journal des mouvements en ajout seul
+
+**Contexte :** Le contrôle patrimonial exige la traçabilité complète de chaque bien.
+
+**Décision :** Table `mouvements` alimentée automatiquement à chaque transition (création, affectation, transfert, maintenance, réforme, cession), jamais modifiée ni supprimée.
+
+**Raison :** Historique infalsifiable, exigence d'audit.
+
+**Alternatives écartées :** Champs d'historique sur `biens` (perte des événements intermédiaires).
+
+---
 
 ## Identité visuelle
-**Contexte :** Couleur d'accent et identité visuelle pour l'interface.
-**Décision :** Vert institutionnel comme couleur d'accent, identité sobre.
-**Raison :** Direction institutionnelle demandée dans le brief, vert institutionnel recommandé.
-**Alternative écartée :** Dégradés violet/bleu (vibe coder interdit).
 
-## Déploiement effectif
-**Contexte :** Le déploiement sur Render s'est heurté à l'exigence d'un moyen de paiement (erreur 402) ; EthioDeploy free est limité à un seul projet de 256 MB.
-**Décision :** Le déploiement effectif est reporté ; la procédure générique multi-hébergeurs est documentée dans `docs/DEPLOIEMENT.md` (Render, SnapDeploy, VPS Oracle Always Free). Une base Neon PostgreSQL a été préparée (projet `patrimoine-gouv`, 3 bases).
-**Raison :** Pas de carte bancaire disponible ; la stack conteneurisée reste déployable telle quelle sur tout hébergeur Docker.
-**Alternative écartée :** Fusionner les 4 services en un conteneur unique (risque mémoire, perte de l'isolation microservices).
+**Contexte :** Interface destinée à l'administration publique togolaise.
+
+**Décision :** Vert institutionnel (`#2E7D32`, déclinaisons `#047857`, `#065f46`), typographie Inter, design sobre : grille stricte, espacements généreux, transitions courtes (150–300 ms), pas de dégradés ni d'effets superflus.
+
+**Raison :** Sobriété et lisibilité exigées pour un outil institutionnel ; contraste AA.
+
+**Alternatives écartées :** Identités colorées ou « startup » (inadaptées au contexte administratif).
+
+---
+
+## Taux journalier et paiement
+**Contexte :** Proposition financière de la mission (6 jours).
+**Décision :** 200 000 FCFA/jour, soit 1 200 000 FCFA au total ; règlement en deux fois : acompte de 60 % (720 000 FCFA) à la signature, solde de 40 % (480 000 FCFA) à la livraison.
+**Raison :** Conditions convenues pour la mission.
+
+## Auteur des documents
+
+**Contexte :** Nom à faire figurer sur les livrables.
+
+**Décision :** Duah Prince Yao AMANKWAAH.
+
+---
+
+## Déploiement
+
+**Contexte :** La stack conteneurisée doit être déployée sur un hébergeur accessible.
+
+**Décision :** Déploiement générique documenté dans `docs/DEPLOIEMENT.md` (tout hébergeur acceptant Docker : Render, SnapDeploy, VPS, Oracle Cloud). Une base PostgreSQL Neon a été provisionnée (projet `patrimoine-gouv`, bases `auth_db`, `patrimoine_db`, `operations_db`). Le déploiement effectif reste à exécuter.
+
+**Raison :** Les plateformes PaaS gratuites évoluent rapidement (exigences de carte bancaire, limites de plan) ; la conteneurisation garantit la portabilité.
+
+**Alternatives écartées :** Dépendre d'un seul hébergeur (fragilité) ; fusionner les services en un conteneur unique (perte de l'isolation microservices, risque mémoire).
+
+---
+
+## Persistance des sessions web
+
+**Contexte :** Le service `web` est sans état propre et doit conserver le JWT entre les requêtes.
+
+**Décision :** Sessions serveur Laravel (`SESSION_DRIVER=file`), JWT conservé en session, jamais exposé au navigateur.
+
+**Raison :** Le token ne quitte pas le serveur ; protection contre le vol via XSS.
+
+**Alternatives écartées :** `localStorage` (vulnérable au XSS) ; cookies portant le JWT (surface de vol élargie).

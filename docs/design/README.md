@@ -9,7 +9,7 @@ https://www.figma.com/design/n0Ykk3lKV5zLpNfeRheqxe/Maquette-Patrimoine-Etat?nod
 
 ## Captures d'écran
 
-Les captures d'écran sont disponibles dans le dossier `screenshots/`.
+Les captures d'écran des écrans implémentés sont disponibles dans le dossier [`Screenshots/`](Screenshots/).
 
 ## Couleur d'accent
 

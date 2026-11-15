@@ -26,7 +26,7 @@ Les versions **rasterisées PNG** destinées à la soutenance se trouvent dans [
 
 ## Diagramme de séquence - Connexion
 
-**Explication :** Ce diagramme décrit le flux de connexion d'un utilisateur. L'utilisateur saisit ses identifiants, l'interface les transmet au service d'authentification, qui vérifie le mot de passe, génère un JWT (RS256) avec l'identifiant, le rôle et le service_id, l'enregistre dans le journal d'audit et renvoie le token. L'interface stocke le token en session chiffrée côté serveur (jamais dans localStorage).
+**Explication :** Ce diagramme décrit le flux de connexion d'un utilisateur. L'utilisateur saisit ses identifiants, le service web les transmet au service d'authentification, qui vérifie le mot de passe, génère un JWT (RS256) et journalise la connexion. Le service web conserve le jeton en session serveur et l'utilise pour appeler les API métier. La déconnexion invalide la session et régénère le jeton CSRF.
 
 ## Diagramme de séquence - Affectation d'un bien
 
@@ -34,15 +34,15 @@ Les versions **rasterisées PNG** destinées à la soutenance se trouvent dans [
 
 ## Diagramme de séquence - Clôture d'une maintenance
 
-**Explication :** Ce diagramme illustre le pattern saga simplifié pour la clôture d'une maintenance. Le service opérations appelle d'abord le service patrimoine pour restaurer le statut du bien (de "en maintenance" à son statut précédent). Si cet appel échoue, le service opérations annule sa propre transaction (rollback). Si l'appel réussit, le service opérations clôture la maintenance et enregistre l'action. Cela garantit la cohérence des données entre services.
+**Explication :** Ce diagramme illustre le processus de clôture d'une maintenance. Le gestionnaire saisit la date effective et le coût final ; le service opérations vérifie les données, passe la maintenance au statut « terminé » et conserve la traçabilité complète (date planifiée, date effective, coût).
 
 ## Diagramme de séquence - Clôture d'une campagne d'inventaire
 
-**Explication :** Ce diagramme décrit la clôture d'une campagne d'inventaire. L'Inspecteur demande la clôture, le service opérations vérifie que la campagne est ouverte, compte les lignes d'inventaire (présents, absents, dégradés), met à jour le statut de la campagne à "clôturée", la marque comme immuable, enregistre l'action dans le journal d'audit et renvoie le rapport des écarts.
+**Explication :** Ce diagramme décrit la clôture d'une campagne d'inventaire. L'inspecteur ou le gestionnaire demande la clôture ; le service opérations vérifie que la campagne est ouverte, compte les constats enregistrés (présents, absents, dégradés) et passe la campagne au statut « terminé ». Le rapport des écarts reste consultable après clôture.
 
 ## Diagramme d'états - Statut d'un bien
 
-**Explication :** Ce diagramme modélise les états possibles d'un bien au cours de son cycle de vie : En stock, Affecté, En maintenance, Réformé, Cédé. Les transitions sont déclenchées par des événements métier (affectation, maintenance, réforme, cession). Une fois réformé ou cédé, le bien ne peut plus revenir à un état actif.
+**Explication :** Ce diagramme modélise les états possibles d'un bien au cours de son cycle de vie : disponible, affecté, en maintenance, réformé, cédé. Les transitions sont déclenchées par des événements métier (affectation, maintenance, réforme, cession). Une fois réformé ou cédé, le bien ne peut plus être affecté ni entretenu.
 
 ## Diagramme d'activités - Cycle de vie d'un bien
 
@@ -50,8 +50,8 @@ Les versions **rasterisées PNG** destinées à la soutenance se trouvent dans [
 
 ## Diagramme de composants
 
-**Explication :** Ce diagramme présente l'architecture en micro-services. L'interface Web (Laravel Blade + Alpine + Tailwind) communique via une passerelle Nginx avec les trois services métier (Auth, Patrimoine, Operations). Chaque service a sa propre base PostgreSQL dans un conteneur unique. L'authentification se fait par JWT RS256, vérifié localement par chaque service sans appel réseau. Les services communiquent entre eux via REST/JSON (opérations → patrimoine pour les mises à jour de statut).
+**Explication :** Ce diagramme présente l'architecture en microservices. L'interface Web (Laravel Blade + Alpine.js + Tailwind CSS) s'authentifie auprès du service Auth (JWT RS256) puis consomme les API Patrimoine et Opérations via un client HTTP interne. Chaque service possède sa propre base PostgreSQL. Chaque service API vérifie la signature du jeton avec la clé publique et valide l'utilisateur actif auprès du service Auth (`GET /api/me`) ; le contrôle des rôles est appliqué par middleware sur chaque endpoint. Les services communiquent entre eux par REST/JSON.
 
 ## Diagramme de déploiement
 
-**Explication :** Ce diagramme montre deux environnements : développement (Docker Compose) et production (Render). En développement, tous les services (Nginx, 3 services Laravel, PostgreSQL) tournent dans des conteneurs Docker sur un réseau interne, avec un volume pour la persistance des données. En production, chaque service est déployé comme un Web Service sur Render, avec une base de données PostgreSQL externe gérée par Render. L'architecture reste identique, seule l'infrastructure change.
+**Explication :** Ce diagramme montre deux environnements : développement (Docker Compose) et production (hébergeur acceptant Docker). En développement, tous les services (Nginx, 3 services Laravel, PostgreSQL) tournent dans des conteneurs Docker sur un réseau interne, avec un volume pour la persistance des données. En production, chaque service est déployé comme un conteneur indépendant derrière la gateway, avec une base de données PostgreSQL externe. L'architecture reste identique, seule l'infrastructure change.
