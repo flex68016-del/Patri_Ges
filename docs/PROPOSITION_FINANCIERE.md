@@ -8,7 +8,7 @@
 | **Client** | République Togolaise |
 | **Prestataire** | Duah Prince Yao AMANKWAAH |
 | **Durée de la mission** | 6 jours (10–15 novembre 2026) |
-| **Taux journalier** | 200 000 FCFA |
+| **Taux journalier** | 2 000 000 FCFA |
 
 ---
 
@@ -16,8 +16,8 @@
 
 | Poste | Jours | Taux journalier | Montant |
 |-------|-------|-----------------|---------|
-| Développement complet | 6 | 200 000 FCFA | **1 200 000 FCFA** |
-| **Total** | **6** | | **1 200 000 FCFA** |
+| Développement complet | 6 | 2 000 000 FCFA | **12 000 000 FCFA** |
+| **Total** | **6** | | **12 000 000 FCFA** |
 
 ---
 
@@ -25,16 +25,16 @@
 
 | Phase | Contenu | Durée | Coût |
 |-------|---------|-------|------|
-| A — Initialisation | Dépôt, conventions, analyse du besoin, décisions d'architecture | 0,5 j | 100 000 FCFA |
-| B — Conception UML | 13 diagrammes : cas d'utilisation, classes, séquences, états, activités, composants, déploiement | 0,5 j | 100 000 FCFA |
-| C — Design de l'interface | Tokens de design, 14 maquettes, captures d'écran | 0,5 j | 100 000 FCFA |
-| D — Modélisation des données | MCD/MLD des 3 services, normalisation, plan d'index | 0,5 j | 100 000 FCFA |
-| E — Infrastructure Docker | Docker Compose, Dockerfiles, Nginx, healthchecks | 0,5 j | 100 000 FCFA |
-| F — Développement | 4 services Laravel : API REST, interface web, tests, seeders | 2 j | 400 000 FCFA |
-| G — Qualité et sécurité | Revues de code et de sécurité, durcissement, audit des dépendances | 0,5 j | 100 000 FCFA |
-| H — Déploiement | Procédures de déploiement, variables d'environnement, clés JWT | 0,5 j | 100 000 FCFA |
-| I — Documentation et soutenance | Rapport, référence API, guides, fiche technique, préparation | 0,5 j | 100 000 FCFA |
-| **Total** | | **6 j** | **1 200 000 FCFA** |
+| A — Initialisation | Dépôt, conventions, analyse du besoin, décisions d'architecture | 0,5 j | 1 000 000 FCFA |
+| B — Conception UML | 13 diagrammes : cas d'utilisation, classes, séquences, états, activités, composants, déploiement | 0,5 j | 1 000 000 FCFA |
+| C — Design de l'interface | Tokens de design, 14 maquettes, captures d'écran | 0,5 j | 1 000 000 FCFA |
+| D — Modélisation des données | MCD/MLD des 3 services, normalisation, plan d'index | 0,5 j | 1 000 000 FCFA |
+| E — Infrastructure Docker | Docker Compose, Dockerfiles, Nginx, healthchecks | 0,5 j | 1 000 000 FCFA |
+| F — Développement | 4 services Laravel : API REST, interface web, tests, seeders | 2 j | 4 000 000 FCFA |
+| G — Qualité et sécurité | Revues de code et de sécurité, durcissement, audit des dépendances | 0,5 j | 1 000 000 FCFA |
+| H — Déploiement | Procédures de déploiement, variables d'environnement, clés JWT | 0,5 j | 1 000 000 FCFA |
+| I — Documentation et soutenance | Rapport, référence API, guides, fiche technique, préparation | 0,5 j | 1 000 000 FCFA |
+| **Total** | | **6 j** | **12 000 000 FCFA** |
 
 ---
 
@@ -60,7 +60,7 @@
 
 ### 4.3 Exploitation
 
-- Guides de déploiement générique et Render
+- Guide de déploiement SnapDeploy
 - Scripts de génération des clés JWT
 - Comptes de démonstration documentés
 
@@ -76,9 +76,9 @@
 
 | Échéance | Taux | Montant | Moment |
 |----------|------|---------|--------|
-| **Acompte** | 60 % | **720 000 FCFA** | À la signature de la présente proposition |
-| **Solde** | 40 % | **480 000 FCFA** | À la livraison et validation du projet |
-| **Total** | **100 %** | **1 200 000 FCFA** | |
+| **Acompte** | 60 % | **7 200 000 FCFA** | À la signature de la présente proposition |
+| **Solde** | 40 % | **4 800 000 FCFA** | À la livraison et validation du projet |
+| **Total** | **100 %** | **12 000 000 FCFA** | |
 
 - **Validation** : validation par le client avant le solde
 - **Garantie** : 1 mois de support après livraison
@@ -123,12 +123,12 @@
 
 ## 9. Conclusion
 
-**Montant total de la proposition : 1 200 000 FCFA**
+**Montant total de la proposition : 12 000 000 FCFA**
 
 réglée selon les modalités suivantes :
 
-- **Acompte de 60 % — 720 000 FCFA** à la signature
-- **Solde de 40 % — 480 000 FCFA** à la livraison
+- **Acompte de 60 % — 7 200 000 FCFA** à la signature
+- **Solde de 40 % — 4 800 000 FCFA** à la livraison
 
 Cette proposition couvre le développement complet de la plateforme, l'ensemble de sa documentation, les tests de validation et la préparation de la soutenance.
 

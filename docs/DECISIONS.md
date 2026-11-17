@@ -90,7 +90,7 @@ Journal des décisions techniques et organisationnelles du projet, avec leur con
 
 ## Taux journalier et paiement
 **Contexte :** Proposition financière de la mission (6 jours).
-**Décision :** 200 000 FCFA/jour, soit 1 200 000 FCFA au total ; règlement en deux fois : acompte de 60 % (720 000 FCFA) à la signature, solde de 40 % (480 000 FCFA) à la livraison.
+**Décision :** 2 000 000 FCFA/jour, soit 12 000 000 FCFA au total ; règlement en deux fois : acompte de 60 % (7 200 000 FCFA) à la signature, solde de 40 % (4 800 000 FCFA) à la livraison.
 **Raison :** Conditions convenues pour la mission.
 
 ## Auteur des documents
